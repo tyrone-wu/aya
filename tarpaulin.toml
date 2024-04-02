@@ -1,0 +1,9 @@
+[coverage]
+workspace = true
+color = "Always"
+exclude = ["xtask", "integration-test", "integration-ebpf"]
+ignore_tests = true
+
+[report]
+out = ["Html"]
+output-dir = "codecov/"
