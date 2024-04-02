@@ -1,0 +1,30 @@
+# [coverage]
+# workspace = true
+# color = "Always"
+# exclude = ["xtask", "integration-test", "integration-ebpf", "init"]
+# exclude-files = ["xtask/*", "test/*", "init/*"]
+
+# [aya]
+# workspace = true
+# all-features = true
+# color = "Always"
+# run-types = ["AllTargets"]
+# exclude = ["aya-ebpf", "aya-ebpf-bindings", "aya-log-ebpf", "integration-ebpf", "integration-test"]
+
+# [aya-doc]
+# workspace = true
+# all-features = true
+# no-fail-fast = true
+# color = "Always"
+# run-types = ["Doctests"]
+# exclude = ["aya-ebpf", "aya-ebpf-bindings", "aya-log-ebpf", "init", "integration-ebpf", "integration-test"]
+
+[aya-ebpf]
+all-features = true
+color = "Always"
+run-types = ["Doctests"]
+packages = ["aya-ebpf", "aya-log-ebpf"]
+
+# [integration-test]
+# workspace = true
+# color = "Always"

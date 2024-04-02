@@ -3,6 +3,7 @@
 [![Crates.io][crates-badge]][crates-url]
 ![License][license-badge]
 [![Build status][build-badge]][build-url]
+![Codecov][coverage-badge]
 [![Book][book-badge]][book-url]
 
 [crates-badge]: https://img.shields.io/crates/v/aya.svg?style=for-the-badge&logo=rust
@@ -11,6 +12,7 @@
 [build-badge]: https://img.shields.io/github/actions/workflow/status/aya-rs/aya/ci.yml?style=for-the-badge
 [build-url]: https://github.com/aya-rs/aya/actions/workflows/ci.yml
 [book-badge]: https://img.shields.io/badge/read%20the-book-9cf.svg?style=for-the-badge&logo=mdbook
+[coverage-badge]: https://img.shields.io/codecov/c/github/tyrone-wu/aya?token=42ZO5LT71I&style=for-the-badge&logo=codecov
 [book-url]: https://aya-rs.dev/book
 
 ## API Documentation
