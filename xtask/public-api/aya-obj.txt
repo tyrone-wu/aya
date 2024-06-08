@@ -1675,7 +1675,12 @@ pub fn aya_obj::generated::bpf_prog_type::clone(&self) -> aya_obj::generated::bp
 impl core::cmp::Eq for aya_obj::generated::bpf_prog_type
 impl core::cmp::PartialEq for aya_obj::generated::bpf_prog_type
 pub fn aya_obj::generated::bpf_prog_type::eq(&self, other: &aya_obj::generated::bpf_prog_type) -> bool
+impl core::convert::TryFrom<u32> for aya_obj::generated::bpf_prog_type
+pub type aya_obj::generated::bpf_prog_type::Error = aya_obj::programs::prog_type::InvalidProgramTypeError
+pub fn aya_obj::generated::bpf_prog_type::try_from(prog_type: u32) -> core::result::Result<Self, Self::Error>
 impl core::fmt::Debug for aya_obj::generated::bpf_prog_type
+pub fn aya_obj::generated::bpf_prog_type::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+impl core::fmt::Display for aya_obj::generated::bpf_prog_type
 pub fn aya_obj::generated::bpf_prog_type::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::hash::Hash for aya_obj::generated::bpf_prog_type
 pub fn aya_obj::generated::bpf_prog_type::hash<__H: core::hash::Hasher>(&self, state: &mut __H)
@@ -1699,6 +1704,8 @@ impl<T> alloc::borrow::ToOwned for aya_obj::generated::bpf_prog_type where T: co
 pub type aya_obj::generated::bpf_prog_type::Owned = T
 pub fn aya_obj::generated::bpf_prog_type::clone_into(&self, target: &mut T)
 pub fn aya_obj::generated::bpf_prog_type::to_owned(&self) -> T
+impl<T> alloc::string::ToString for aya_obj::generated::bpf_prog_type where T: core::fmt::Display + core::marker::Sized
+pub fn aya_obj::generated::bpf_prog_type::to_string(&self) -> alloc::string::String
 impl<T> core::any::Any for aya_obj::generated::bpf_prog_type where T: 'static + core::marker::Sized
 pub fn aya_obj::generated::bpf_prog_type::type_id(&self) -> core::any::TypeId
 impl<T> core::borrow::Borrow<T> for aya_obj::generated::bpf_prog_type where T: core::marker::Sized
@@ -7092,6 +7099,31 @@ impl<T> core::borrow::BorrowMut<T> for aya_obj::programs::cgroup_sockopt::Cgroup
 pub fn aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::borrow_mut(&mut self) -> &mut T
 impl<T> core::convert::From<T> for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType
 pub fn aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::from(t: T) -> T
+pub mod aya_obj::programs::prog_type
+pub struct aya_obj::programs::prog_type::InvalidProgramTypeError
+pub aya_obj::programs::prog_type::InvalidProgramTypeError::prog_type: u32
+impl core::marker::Freeze for aya_obj::programs::prog_type::InvalidProgramTypeError
+impl core::marker::Send for aya_obj::programs::prog_type::InvalidProgramTypeError
+impl core::marker::Sync for aya_obj::programs::prog_type::InvalidProgramTypeError
+impl core::marker::Unpin for aya_obj::programs::prog_type::InvalidProgramTypeError
+impl core::panic::unwind_safe::RefUnwindSafe for aya_obj::programs::prog_type::InvalidProgramTypeError
+impl core::panic::unwind_safe::UnwindSafe for aya_obj::programs::prog_type::InvalidProgramTypeError
+impl<T, U> core::convert::Into<U> for aya_obj::programs::prog_type::InvalidProgramTypeError where U: core::convert::From<T>
+pub fn aya_obj::programs::prog_type::InvalidProgramTypeError::into(self) -> U
+impl<T, U> core::convert::TryFrom<U> for aya_obj::programs::prog_type::InvalidProgramTypeError where U: core::convert::Into<T>
+pub type aya_obj::programs::prog_type::InvalidProgramTypeError::Error = core::convert::Infallible
+pub fn aya_obj::programs::prog_type::InvalidProgramTypeError::try_from(value: U) -> core::result::Result<T, <T as core::convert::TryFrom<U>>::Error>
+impl<T, U> core::convert::TryInto<U> for aya_obj::programs::prog_type::InvalidProgramTypeError where U: core::convert::TryFrom<T>
+pub type aya_obj::programs::prog_type::InvalidProgramTypeError::Error = <U as core::convert::TryFrom<T>>::Error
+pub fn aya_obj::programs::prog_type::InvalidProgramTypeError::try_into(self) -> core::result::Result<U, <U as core::convert::TryFrom<T>>::Error>
+impl<T> core::any::Any for aya_obj::programs::prog_type::InvalidProgramTypeError where T: 'static + core::marker::Sized
+pub fn aya_obj::programs::prog_type::InvalidProgramTypeError::type_id(&self) -> core::any::TypeId
+impl<T> core::borrow::Borrow<T> for aya_obj::programs::prog_type::InvalidProgramTypeError where T: core::marker::Sized
+pub fn aya_obj::programs::prog_type::InvalidProgramTypeError::borrow(&self) -> &T
+impl<T> core::borrow::BorrowMut<T> for aya_obj::programs::prog_type::InvalidProgramTypeError where T: core::marker::Sized
+pub fn aya_obj::programs::prog_type::InvalidProgramTypeError::borrow_mut(&mut self) -> &mut T
+impl<T> core::convert::From<T> for aya_obj::programs::prog_type::InvalidProgramTypeError
+pub fn aya_obj::programs::prog_type::InvalidProgramTypeError::from(t: T) -> T
 pub mod aya_obj::programs::xdp
 pub enum aya_obj::programs::xdp::XdpAttachType
 pub aya_obj::programs::xdp::XdpAttachType::CpuMap
