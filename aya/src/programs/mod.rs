@@ -1039,6 +1039,12 @@ impl ProgramInfo {
         self.0.type_
     }
 
+    /// The program type as the linux kernel enum
+    /// [`bpf_prog_type`](https://elixir.bootlin.com/linux/v6.4.4/source/include/uapi/linux/bpf.h#L948).
+    pub fn program_type_enum(&self) -> Result<bpf_prog_type, ProgramError> {
+        bpf_prog_type::try_from(self.0.type_).map_err(|_| ProgramError::UnexpectedProgramType)
+    }
+
     /// Returns true if the program is defined with a GPL-compatible license.
     pub fn gpl_compatible(&self) -> bool {
         self.0.gpl_compatible() != 0
