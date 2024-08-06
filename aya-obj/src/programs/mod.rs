@@ -1,9 +1,9 @@
 //! Program struct and type bindings.
 
-pub mod cgroup_sock;
-pub mod cgroup_sock_addr;
-pub mod cgroup_sockopt;
-pub mod xdp;
+mod cgroup_sock;
+mod cgroup_sock_addr;
+mod cgroup_sockopt;
+mod xdp;
 
 pub use cgroup_sock::CgroupSockAttachType;
 pub use cgroup_sock_addr::CgroupSockAddrAttachType;

@@ -1452,14 +1452,14 @@ pub fn aya_obj::generated::bpf_attach_type::clone(&self) -> aya_obj::generated::
 impl core::cmp::Eq for aya_obj::generated::bpf_attach_type
 impl core::cmp::PartialEq for aya_obj::generated::bpf_attach_type
 pub fn aya_obj::generated::bpf_attach_type::eq(&self, other: &aya_obj::generated::bpf_attach_type) -> bool
-impl core::convert::From<aya_obj::programs::cgroup_sock::CgroupSockAttachType> for aya_obj::generated::bpf_attach_type
-pub fn aya_obj::generated::bpf_attach_type::from(s: aya_obj::programs::cgroup_sock::CgroupSockAttachType) -> aya_obj::generated::bpf_attach_type
-impl core::convert::From<aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType> for aya_obj::generated::bpf_attach_type
-pub fn aya_obj::generated::bpf_attach_type::from(s: aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType) -> aya_obj::generated::bpf_attach_type
-impl core::convert::From<aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType> for aya_obj::generated::bpf_attach_type
-pub fn aya_obj::generated::bpf_attach_type::from(s: aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType) -> aya_obj::generated::bpf_attach_type
-impl core::convert::From<aya_obj::programs::xdp::XdpAttachType> for aya_obj::generated::bpf_attach_type
-pub fn aya_obj::generated::bpf_attach_type::from(value: aya_obj::programs::xdp::XdpAttachType) -> Self
+impl core::convert::From<aya_obj::programs::CgroupSockAddrAttachType> for aya_obj::generated::bpf_attach_type
+pub fn aya_obj::generated::bpf_attach_type::from(s: aya_obj::programs::CgroupSockAddrAttachType) -> aya_obj::generated::bpf_attach_type
+impl core::convert::From<aya_obj::programs::CgroupSockAttachType> for aya_obj::generated::bpf_attach_type
+pub fn aya_obj::generated::bpf_attach_type::from(s: aya_obj::programs::CgroupSockAttachType) -> aya_obj::generated::bpf_attach_type
+impl core::convert::From<aya_obj::programs::CgroupSockoptAttachType> for aya_obj::generated::bpf_attach_type
+pub fn aya_obj::generated::bpf_attach_type::from(s: aya_obj::programs::CgroupSockoptAttachType) -> aya_obj::generated::bpf_attach_type
+impl core::convert::From<aya_obj::programs::XdpAttachType> for aya_obj::generated::bpf_attach_type
+pub fn aya_obj::generated::bpf_attach_type::from(value: aya_obj::programs::XdpAttachType) -> Self
 impl core::fmt::Debug for aya_obj::generated::bpf_attach_type
 pub fn aya_obj::generated::bpf_attach_type::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::hash::Hash for aya_obj::generated::bpf_attach_type
@@ -7289,11 +7289,11 @@ pub aya_obj::obj::ProgramSection::CgroupSkb
 pub aya_obj::obj::ProgramSection::CgroupSkbEgress
 pub aya_obj::obj::ProgramSection::CgroupSkbIngress
 pub aya_obj::obj::ProgramSection::CgroupSock
-pub aya_obj::obj::ProgramSection::CgroupSock::attach_type: aya_obj::programs::cgroup_sock::CgroupSockAttachType
+pub aya_obj::obj::ProgramSection::CgroupSock::attach_type: aya_obj::programs::CgroupSockAttachType
 pub aya_obj::obj::ProgramSection::CgroupSockAddr
-pub aya_obj::obj::ProgramSection::CgroupSockAddr::attach_type: aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType
+pub aya_obj::obj::ProgramSection::CgroupSockAddr::attach_type: aya_obj::programs::CgroupSockAddrAttachType
 pub aya_obj::obj::ProgramSection::CgroupSockopt
-pub aya_obj::obj::ProgramSection::CgroupSockopt::attach_type: aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType
+pub aya_obj::obj::ProgramSection::CgroupSockopt::attach_type: aya_obj::programs::CgroupSockoptAttachType
 pub aya_obj::obj::ProgramSection::CgroupSysctl
 pub aya_obj::obj::ProgramSection::Extension
 pub aya_obj::obj::ProgramSection::FEntry
@@ -7320,7 +7320,7 @@ pub aya_obj::obj::ProgramSection::UProbe::sleepable: bool
 pub aya_obj::obj::ProgramSection::URetProbe
 pub aya_obj::obj::ProgramSection::URetProbe::sleepable: bool
 pub aya_obj::obj::ProgramSection::Xdp
-pub aya_obj::obj::ProgramSection::Xdp::attach_type: aya_obj::programs::xdp::XdpAttachType
+pub aya_obj::obj::ProgramSection::Xdp::attach_type: aya_obj::programs::XdpAttachType
 pub aya_obj::obj::ProgramSection::Xdp::frags: bool
 impl core::clone::Clone for aya_obj::ProgramSection
 pub fn aya_obj::ProgramSection::clone(&self) -> aya_obj::ProgramSection
@@ -7530,185 +7530,6 @@ pub fn aya_obj::Program::from(t: T) -> T
 pub fn aya_obj::obj::copy_instructions(data: &[u8]) -> core::result::Result<alloc::vec::Vec<aya_obj::generated::bpf_insn>, aya_obj::ParseError>
 pub fn aya_obj::obj::parse_map_info(info: aya_obj::generated::bpf_map_info, pinned: aya_obj::maps::PinningType) -> aya_obj::maps::Map
 pub mod aya_obj::programs
-pub mod aya_obj::programs::cgroup_sock
-pub enum aya_obj::programs::cgroup_sock::CgroupSockAttachType
-pub aya_obj::programs::cgroup_sock::CgroupSockAttachType::PostBind4
-pub aya_obj::programs::cgroup_sock::CgroupSockAttachType::PostBind6
-pub aya_obj::programs::cgroup_sock::CgroupSockAttachType::SockCreate
-pub aya_obj::programs::cgroup_sock::CgroupSockAttachType::SockRelease
-impl core::clone::Clone for aya_obj::programs::cgroup_sock::CgroupSockAttachType
-pub fn aya_obj::programs::cgroup_sock::CgroupSockAttachType::clone(&self) -> aya_obj::programs::cgroup_sock::CgroupSockAttachType
-impl core::convert::From<aya_obj::programs::cgroup_sock::CgroupSockAttachType> for aya_obj::generated::bpf_attach_type
-pub fn aya_obj::generated::bpf_attach_type::from(s: aya_obj::programs::cgroup_sock::CgroupSockAttachType) -> aya_obj::generated::bpf_attach_type
-impl core::default::Default for aya_obj::programs::cgroup_sock::CgroupSockAttachType
-pub fn aya_obj::programs::cgroup_sock::CgroupSockAttachType::default() -> aya_obj::programs::cgroup_sock::CgroupSockAttachType
-impl core::fmt::Debug for aya_obj::programs::cgroup_sock::CgroupSockAttachType
-pub fn aya_obj::programs::cgroup_sock::CgroupSockAttachType::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
-impl core::marker::Copy for aya_obj::programs::cgroup_sock::CgroupSockAttachType
-impl core::marker::Freeze for aya_obj::programs::cgroup_sock::CgroupSockAttachType
-impl core::marker::Send for aya_obj::programs::cgroup_sock::CgroupSockAttachType
-impl core::marker::Sync for aya_obj::programs::cgroup_sock::CgroupSockAttachType
-impl core::marker::Unpin for aya_obj::programs::cgroup_sock::CgroupSockAttachType
-impl core::panic::unwind_safe::RefUnwindSafe for aya_obj::programs::cgroup_sock::CgroupSockAttachType
-impl core::panic::unwind_safe::UnwindSafe for aya_obj::programs::cgroup_sock::CgroupSockAttachType
-impl<T, U> core::convert::Into<U> for aya_obj::programs::cgroup_sock::CgroupSockAttachType where U: core::convert::From<T>
-pub fn aya_obj::programs::cgroup_sock::CgroupSockAttachType::into(self) -> U
-impl<T, U> core::convert::TryFrom<U> for aya_obj::programs::cgroup_sock::CgroupSockAttachType where U: core::convert::Into<T>
-pub type aya_obj::programs::cgroup_sock::CgroupSockAttachType::Error = core::convert::Infallible
-pub fn aya_obj::programs::cgroup_sock::CgroupSockAttachType::try_from(value: U) -> core::result::Result<T, <T as core::convert::TryFrom<U>>::Error>
-impl<T, U> core::convert::TryInto<U> for aya_obj::programs::cgroup_sock::CgroupSockAttachType where U: core::convert::TryFrom<T>
-pub type aya_obj::programs::cgroup_sock::CgroupSockAttachType::Error = <U as core::convert::TryFrom<T>>::Error
-pub fn aya_obj::programs::cgroup_sock::CgroupSockAttachType::try_into(self) -> core::result::Result<U, <U as core::convert::TryFrom<T>>::Error>
-impl<T> alloc::borrow::ToOwned for aya_obj::programs::cgroup_sock::CgroupSockAttachType where T: core::clone::Clone
-pub type aya_obj::programs::cgroup_sock::CgroupSockAttachType::Owned = T
-pub fn aya_obj::programs::cgroup_sock::CgroupSockAttachType::clone_into(&self, target: &mut T)
-pub fn aya_obj::programs::cgroup_sock::CgroupSockAttachType::to_owned(&self) -> T
-impl<T> core::any::Any for aya_obj::programs::cgroup_sock::CgroupSockAttachType where T: 'static + core::marker::Sized
-pub fn aya_obj::programs::cgroup_sock::CgroupSockAttachType::type_id(&self) -> core::any::TypeId
-impl<T> core::borrow::Borrow<T> for aya_obj::programs::cgroup_sock::CgroupSockAttachType where T: core::marker::Sized
-pub fn aya_obj::programs::cgroup_sock::CgroupSockAttachType::borrow(&self) -> &T
-impl<T> core::borrow::BorrowMut<T> for aya_obj::programs::cgroup_sock::CgroupSockAttachType where T: core::marker::Sized
-pub fn aya_obj::programs::cgroup_sock::CgroupSockAttachType::borrow_mut(&mut self) -> &mut T
-impl<T> core::clone::CloneToUninit for aya_obj::programs::cgroup_sock::CgroupSockAttachType where T: core::clone::Clone
-pub unsafe fn aya_obj::programs::cgroup_sock::CgroupSockAttachType::clone_to_uninit(&self, dst: *mut T)
-impl<T> core::clone::CloneToUninit for aya_obj::programs::cgroup_sock::CgroupSockAttachType where T: core::marker::Copy
-pub unsafe fn aya_obj::programs::cgroup_sock::CgroupSockAttachType::clone_to_uninit(&self, dst: *mut T)
-impl<T> core::convert::From<T> for aya_obj::programs::cgroup_sock::CgroupSockAttachType
-pub fn aya_obj::programs::cgroup_sock::CgroupSockAttachType::from(t: T) -> T
-pub mod aya_obj::programs::cgroup_sock_addr
-pub enum aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType
-pub aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::Bind4
-pub aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::Bind6
-pub aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::Connect4
-pub aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::Connect6
-pub aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::GetPeerName4
-pub aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::GetPeerName6
-pub aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::GetSockName4
-pub aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::GetSockName6
-pub aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::UDPRecvMsg4
-pub aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::UDPRecvMsg6
-pub aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::UDPSendMsg4
-pub aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::UDPSendMsg6
-impl core::clone::Clone for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType
-pub fn aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::clone(&self) -> aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType
-impl core::convert::From<aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType> for aya_obj::generated::bpf_attach_type
-pub fn aya_obj::generated::bpf_attach_type::from(s: aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType) -> aya_obj::generated::bpf_attach_type
-impl core::fmt::Debug for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType
-pub fn aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
-impl core::marker::Copy for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType
-impl core::marker::Freeze for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType
-impl core::marker::Send for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType
-impl core::marker::Sync for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType
-impl core::marker::Unpin for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType
-impl core::panic::unwind_safe::RefUnwindSafe for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType
-impl core::panic::unwind_safe::UnwindSafe for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType
-impl<T, U> core::convert::Into<U> for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType where U: core::convert::From<T>
-pub fn aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::into(self) -> U
-impl<T, U> core::convert::TryFrom<U> for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType where U: core::convert::Into<T>
-pub type aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::Error = core::convert::Infallible
-pub fn aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::try_from(value: U) -> core::result::Result<T, <T as core::convert::TryFrom<U>>::Error>
-impl<T, U> core::convert::TryInto<U> for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType where U: core::convert::TryFrom<T>
-pub type aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::Error = <U as core::convert::TryFrom<T>>::Error
-pub fn aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::try_into(self) -> core::result::Result<U, <U as core::convert::TryFrom<T>>::Error>
-impl<T> alloc::borrow::ToOwned for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType where T: core::clone::Clone
-pub type aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::Owned = T
-pub fn aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::clone_into(&self, target: &mut T)
-pub fn aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::to_owned(&self) -> T
-impl<T> core::any::Any for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType where T: 'static + core::marker::Sized
-pub fn aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::type_id(&self) -> core::any::TypeId
-impl<T> core::borrow::Borrow<T> for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType where T: core::marker::Sized
-pub fn aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::borrow(&self) -> &T
-impl<T> core::borrow::BorrowMut<T> for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType where T: core::marker::Sized
-pub fn aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::borrow_mut(&mut self) -> &mut T
-impl<T> core::clone::CloneToUninit for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType where T: core::clone::Clone
-pub unsafe fn aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::clone_to_uninit(&self, dst: *mut T)
-impl<T> core::clone::CloneToUninit for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType where T: core::marker::Copy
-pub unsafe fn aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::clone_to_uninit(&self, dst: *mut T)
-impl<T> core::convert::From<T> for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType
-pub fn aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::from(t: T) -> T
-pub mod aya_obj::programs::cgroup_sockopt
-pub enum aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType
-pub aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::Get
-pub aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::Set
-impl core::clone::Clone for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType
-pub fn aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::clone(&self) -> aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType
-impl core::convert::From<aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType> for aya_obj::generated::bpf_attach_type
-pub fn aya_obj::generated::bpf_attach_type::from(s: aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType) -> aya_obj::generated::bpf_attach_type
-impl core::fmt::Debug for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType
-pub fn aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
-impl core::marker::Copy for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType
-impl core::marker::Freeze for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType
-impl core::marker::Send for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType
-impl core::marker::Sync for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType
-impl core::marker::Unpin for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType
-impl core::panic::unwind_safe::RefUnwindSafe for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType
-impl core::panic::unwind_safe::UnwindSafe for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType
-impl<T, U> core::convert::Into<U> for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType where U: core::convert::From<T>
-pub fn aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::into(self) -> U
-impl<T, U> core::convert::TryFrom<U> for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType where U: core::convert::Into<T>
-pub type aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::Error = core::convert::Infallible
-pub fn aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::try_from(value: U) -> core::result::Result<T, <T as core::convert::TryFrom<U>>::Error>
-impl<T, U> core::convert::TryInto<U> for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType where U: core::convert::TryFrom<T>
-pub type aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::Error = <U as core::convert::TryFrom<T>>::Error
-pub fn aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::try_into(self) -> core::result::Result<U, <U as core::convert::TryFrom<T>>::Error>
-impl<T> alloc::borrow::ToOwned for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType where T: core::clone::Clone
-pub type aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::Owned = T
-pub fn aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::clone_into(&self, target: &mut T)
-pub fn aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::to_owned(&self) -> T
-impl<T> core::any::Any for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType where T: 'static + core::marker::Sized
-pub fn aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::type_id(&self) -> core::any::TypeId
-impl<T> core::borrow::Borrow<T> for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType where T: core::marker::Sized
-pub fn aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::borrow(&self) -> &T
-impl<T> core::borrow::BorrowMut<T> for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType where T: core::marker::Sized
-pub fn aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::borrow_mut(&mut self) -> &mut T
-impl<T> core::clone::CloneToUninit for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType where T: core::clone::Clone
-pub unsafe fn aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::clone_to_uninit(&self, dst: *mut T)
-impl<T> core::clone::CloneToUninit for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType where T: core::marker::Copy
-pub unsafe fn aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::clone_to_uninit(&self, dst: *mut T)
-impl<T> core::convert::From<T> for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType
-pub fn aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::from(t: T) -> T
-pub mod aya_obj::programs::xdp
-pub enum aya_obj::programs::xdp::XdpAttachType
-pub aya_obj::programs::xdp::XdpAttachType::CpuMap
-pub aya_obj::programs::xdp::XdpAttachType::DevMap
-pub aya_obj::programs::xdp::XdpAttachType::Interface
-impl core::clone::Clone for aya_obj::programs::xdp::XdpAttachType
-pub fn aya_obj::programs::xdp::XdpAttachType::clone(&self) -> aya_obj::programs::xdp::XdpAttachType
-impl core::convert::From<aya_obj::programs::xdp::XdpAttachType> for aya_obj::generated::bpf_attach_type
-pub fn aya_obj::generated::bpf_attach_type::from(value: aya_obj::programs::xdp::XdpAttachType) -> Self
-impl core::fmt::Debug for aya_obj::programs::xdp::XdpAttachType
-pub fn aya_obj::programs::xdp::XdpAttachType::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
-impl core::marker::Copy for aya_obj::programs::xdp::XdpAttachType
-impl core::marker::Freeze for aya_obj::programs::xdp::XdpAttachType
-impl core::marker::Send for aya_obj::programs::xdp::XdpAttachType
-impl core::marker::Sync for aya_obj::programs::xdp::XdpAttachType
-impl core::marker::Unpin for aya_obj::programs::xdp::XdpAttachType
-impl core::panic::unwind_safe::RefUnwindSafe for aya_obj::programs::xdp::XdpAttachType
-impl core::panic::unwind_safe::UnwindSafe for aya_obj::programs::xdp::XdpAttachType
-impl<T, U> core::convert::Into<U> for aya_obj::programs::xdp::XdpAttachType where U: core::convert::From<T>
-pub fn aya_obj::programs::xdp::XdpAttachType::into(self) -> U
-impl<T, U> core::convert::TryFrom<U> for aya_obj::programs::xdp::XdpAttachType where U: core::convert::Into<T>
-pub type aya_obj::programs::xdp::XdpAttachType::Error = core::convert::Infallible
-pub fn aya_obj::programs::xdp::XdpAttachType::try_from(value: U) -> core::result::Result<T, <T as core::convert::TryFrom<U>>::Error>
-impl<T, U> core::convert::TryInto<U> for aya_obj::programs::xdp::XdpAttachType where U: core::convert::TryFrom<T>
-pub type aya_obj::programs::xdp::XdpAttachType::Error = <U as core::convert::TryFrom<T>>::Error
-pub fn aya_obj::programs::xdp::XdpAttachType::try_into(self) -> core::result::Result<U, <U as core::convert::TryFrom<T>>::Error>
-impl<T> alloc::borrow::ToOwned for aya_obj::programs::xdp::XdpAttachType where T: core::clone::Clone
-pub type aya_obj::programs::xdp::XdpAttachType::Owned = T
-pub fn aya_obj::programs::xdp::XdpAttachType::clone_into(&self, target: &mut T)
-pub fn aya_obj::programs::xdp::XdpAttachType::to_owned(&self) -> T
-impl<T> core::any::Any for aya_obj::programs::xdp::XdpAttachType where T: 'static + core::marker::Sized
-pub fn aya_obj::programs::xdp::XdpAttachType::type_id(&self) -> core::any::TypeId
-impl<T> core::borrow::Borrow<T> for aya_obj::programs::xdp::XdpAttachType where T: core::marker::Sized
-pub fn aya_obj::programs::xdp::XdpAttachType::borrow(&self) -> &T
-impl<T> core::borrow::BorrowMut<T> for aya_obj::programs::xdp::XdpAttachType where T: core::marker::Sized
-pub fn aya_obj::programs::xdp::XdpAttachType::borrow_mut(&mut self) -> &mut T
-impl<T> core::clone::CloneToUninit for aya_obj::programs::xdp::XdpAttachType where T: core::clone::Clone
-pub unsafe fn aya_obj::programs::xdp::XdpAttachType::clone_to_uninit(&self, dst: *mut T)
-impl<T> core::clone::CloneToUninit for aya_obj::programs::xdp::XdpAttachType where T: core::marker::Copy
-pub unsafe fn aya_obj::programs::xdp::XdpAttachType::clone_to_uninit(&self, dst: *mut T)
-impl<T> core::convert::From<T> for aya_obj::programs::xdp::XdpAttachType
-pub fn aya_obj::programs::xdp::XdpAttachType::from(t: T) -> T
 pub enum aya_obj::programs::CgroupSockAddrAttachType
 pub aya_obj::programs::CgroupSockAddrAttachType::Bind4
 pub aya_obj::programs::CgroupSockAddrAttachType::Bind6
@@ -7722,168 +7543,168 @@ pub aya_obj::programs::CgroupSockAddrAttachType::UDPRecvMsg4
 pub aya_obj::programs::CgroupSockAddrAttachType::UDPRecvMsg6
 pub aya_obj::programs::CgroupSockAddrAttachType::UDPSendMsg4
 pub aya_obj::programs::CgroupSockAddrAttachType::UDPSendMsg6
-impl core::clone::Clone for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType
-pub fn aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::clone(&self) -> aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType
-impl core::convert::From<aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType> for aya_obj::generated::bpf_attach_type
-pub fn aya_obj::generated::bpf_attach_type::from(s: aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType) -> aya_obj::generated::bpf_attach_type
-impl core::fmt::Debug for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType
-pub fn aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
-impl core::marker::Copy for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType
-impl core::marker::Freeze for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType
-impl core::marker::Send for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType
-impl core::marker::Sync for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType
-impl core::marker::Unpin for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType
-impl core::panic::unwind_safe::RefUnwindSafe for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType
-impl core::panic::unwind_safe::UnwindSafe for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType
-impl<T, U> core::convert::Into<U> for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType where U: core::convert::From<T>
-pub fn aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::into(self) -> U
-impl<T, U> core::convert::TryFrom<U> for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType where U: core::convert::Into<T>
-pub type aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::Error = core::convert::Infallible
-pub fn aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::try_from(value: U) -> core::result::Result<T, <T as core::convert::TryFrom<U>>::Error>
-impl<T, U> core::convert::TryInto<U> for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType where U: core::convert::TryFrom<T>
-pub type aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::Error = <U as core::convert::TryFrom<T>>::Error
-pub fn aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::try_into(self) -> core::result::Result<U, <U as core::convert::TryFrom<T>>::Error>
-impl<T> alloc::borrow::ToOwned for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType where T: core::clone::Clone
-pub type aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::Owned = T
-pub fn aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::clone_into(&self, target: &mut T)
-pub fn aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::to_owned(&self) -> T
-impl<T> core::any::Any for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType where T: 'static + core::marker::Sized
-pub fn aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::type_id(&self) -> core::any::TypeId
-impl<T> core::borrow::Borrow<T> for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType where T: core::marker::Sized
-pub fn aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::borrow(&self) -> &T
-impl<T> core::borrow::BorrowMut<T> for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType where T: core::marker::Sized
-pub fn aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::borrow_mut(&mut self) -> &mut T
-impl<T> core::clone::CloneToUninit for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType where T: core::clone::Clone
-pub unsafe fn aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::clone_to_uninit(&self, dst: *mut T)
-impl<T> core::clone::CloneToUninit for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType where T: core::marker::Copy
-pub unsafe fn aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::clone_to_uninit(&self, dst: *mut T)
-impl<T> core::convert::From<T> for aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType
-pub fn aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType::from(t: T) -> T
+impl core::clone::Clone for aya_obj::programs::CgroupSockAddrAttachType
+pub fn aya_obj::programs::CgroupSockAddrAttachType::clone(&self) -> aya_obj::programs::CgroupSockAddrAttachType
+impl core::convert::From<aya_obj::programs::CgroupSockAddrAttachType> for aya_obj::generated::bpf_attach_type
+pub fn aya_obj::generated::bpf_attach_type::from(s: aya_obj::programs::CgroupSockAddrAttachType) -> aya_obj::generated::bpf_attach_type
+impl core::fmt::Debug for aya_obj::programs::CgroupSockAddrAttachType
+pub fn aya_obj::programs::CgroupSockAddrAttachType::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+impl core::marker::Copy for aya_obj::programs::CgroupSockAddrAttachType
+impl core::marker::Freeze for aya_obj::programs::CgroupSockAddrAttachType
+impl core::marker::Send for aya_obj::programs::CgroupSockAddrAttachType
+impl core::marker::Sync for aya_obj::programs::CgroupSockAddrAttachType
+impl core::marker::Unpin for aya_obj::programs::CgroupSockAddrAttachType
+impl core::panic::unwind_safe::RefUnwindSafe for aya_obj::programs::CgroupSockAddrAttachType
+impl core::panic::unwind_safe::UnwindSafe for aya_obj::programs::CgroupSockAddrAttachType
+impl<T, U> core::convert::Into<U> for aya_obj::programs::CgroupSockAddrAttachType where U: core::convert::From<T>
+pub fn aya_obj::programs::CgroupSockAddrAttachType::into(self) -> U
+impl<T, U> core::convert::TryFrom<U> for aya_obj::programs::CgroupSockAddrAttachType where U: core::convert::Into<T>
+pub type aya_obj::programs::CgroupSockAddrAttachType::Error = core::convert::Infallible
+pub fn aya_obj::programs::CgroupSockAddrAttachType::try_from(value: U) -> core::result::Result<T, <T as core::convert::TryFrom<U>>::Error>
+impl<T, U> core::convert::TryInto<U> for aya_obj::programs::CgroupSockAddrAttachType where U: core::convert::TryFrom<T>
+pub type aya_obj::programs::CgroupSockAddrAttachType::Error = <U as core::convert::TryFrom<T>>::Error
+pub fn aya_obj::programs::CgroupSockAddrAttachType::try_into(self) -> core::result::Result<U, <U as core::convert::TryFrom<T>>::Error>
+impl<T> alloc::borrow::ToOwned for aya_obj::programs::CgroupSockAddrAttachType where T: core::clone::Clone
+pub type aya_obj::programs::CgroupSockAddrAttachType::Owned = T
+pub fn aya_obj::programs::CgroupSockAddrAttachType::clone_into(&self, target: &mut T)
+pub fn aya_obj::programs::CgroupSockAddrAttachType::to_owned(&self) -> T
+impl<T> core::any::Any for aya_obj::programs::CgroupSockAddrAttachType where T: 'static + core::marker::Sized
+pub fn aya_obj::programs::CgroupSockAddrAttachType::type_id(&self) -> core::any::TypeId
+impl<T> core::borrow::Borrow<T> for aya_obj::programs::CgroupSockAddrAttachType where T: core::marker::Sized
+pub fn aya_obj::programs::CgroupSockAddrAttachType::borrow(&self) -> &T
+impl<T> core::borrow::BorrowMut<T> for aya_obj::programs::CgroupSockAddrAttachType where T: core::marker::Sized
+pub fn aya_obj::programs::CgroupSockAddrAttachType::borrow_mut(&mut self) -> &mut T
+impl<T> core::clone::CloneToUninit for aya_obj::programs::CgroupSockAddrAttachType where T: core::clone::Clone
+pub unsafe fn aya_obj::programs::CgroupSockAddrAttachType::clone_to_uninit(&self, dst: *mut T)
+impl<T> core::clone::CloneToUninit for aya_obj::programs::CgroupSockAddrAttachType where T: core::marker::Copy
+pub unsafe fn aya_obj::programs::CgroupSockAddrAttachType::clone_to_uninit(&self, dst: *mut T)
+impl<T> core::convert::From<T> for aya_obj::programs::CgroupSockAddrAttachType
+pub fn aya_obj::programs::CgroupSockAddrAttachType::from(t: T) -> T
 pub enum aya_obj::programs::CgroupSockAttachType
 pub aya_obj::programs::CgroupSockAttachType::PostBind4
 pub aya_obj::programs::CgroupSockAttachType::PostBind6
 pub aya_obj::programs::CgroupSockAttachType::SockCreate
 pub aya_obj::programs::CgroupSockAttachType::SockRelease
-impl core::clone::Clone for aya_obj::programs::cgroup_sock::CgroupSockAttachType
-pub fn aya_obj::programs::cgroup_sock::CgroupSockAttachType::clone(&self) -> aya_obj::programs::cgroup_sock::CgroupSockAttachType
-impl core::convert::From<aya_obj::programs::cgroup_sock::CgroupSockAttachType> for aya_obj::generated::bpf_attach_type
-pub fn aya_obj::generated::bpf_attach_type::from(s: aya_obj::programs::cgroup_sock::CgroupSockAttachType) -> aya_obj::generated::bpf_attach_type
-impl core::default::Default for aya_obj::programs::cgroup_sock::CgroupSockAttachType
-pub fn aya_obj::programs::cgroup_sock::CgroupSockAttachType::default() -> aya_obj::programs::cgroup_sock::CgroupSockAttachType
-impl core::fmt::Debug for aya_obj::programs::cgroup_sock::CgroupSockAttachType
-pub fn aya_obj::programs::cgroup_sock::CgroupSockAttachType::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
-impl core::marker::Copy for aya_obj::programs::cgroup_sock::CgroupSockAttachType
-impl core::marker::Freeze for aya_obj::programs::cgroup_sock::CgroupSockAttachType
-impl core::marker::Send for aya_obj::programs::cgroup_sock::CgroupSockAttachType
-impl core::marker::Sync for aya_obj::programs::cgroup_sock::CgroupSockAttachType
-impl core::marker::Unpin for aya_obj::programs::cgroup_sock::CgroupSockAttachType
-impl core::panic::unwind_safe::RefUnwindSafe for aya_obj::programs::cgroup_sock::CgroupSockAttachType
-impl core::panic::unwind_safe::UnwindSafe for aya_obj::programs::cgroup_sock::CgroupSockAttachType
-impl<T, U> core::convert::Into<U> for aya_obj::programs::cgroup_sock::CgroupSockAttachType where U: core::convert::From<T>
-pub fn aya_obj::programs::cgroup_sock::CgroupSockAttachType::into(self) -> U
-impl<T, U> core::convert::TryFrom<U> for aya_obj::programs::cgroup_sock::CgroupSockAttachType where U: core::convert::Into<T>
-pub type aya_obj::programs::cgroup_sock::CgroupSockAttachType::Error = core::convert::Infallible
-pub fn aya_obj::programs::cgroup_sock::CgroupSockAttachType::try_from(value: U) -> core::result::Result<T, <T as core::convert::TryFrom<U>>::Error>
-impl<T, U> core::convert::TryInto<U> for aya_obj::programs::cgroup_sock::CgroupSockAttachType where U: core::convert::TryFrom<T>
-pub type aya_obj::programs::cgroup_sock::CgroupSockAttachType::Error = <U as core::convert::TryFrom<T>>::Error
-pub fn aya_obj::programs::cgroup_sock::CgroupSockAttachType::try_into(self) -> core::result::Result<U, <U as core::convert::TryFrom<T>>::Error>
-impl<T> alloc::borrow::ToOwned for aya_obj::programs::cgroup_sock::CgroupSockAttachType where T: core::clone::Clone
-pub type aya_obj::programs::cgroup_sock::CgroupSockAttachType::Owned = T
-pub fn aya_obj::programs::cgroup_sock::CgroupSockAttachType::clone_into(&self, target: &mut T)
-pub fn aya_obj::programs::cgroup_sock::CgroupSockAttachType::to_owned(&self) -> T
-impl<T> core::any::Any for aya_obj::programs::cgroup_sock::CgroupSockAttachType where T: 'static + core::marker::Sized
-pub fn aya_obj::programs::cgroup_sock::CgroupSockAttachType::type_id(&self) -> core::any::TypeId
-impl<T> core::borrow::Borrow<T> for aya_obj::programs::cgroup_sock::CgroupSockAttachType where T: core::marker::Sized
-pub fn aya_obj::programs::cgroup_sock::CgroupSockAttachType::borrow(&self) -> &T
-impl<T> core::borrow::BorrowMut<T> for aya_obj::programs::cgroup_sock::CgroupSockAttachType where T: core::marker::Sized
-pub fn aya_obj::programs::cgroup_sock::CgroupSockAttachType::borrow_mut(&mut self) -> &mut T
-impl<T> core::clone::CloneToUninit for aya_obj::programs::cgroup_sock::CgroupSockAttachType where T: core::clone::Clone
-pub unsafe fn aya_obj::programs::cgroup_sock::CgroupSockAttachType::clone_to_uninit(&self, dst: *mut T)
-impl<T> core::clone::CloneToUninit for aya_obj::programs::cgroup_sock::CgroupSockAttachType where T: core::marker::Copy
-pub unsafe fn aya_obj::programs::cgroup_sock::CgroupSockAttachType::clone_to_uninit(&self, dst: *mut T)
-impl<T> core::convert::From<T> for aya_obj::programs::cgroup_sock::CgroupSockAttachType
-pub fn aya_obj::programs::cgroup_sock::CgroupSockAttachType::from(t: T) -> T
+impl core::clone::Clone for aya_obj::programs::CgroupSockAttachType
+pub fn aya_obj::programs::CgroupSockAttachType::clone(&self) -> aya_obj::programs::CgroupSockAttachType
+impl core::convert::From<aya_obj::programs::CgroupSockAttachType> for aya_obj::generated::bpf_attach_type
+pub fn aya_obj::generated::bpf_attach_type::from(s: aya_obj::programs::CgroupSockAttachType) -> aya_obj::generated::bpf_attach_type
+impl core::default::Default for aya_obj::programs::CgroupSockAttachType
+pub fn aya_obj::programs::CgroupSockAttachType::default() -> aya_obj::programs::CgroupSockAttachType
+impl core::fmt::Debug for aya_obj::programs::CgroupSockAttachType
+pub fn aya_obj::programs::CgroupSockAttachType::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+impl core::marker::Copy for aya_obj::programs::CgroupSockAttachType
+impl core::marker::Freeze for aya_obj::programs::CgroupSockAttachType
+impl core::marker::Send for aya_obj::programs::CgroupSockAttachType
+impl core::marker::Sync for aya_obj::programs::CgroupSockAttachType
+impl core::marker::Unpin for aya_obj::programs::CgroupSockAttachType
+impl core::panic::unwind_safe::RefUnwindSafe for aya_obj::programs::CgroupSockAttachType
+impl core::panic::unwind_safe::UnwindSafe for aya_obj::programs::CgroupSockAttachType
+impl<T, U> core::convert::Into<U> for aya_obj::programs::CgroupSockAttachType where U: core::convert::From<T>
+pub fn aya_obj::programs::CgroupSockAttachType::into(self) -> U
+impl<T, U> core::convert::TryFrom<U> for aya_obj::programs::CgroupSockAttachType where U: core::convert::Into<T>
+pub type aya_obj::programs::CgroupSockAttachType::Error = core::convert::Infallible
+pub fn aya_obj::programs::CgroupSockAttachType::try_from(value: U) -> core::result::Result<T, <T as core::convert::TryFrom<U>>::Error>
+impl<T, U> core::convert::TryInto<U> for aya_obj::programs::CgroupSockAttachType where U: core::convert::TryFrom<T>
+pub type aya_obj::programs::CgroupSockAttachType::Error = <U as core::convert::TryFrom<T>>::Error
+pub fn aya_obj::programs::CgroupSockAttachType::try_into(self) -> core::result::Result<U, <U as core::convert::TryFrom<T>>::Error>
+impl<T> alloc::borrow::ToOwned for aya_obj::programs::CgroupSockAttachType where T: core::clone::Clone
+pub type aya_obj::programs::CgroupSockAttachType::Owned = T
+pub fn aya_obj::programs::CgroupSockAttachType::clone_into(&self, target: &mut T)
+pub fn aya_obj::programs::CgroupSockAttachType::to_owned(&self) -> T
+impl<T> core::any::Any for aya_obj::programs::CgroupSockAttachType where T: 'static + core::marker::Sized
+pub fn aya_obj::programs::CgroupSockAttachType::type_id(&self) -> core::any::TypeId
+impl<T> core::borrow::Borrow<T> for aya_obj::programs::CgroupSockAttachType where T: core::marker::Sized
+pub fn aya_obj::programs::CgroupSockAttachType::borrow(&self) -> &T
+impl<T> core::borrow::BorrowMut<T> for aya_obj::programs::CgroupSockAttachType where T: core::marker::Sized
+pub fn aya_obj::programs::CgroupSockAttachType::borrow_mut(&mut self) -> &mut T
+impl<T> core::clone::CloneToUninit for aya_obj::programs::CgroupSockAttachType where T: core::clone::Clone
+pub unsafe fn aya_obj::programs::CgroupSockAttachType::clone_to_uninit(&self, dst: *mut T)
+impl<T> core::clone::CloneToUninit for aya_obj::programs::CgroupSockAttachType where T: core::marker::Copy
+pub unsafe fn aya_obj::programs::CgroupSockAttachType::clone_to_uninit(&self, dst: *mut T)
+impl<T> core::convert::From<T> for aya_obj::programs::CgroupSockAttachType
+pub fn aya_obj::programs::CgroupSockAttachType::from(t: T) -> T
 pub enum aya_obj::programs::CgroupSockoptAttachType
 pub aya_obj::programs::CgroupSockoptAttachType::Get
 pub aya_obj::programs::CgroupSockoptAttachType::Set
-impl core::clone::Clone for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType
-pub fn aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::clone(&self) -> aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType
-impl core::convert::From<aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType> for aya_obj::generated::bpf_attach_type
-pub fn aya_obj::generated::bpf_attach_type::from(s: aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType) -> aya_obj::generated::bpf_attach_type
-impl core::fmt::Debug for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType
-pub fn aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
-impl core::marker::Copy for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType
-impl core::marker::Freeze for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType
-impl core::marker::Send for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType
-impl core::marker::Sync for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType
-impl core::marker::Unpin for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType
-impl core::panic::unwind_safe::RefUnwindSafe for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType
-impl core::panic::unwind_safe::UnwindSafe for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType
-impl<T, U> core::convert::Into<U> for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType where U: core::convert::From<T>
-pub fn aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::into(self) -> U
-impl<T, U> core::convert::TryFrom<U> for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType where U: core::convert::Into<T>
-pub type aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::Error = core::convert::Infallible
-pub fn aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::try_from(value: U) -> core::result::Result<T, <T as core::convert::TryFrom<U>>::Error>
-impl<T, U> core::convert::TryInto<U> for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType where U: core::convert::TryFrom<T>
-pub type aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::Error = <U as core::convert::TryFrom<T>>::Error
-pub fn aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::try_into(self) -> core::result::Result<U, <U as core::convert::TryFrom<T>>::Error>
-impl<T> alloc::borrow::ToOwned for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType where T: core::clone::Clone
-pub type aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::Owned = T
-pub fn aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::clone_into(&self, target: &mut T)
-pub fn aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::to_owned(&self) -> T
-impl<T> core::any::Any for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType where T: 'static + core::marker::Sized
-pub fn aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::type_id(&self) -> core::any::TypeId
-impl<T> core::borrow::Borrow<T> for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType where T: core::marker::Sized
-pub fn aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::borrow(&self) -> &T
-impl<T> core::borrow::BorrowMut<T> for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType where T: core::marker::Sized
-pub fn aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::borrow_mut(&mut self) -> &mut T
-impl<T> core::clone::CloneToUninit for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType where T: core::clone::Clone
-pub unsafe fn aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::clone_to_uninit(&self, dst: *mut T)
-impl<T> core::clone::CloneToUninit for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType where T: core::marker::Copy
-pub unsafe fn aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::clone_to_uninit(&self, dst: *mut T)
-impl<T> core::convert::From<T> for aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType
-pub fn aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType::from(t: T) -> T
+impl core::clone::Clone for aya_obj::programs::CgroupSockoptAttachType
+pub fn aya_obj::programs::CgroupSockoptAttachType::clone(&self) -> aya_obj::programs::CgroupSockoptAttachType
+impl core::convert::From<aya_obj::programs::CgroupSockoptAttachType> for aya_obj::generated::bpf_attach_type
+pub fn aya_obj::generated::bpf_attach_type::from(s: aya_obj::programs::CgroupSockoptAttachType) -> aya_obj::generated::bpf_attach_type
+impl core::fmt::Debug for aya_obj::programs::CgroupSockoptAttachType
+pub fn aya_obj::programs::CgroupSockoptAttachType::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+impl core::marker::Copy for aya_obj::programs::CgroupSockoptAttachType
+impl core::marker::Freeze for aya_obj::programs::CgroupSockoptAttachType
+impl core::marker::Send for aya_obj::programs::CgroupSockoptAttachType
+impl core::marker::Sync for aya_obj::programs::CgroupSockoptAttachType
+impl core::marker::Unpin for aya_obj::programs::CgroupSockoptAttachType
+impl core::panic::unwind_safe::RefUnwindSafe for aya_obj::programs::CgroupSockoptAttachType
+impl core::panic::unwind_safe::UnwindSafe for aya_obj::programs::CgroupSockoptAttachType
+impl<T, U> core::convert::Into<U> for aya_obj::programs::CgroupSockoptAttachType where U: core::convert::From<T>
+pub fn aya_obj::programs::CgroupSockoptAttachType::into(self) -> U
+impl<T, U> core::convert::TryFrom<U> for aya_obj::programs::CgroupSockoptAttachType where U: core::convert::Into<T>
+pub type aya_obj::programs::CgroupSockoptAttachType::Error = core::convert::Infallible
+pub fn aya_obj::programs::CgroupSockoptAttachType::try_from(value: U) -> core::result::Result<T, <T as core::convert::TryFrom<U>>::Error>
+impl<T, U> core::convert::TryInto<U> for aya_obj::programs::CgroupSockoptAttachType where U: core::convert::TryFrom<T>
+pub type aya_obj::programs::CgroupSockoptAttachType::Error = <U as core::convert::TryFrom<T>>::Error
+pub fn aya_obj::programs::CgroupSockoptAttachType::try_into(self) -> core::result::Result<U, <U as core::convert::TryFrom<T>>::Error>
+impl<T> alloc::borrow::ToOwned for aya_obj::programs::CgroupSockoptAttachType where T: core::clone::Clone
+pub type aya_obj::programs::CgroupSockoptAttachType::Owned = T
+pub fn aya_obj::programs::CgroupSockoptAttachType::clone_into(&self, target: &mut T)
+pub fn aya_obj::programs::CgroupSockoptAttachType::to_owned(&self) -> T
+impl<T> core::any::Any for aya_obj::programs::CgroupSockoptAttachType where T: 'static + core::marker::Sized
+pub fn aya_obj::programs::CgroupSockoptAttachType::type_id(&self) -> core::any::TypeId
+impl<T> core::borrow::Borrow<T> for aya_obj::programs::CgroupSockoptAttachType where T: core::marker::Sized
+pub fn aya_obj::programs::CgroupSockoptAttachType::borrow(&self) -> &T
+impl<T> core::borrow::BorrowMut<T> for aya_obj::programs::CgroupSockoptAttachType where T: core::marker::Sized
+pub fn aya_obj::programs::CgroupSockoptAttachType::borrow_mut(&mut self) -> &mut T
+impl<T> core::clone::CloneToUninit for aya_obj::programs::CgroupSockoptAttachType where T: core::clone::Clone
+pub unsafe fn aya_obj::programs::CgroupSockoptAttachType::clone_to_uninit(&self, dst: *mut T)
+impl<T> core::clone::CloneToUninit for aya_obj::programs::CgroupSockoptAttachType where T: core::marker::Copy
+pub unsafe fn aya_obj::programs::CgroupSockoptAttachType::clone_to_uninit(&self, dst: *mut T)
+impl<T> core::convert::From<T> for aya_obj::programs::CgroupSockoptAttachType
+pub fn aya_obj::programs::CgroupSockoptAttachType::from(t: T) -> T
 pub enum aya_obj::programs::XdpAttachType
 pub aya_obj::programs::XdpAttachType::CpuMap
 pub aya_obj::programs::XdpAttachType::DevMap
 pub aya_obj::programs::XdpAttachType::Interface
-impl core::clone::Clone for aya_obj::programs::xdp::XdpAttachType
-pub fn aya_obj::programs::xdp::XdpAttachType::clone(&self) -> aya_obj::programs::xdp::XdpAttachType
-impl core::convert::From<aya_obj::programs::xdp::XdpAttachType> for aya_obj::generated::bpf_attach_type
-pub fn aya_obj::generated::bpf_attach_type::from(value: aya_obj::programs::xdp::XdpAttachType) -> Self
-impl core::fmt::Debug for aya_obj::programs::xdp::XdpAttachType
-pub fn aya_obj::programs::xdp::XdpAttachType::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
-impl core::marker::Copy for aya_obj::programs::xdp::XdpAttachType
-impl core::marker::Freeze for aya_obj::programs::xdp::XdpAttachType
-impl core::marker::Send for aya_obj::programs::xdp::XdpAttachType
-impl core::marker::Sync for aya_obj::programs::xdp::XdpAttachType
-impl core::marker::Unpin for aya_obj::programs::xdp::XdpAttachType
-impl core::panic::unwind_safe::RefUnwindSafe for aya_obj::programs::xdp::XdpAttachType
-impl core::panic::unwind_safe::UnwindSafe for aya_obj::programs::xdp::XdpAttachType
-impl<T, U> core::convert::Into<U> for aya_obj::programs::xdp::XdpAttachType where U: core::convert::From<T>
-pub fn aya_obj::programs::xdp::XdpAttachType::into(self) -> U
-impl<T, U> core::convert::TryFrom<U> for aya_obj::programs::xdp::XdpAttachType where U: core::convert::Into<T>
-pub type aya_obj::programs::xdp::XdpAttachType::Error = core::convert::Infallible
-pub fn aya_obj::programs::xdp::XdpAttachType::try_from(value: U) -> core::result::Result<T, <T as core::convert::TryFrom<U>>::Error>
-impl<T, U> core::convert::TryInto<U> for aya_obj::programs::xdp::XdpAttachType where U: core::convert::TryFrom<T>
-pub type aya_obj::programs::xdp::XdpAttachType::Error = <U as core::convert::TryFrom<T>>::Error
-pub fn aya_obj::programs::xdp::XdpAttachType::try_into(self) -> core::result::Result<U, <U as core::convert::TryFrom<T>>::Error>
-impl<T> alloc::borrow::ToOwned for aya_obj::programs::xdp::XdpAttachType where T: core::clone::Clone
-pub type aya_obj::programs::xdp::XdpAttachType::Owned = T
-pub fn aya_obj::programs::xdp::XdpAttachType::clone_into(&self, target: &mut T)
-pub fn aya_obj::programs::xdp::XdpAttachType::to_owned(&self) -> T
-impl<T> core::any::Any for aya_obj::programs::xdp::XdpAttachType where T: 'static + core::marker::Sized
-pub fn aya_obj::programs::xdp::XdpAttachType::type_id(&self) -> core::any::TypeId
-impl<T> core::borrow::Borrow<T> for aya_obj::programs::xdp::XdpAttachType where T: core::marker::Sized
-pub fn aya_obj::programs::xdp::XdpAttachType::borrow(&self) -> &T
-impl<T> core::borrow::BorrowMut<T> for aya_obj::programs::xdp::XdpAttachType where T: core::marker::Sized
-pub fn aya_obj::programs::xdp::XdpAttachType::borrow_mut(&mut self) -> &mut T
-impl<T> core::clone::CloneToUninit for aya_obj::programs::xdp::XdpAttachType where T: core::clone::Clone
-pub unsafe fn aya_obj::programs::xdp::XdpAttachType::clone_to_uninit(&self, dst: *mut T)
-impl<T> core::clone::CloneToUninit for aya_obj::programs::xdp::XdpAttachType where T: core::marker::Copy
-pub unsafe fn aya_obj::programs::xdp::XdpAttachType::clone_to_uninit(&self, dst: *mut T)
-impl<T> core::convert::From<T> for aya_obj::programs::xdp::XdpAttachType
-pub fn aya_obj::programs::xdp::XdpAttachType::from(t: T) -> T
+impl core::clone::Clone for aya_obj::programs::XdpAttachType
+pub fn aya_obj::programs::XdpAttachType::clone(&self) -> aya_obj::programs::XdpAttachType
+impl core::convert::From<aya_obj::programs::XdpAttachType> for aya_obj::generated::bpf_attach_type
+pub fn aya_obj::generated::bpf_attach_type::from(value: aya_obj::programs::XdpAttachType) -> Self
+impl core::fmt::Debug for aya_obj::programs::XdpAttachType
+pub fn aya_obj::programs::XdpAttachType::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+impl core::marker::Copy for aya_obj::programs::XdpAttachType
+impl core::marker::Freeze for aya_obj::programs::XdpAttachType
+impl core::marker::Send for aya_obj::programs::XdpAttachType
+impl core::marker::Sync for aya_obj::programs::XdpAttachType
+impl core::marker::Unpin for aya_obj::programs::XdpAttachType
+impl core::panic::unwind_safe::RefUnwindSafe for aya_obj::programs::XdpAttachType
+impl core::panic::unwind_safe::UnwindSafe for aya_obj::programs::XdpAttachType
+impl<T, U> core::convert::Into<U> for aya_obj::programs::XdpAttachType where U: core::convert::From<T>
+pub fn aya_obj::programs::XdpAttachType::into(self) -> U
+impl<T, U> core::convert::TryFrom<U> for aya_obj::programs::XdpAttachType where U: core::convert::Into<T>
+pub type aya_obj::programs::XdpAttachType::Error = core::convert::Infallible
+pub fn aya_obj::programs::XdpAttachType::try_from(value: U) -> core::result::Result<T, <T as core::convert::TryFrom<U>>::Error>
+impl<T, U> core::convert::TryInto<U> for aya_obj::programs::XdpAttachType where U: core::convert::TryFrom<T>
+pub type aya_obj::programs::XdpAttachType::Error = <U as core::convert::TryFrom<T>>::Error
+pub fn aya_obj::programs::XdpAttachType::try_into(self) -> core::result::Result<U, <U as core::convert::TryFrom<T>>::Error>
+impl<T> alloc::borrow::ToOwned for aya_obj::programs::XdpAttachType where T: core::clone::Clone
+pub type aya_obj::programs::XdpAttachType::Owned = T
+pub fn aya_obj::programs::XdpAttachType::clone_into(&self, target: &mut T)
+pub fn aya_obj::programs::XdpAttachType::to_owned(&self) -> T
+impl<T> core::any::Any for aya_obj::programs::XdpAttachType where T: 'static + core::marker::Sized
+pub fn aya_obj::programs::XdpAttachType::type_id(&self) -> core::any::TypeId
+impl<T> core::borrow::Borrow<T> for aya_obj::programs::XdpAttachType where T: core::marker::Sized
+pub fn aya_obj::programs::XdpAttachType::borrow(&self) -> &T
+impl<T> core::borrow::BorrowMut<T> for aya_obj::programs::XdpAttachType where T: core::marker::Sized
+pub fn aya_obj::programs::XdpAttachType::borrow_mut(&mut self) -> &mut T
+impl<T> core::clone::CloneToUninit for aya_obj::programs::XdpAttachType where T: core::clone::Clone
+pub unsafe fn aya_obj::programs::XdpAttachType::clone_to_uninit(&self, dst: *mut T)
+impl<T> core::clone::CloneToUninit for aya_obj::programs::XdpAttachType where T: core::marker::Copy
+pub unsafe fn aya_obj::programs::XdpAttachType::clone_to_uninit(&self, dst: *mut T)
+impl<T> core::convert::From<T> for aya_obj::programs::XdpAttachType
+pub fn aya_obj::programs::XdpAttachType::from(t: T) -> T
 pub mod aya_obj::relocation
 pub enum aya_obj::relocation::RelocationError
 pub aya_obj::relocation::RelocationError::InvalidRelocationOffset
@@ -8141,11 +7962,11 @@ pub aya_obj::ProgramSection::CgroupSkb
 pub aya_obj::ProgramSection::CgroupSkbEgress
 pub aya_obj::ProgramSection::CgroupSkbIngress
 pub aya_obj::ProgramSection::CgroupSock
-pub aya_obj::ProgramSection::CgroupSock::attach_type: aya_obj::programs::cgroup_sock::CgroupSockAttachType
+pub aya_obj::ProgramSection::CgroupSock::attach_type: aya_obj::programs::CgroupSockAttachType
 pub aya_obj::ProgramSection::CgroupSockAddr
-pub aya_obj::ProgramSection::CgroupSockAddr::attach_type: aya_obj::programs::cgroup_sock_addr::CgroupSockAddrAttachType
+pub aya_obj::ProgramSection::CgroupSockAddr::attach_type: aya_obj::programs::CgroupSockAddrAttachType
 pub aya_obj::ProgramSection::CgroupSockopt
-pub aya_obj::ProgramSection::CgroupSockopt::attach_type: aya_obj::programs::cgroup_sockopt::CgroupSockoptAttachType
+pub aya_obj::ProgramSection::CgroupSockopt::attach_type: aya_obj::programs::CgroupSockoptAttachType
 pub aya_obj::ProgramSection::CgroupSysctl
 pub aya_obj::ProgramSection::Extension
 pub aya_obj::ProgramSection::FEntry
@@ -8172,7 +7993,7 @@ pub aya_obj::ProgramSection::UProbe::sleepable: bool
 pub aya_obj::ProgramSection::URetProbe
 pub aya_obj::ProgramSection::URetProbe::sleepable: bool
 pub aya_obj::ProgramSection::Xdp
-pub aya_obj::ProgramSection::Xdp::attach_type: aya_obj::programs::xdp::XdpAttachType
+pub aya_obj::ProgramSection::Xdp::attach_type: aya_obj::programs::XdpAttachType
 pub aya_obj::ProgramSection::Xdp::frags: bool
 impl core::clone::Clone for aya_obj::ProgramSection
 pub fn aya_obj::ProgramSection::clone(&self) -> aya_obj::ProgramSection
