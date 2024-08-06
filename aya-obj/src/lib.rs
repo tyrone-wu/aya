@@ -88,7 +88,7 @@ mod std {
 pub mod btf;
 pub mod generated;
 pub mod maps;
-pub mod obj;
+mod obj;
 pub mod programs;
 pub mod relocation;
 mod util;
