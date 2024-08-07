@@ -59,15 +59,15 @@ use std::{
     ptr,
 };
 
-use aya_obj::generated::bpf_map_type;
+use aya_obj::{
+    generated::bpf_map_type, maps::InvalidMapTypeError, parse_map_info, EbpfSectionKind,
+};
 use libc::{getrlimit, rlim_t, rlimit, RLIMIT_MEMLOCK, RLIM_INFINITY};
 use log::warn;
-use obj::maps::InvalidMapTypeError;
 use thiserror::Error;
 
 use crate::{
     generated::bpf_map_info,
-    obj::{self, parse_map_info, EbpfSectionKind},
     pin::PinError,
     sys::{
         bpf_create_map, bpf_get_object, bpf_map_freeze, bpf_map_get_fd_by_id,
@@ -548,14 +548,14 @@ pub(crate) fn check_v_size<V>(map: &MapData) -> Result<(), MapError> {
 /// You should never need to use this unless you're implementing a new map type.
 #[derive(Debug)]
 pub struct MapData {
-    obj: obj::Map,
+    obj: aya_obj::maps::Map,
     fd: MapFd,
 }
 
 impl MapData {
     /// Creates a new map with the provided `name`
     pub fn create(
-        mut obj: obj::Map,
+        mut obj: aya_obj::maps::Map,
         name: &str,
         btf_fd: Option<BorrowedFd<'_>>,
     ) -> Result<Self, MapError> {
@@ -603,7 +603,7 @@ impl MapData {
 
     pub(crate) fn create_pinned_by_name<P: AsRef<Path>>(
         path: P,
-        obj: obj::Map,
+        obj: aya_obj::maps::Map,
         name: &str,
         btf_fd: Option<BorrowedFd<'_>>,
     ) -> Result<Self, MapError> {
@@ -754,7 +754,7 @@ impl MapData {
         fd
     }
 
-    pub(crate) fn obj(&self) -> &obj::Map {
+    pub(crate) fn obj(&self) -> &aya_obj::maps::Map {
         let Self { obj, fd: _ } = self;
         obj
     }
@@ -1066,15 +1066,16 @@ pub fn loaded_maps() -> impl Iterator<Item = Result<MapInfo, MapError>> {
 
 #[cfg(test)]
 mod test_utils {
+    use aya_obj::{maps::LegacyMap, EbpfSectionKind};
+
     use crate::{
         bpf_map_def,
         generated::{bpf_cmd, bpf_map_type},
         maps::MapData,
-        obj::{self, maps::LegacyMap, EbpfSectionKind},
         sys::{override_syscall, Syscall},
     };
 
-    pub(super) fn new_map(obj: obj::Map) -> MapData {
+    pub(super) fn new_map(obj: aya_obj::maps::Map) -> MapData {
         override_syscall(|call| match call {
             Syscall::Ebpf {
                 cmd: bpf_cmd::BPF_MAP_CREATE,
@@ -1085,8 +1086,8 @@ mod test_utils {
         MapData::create(obj, "foo", None).unwrap()
     }
 
-    pub(super) fn new_obj_map<K>(map_type: bpf_map_type) -> obj::Map {
-        obj::Map::Legacy(LegacyMap {
+    pub(super) fn new_obj_map<K>(map_type: bpf_map_type) -> aya_obj::maps::Map {
+        aya_obj::maps::Map::Legacy(LegacyMap {
             def: bpf_map_def {
                 map_type: map_type as u32,
                 key_size: std::mem::size_of::<K>() as u32,
@@ -1104,8 +1105,8 @@ mod test_utils {
     pub(super) fn new_obj_map_with_max_entries<K>(
         map_type: bpf_map_type,
         max_entries: u32,
-    ) -> obj::Map {
-        obj::Map::Legacy(LegacyMap {
+    ) -> aya_obj::maps::Map {
+        aya_obj::maps::Map::Legacy(LegacyMap {
             def: bpf_map_def {
                 map_type: map_type as u32,
                 key_size: std::mem::size_of::<K>() as u32,
@@ -1128,7 +1129,7 @@ mod tests {
     use assert_matches::assert_matches;
     use libc::{c_char, EFAULT};
 
-    fn new_obj_map() -> obj::Map {
+    fn new_obj_map() -> aya_obj::maps::Map {
         test_utils::new_obj_map::<u32>(crate::generated::bpf_map_type::BPF_MAP_TYPE_HASH)
     }
 

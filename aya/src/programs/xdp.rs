@@ -8,6 +8,7 @@ use std::{
     path::Path,
 };
 
+use aya_obj::programs::XdpAttachType;
 use libc::if_nametoindex;
 use thiserror::Error;
 
@@ -16,7 +17,6 @@ use crate::{
         bpf_link_type, bpf_prog_type, XDP_FLAGS_DRV_MODE, XDP_FLAGS_HW_MODE, XDP_FLAGS_REPLACE,
         XDP_FLAGS_SKB_MODE, XDP_FLAGS_UPDATE_IF_NOEXIST,
     },
-    obj::programs::XdpAttachType,
     programs::{
         define_link_wrapper, load_program, FdLink, Link, LinkError, ProgramData, ProgramError,
     },

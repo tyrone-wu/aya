@@ -78,9 +78,7 @@
 )]
 
 mod bpf;
-use aya_obj::generated;
 pub mod maps;
-use aya_obj as obj;
 pub mod pin;
 pub mod programs;
 pub use programs::loaded_programs;
@@ -89,8 +87,10 @@ pub mod util;
 
 use std::os::fd::{AsFd, AsRawFd, BorrowedFd, FromRawFd, OwnedFd, RawFd};
 
+// re-export items so API doesn't break
+pub use aya_obj::btf::{Btf, BtfError};
+use aya_obj::generated;
 pub use bpf::*;
-pub use obj::btf::{Btf, BtfError};
 pub use object::Endianness;
 #[doc(hidden)]
 pub use sys::netlink_set_link_up;

@@ -1,8 +1,9 @@
 //! BTF-enabled raw tracepoints.
 
+use aya_obj::btf::{Btf, BtfKind};
+
 use crate::{
     generated::{bpf_attach_type::BPF_TRACE_RAW_TP, bpf_prog_type::BPF_PROG_TYPE_TRACING},
-    obj::btf::{Btf, BtfKind},
     programs::{
         define_link_wrapper, load_program, utils::attach_raw_tracepoint, FdLink, FdLinkId,
         ProgramData, ProgramError,

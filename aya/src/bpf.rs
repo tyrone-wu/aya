@@ -11,10 +11,10 @@ use std::{
 };
 
 use aya_obj::{
-    btf::{BtfFeatures, BtfRelocationError},
+    btf::{Btf, BtfError, BtfFeatures, BtfRelocationError},
     generated::{BPF_F_SLEEPABLE, BPF_F_XDP_HAS_FRAGS},
     relocation::EbpfRelocationError,
-    EbpfSectionKind, Features,
+    EbpfSectionKind, Features, Object, ParseError, ProgramSection,
 };
 use log::{debug, warn};
 use thiserror::Error;
@@ -25,10 +25,6 @@ use crate::{
         AYA_PERF_EVENT_IOC_SET_BPF,
     },
     maps::{Map, MapData, MapError},
-    obj::{
-        btf::{Btf, BtfError},
-        Object, ParseError, ProgramSection,
-    },
     programs::{
         BtfTracePoint, CgroupDevice, CgroupSkb, CgroupSkbAttachType, CgroupSock, CgroupSockAddr,
         CgroupSockopt, CgroupSysctl, Extension, FEntry, FExit, KProbe, LircMode2, Lsm, PerfEvent,

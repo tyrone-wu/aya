@@ -8,12 +8,17 @@ use std::{
 };
 
 use assert_matches::assert_matches;
-use libc::{ENOENT, ENOSPC};
-use obj::{
-    btf::{BtfEnum64, Enum64},
+use aya_obj::{
+    btf::{
+        Btf, BtfEnum64, BtfParam, BtfType, DataSec, DataSecEntry, DeclTag, Enum64, Float, Func,
+        FuncLinkage, FuncProto, FuncSecInfo, Int, IntEncoding, LineSecInfo, Ptr, TypeTag, Var,
+        VarLinkage,
+    },
+    copy_instructions,
     maps::{bpf_map_def, LegacyMap},
     EbpfSectionKind, VerifierLog,
 };
+use libc::{ENOENT, ENOSPC};
 
 use crate::{
     generated::{
@@ -21,22 +26,14 @@ use crate::{
         bpf_map_type, bpf_prog_info, bpf_prog_type, BPF_F_REPLACE,
     },
     maps::{MapData, PerCpuValues},
-    obj::{
-        self,
-        btf::{
-            BtfParam, BtfType, DataSec, DataSecEntry, DeclTag, Float, Func, FuncLinkage, FuncProto,
-            FuncSecInfo, Int, IntEncoding, LineSecInfo, Ptr, TypeTag, Var, VarLinkage,
-        },
-        copy_instructions,
-    },
     sys::{syscall, SysResult, Syscall, SyscallError},
     util::KernelVersion,
-    Btf, Pod, VerifierLogLevel, BPF_OBJ_NAME_LEN,
+    Pod, VerifierLogLevel, BPF_OBJ_NAME_LEN,
 };
 
 pub(crate) fn bpf_create_map(
     name: &CStr,
-    def: &obj::Map,
+    def: &aya_obj::maps::Map,
     btf_fd: Option<BorrowedFd<'_>>,
     kernel_version: KernelVersion,
 ) -> SysResult<crate::MockableFd> {
@@ -49,7 +46,7 @@ pub(crate) fn bpf_create_map(
     u.max_entries = def.max_entries();
     u.map_flags = def.map_flags();
 
-    if let obj::Map::Btf(m) = def {
+    if let aya_obj::maps::Map::Btf(m) = def {
         use bpf_map_type::*;
 
         // Mimic https://github.com/libbpf/libbpf/issues/355
@@ -757,7 +754,7 @@ pub(crate) fn is_bpf_global_data_supported() -> bool {
     let mut insns = copy_instructions(prog).unwrap();
 
     let map = MapData::create(
-        obj::Map::Legacy(LegacyMap {
+        aya_obj::maps::Map::Legacy(LegacyMap {
             def: bpf_map_def {
                 map_type: bpf_map_type::BPF_MAP_TYPE_ARRAY as u32,
                 key_size: 4,

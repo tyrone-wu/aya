@@ -1,4 +1,5 @@
-use aya::{maps::Array, programs::UProbe, util::KernelVersion, Btf, EbpfLoader, Endianness};
+use aya::{maps::Array, programs::UProbe, util::KernelVersion, EbpfLoader, Endianness};
+use aya_obj::btf::Btf;
 use test_case::test_case;
 
 #[test_case("enum_signed_32", false, Some((KernelVersion::new(6, 0, 0), "https://github.com/torvalds/linux/commit/6089fb3")), -0x7AAAAAAAi32 as u64)]
