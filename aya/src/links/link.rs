@@ -1,4 +1,5 @@
 //! Program links.
+
 use std::{
     collections::{hash_map::Entry, HashMap},
     ffi::CString,
@@ -94,7 +95,7 @@ pub struct FdLinkId(pub(crate) RawFd);
 ///
 ///```no_run
 /// # let mut bpf = Ebpf::load_file("ebpf_programs.o")?;
-/// use aya::{Ebpf, programs::{links::FdLink, KProbe}};
+/// use aya::{Ebpf, links::FdLink, programs::KProbe};
 ///
 /// let program: &mut KProbe = bpf.program_mut("intercept_wakeups").unwrap().try_into()?;
 /// program.load()?;
@@ -125,7 +126,7 @@ impl FdLink {
     ///
     /// # Example
     /// ```no_run
-    /// # use aya::programs::{links::FdLink, Extension};
+    /// # use aya::{links::FdLink, programs::Extension};
     /// # use std::convert::TryInto;
     /// # #[derive(thiserror::Error, Debug)]
     /// # enum Error {
@@ -201,7 +202,7 @@ impl PinnedLink {
         Self { inner: link, path }
     }
 
-    /// Creates a [`crate::programs::links::PinnedLink`] from a valid path on bpffs.
+    /// Creates a [`crate::links::PinnedLink`] from a valid path on bpffs.
     pub fn from_pin<P: AsRef<Path>>(path: P) -> Result<Self, LinkError> {
         use std::os::unix::ffi::OsStrExt as _;
 
@@ -322,7 +323,7 @@ macro_rules! define_link_wrapper {
 
         impl Drop for $wrapper {
             fn drop(&mut self) {
-                use crate::programs::links::Link;
+                use crate::links::Link as _;
 
                 if let Some(base) = self.0.take() {
                     let _ = base.detach();

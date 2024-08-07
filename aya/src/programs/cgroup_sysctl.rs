@@ -4,9 +4,8 @@ use std::{hash::Hash, os::fd::AsFd};
 
 use crate::{
     generated::{bpf_attach_type::BPF_CGROUP_SYSCTL, bpf_prog_type::BPF_PROG_TYPE_CGROUP_SYSCTL},
-    programs::{
-        define_link_wrapper, load_program, FdLink, Link, ProgAttachLink, ProgramData, ProgramError,
-    },
+    links::{define_link_wrapper, FdLink, Link, ProgAttachLink},
+    programs::{load_program, ProgramData, ProgramError},
     sys::{bpf_link_create, LinkTarget, SyscallError},
     util::KernelVersion,
 };

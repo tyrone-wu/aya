@@ -12,7 +12,8 @@ use crate::{
     generated::{
         bpf_prog_type::BPF_PROG_TYPE_SCHED_CLS, TC_H_CLSACT, TC_H_MIN_EGRESS, TC_H_MIN_INGRESS,
     },
-    programs::{define_link_wrapper, load_program, Link, ProgramData, ProgramError},
+    links::{define_link_wrapper, Link},
+    programs::{load_program, ProgramData, ProgramError},
     sys::{
         netlink_find_filter_with_name, netlink_qdisc_add_clsact, netlink_qdisc_attach,
         netlink_qdisc_detach,
@@ -226,7 +227,7 @@ impl SchedClassifier {
 
     /// Creates a program from a pinned entry on a bpffs.
     ///
-    /// Existing links will not be populated. To work with existing links you should use [`crate::programs::links::PinnedLink`].
+    /// Existing links will not be populated. To work with existing links you should use [`crate::links::PinnedLink`].
     ///
     /// On drop, any managed links are detached and the program is unloaded. This will not result in
     /// the program being unloaded from the kernel if it is still pinned.

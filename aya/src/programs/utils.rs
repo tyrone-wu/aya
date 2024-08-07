@@ -9,7 +9,8 @@ use std::{
 };
 
 use crate::{
-    programs::{FdLink, Link, ProgramData, ProgramError},
+    links::{FdLink, Link},
+    programs::{ProgramData, ProgramError},
     sys::{bpf_raw_tracepoint_open, SyscallError},
 };
 

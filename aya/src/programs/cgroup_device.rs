@@ -4,10 +4,8 @@ use std::os::fd::AsFd;
 
 use crate::{
     generated::{bpf_attach_type::BPF_CGROUP_DEVICE, bpf_prog_type::BPF_PROG_TYPE_CGROUP_DEVICE},
-    programs::{
-        bpf_prog_get_fd_by_id, define_link_wrapper, load_program, query, FdLink, Link,
-        ProgAttachLink, ProgramData, ProgramError, ProgramFd,
-    },
+    links::{define_link_wrapper, FdLink, Link, ProgAttachLink},
+    programs::{bpf_prog_get_fd_by_id, load_program, query, ProgramData, ProgramError, ProgramFd},
     sys::{bpf_link_create, LinkTarget, SyscallError},
     util::KernelVersion,
 };

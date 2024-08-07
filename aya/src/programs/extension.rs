@@ -7,10 +7,9 @@ use thiserror::Error;
 
 use crate::{
     generated::{bpf_attach_type::BPF_CGROUP_INET_INGRESS, bpf_prog_type::BPF_PROG_TYPE_EXT},
+    links::{define_link_wrapper, FdLink, FdLinkId},
     obj::btf::BtfKind,
-    programs::{
-        define_link_wrapper, load_program, FdLink, FdLinkId, ProgramData, ProgramError, ProgramFd,
-    },
+    programs::{load_program, ProgramData, ProgramError, ProgramFd},
     sys::{self, bpf_link_create, LinkTarget, SyscallError},
     Btf,
 };

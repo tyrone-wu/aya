@@ -81,6 +81,7 @@ mod bpf;
 use aya_obj::generated;
 pub mod maps;
 use aya_obj as obj;
+pub mod links;
 pub mod pin;
 pub mod programs;
 mod sys;

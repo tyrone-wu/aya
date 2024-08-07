@@ -17,11 +17,12 @@ use thiserror::Error;
 
 use crate::{
     generated::{bpf_link_type, bpf_prog_type::BPF_PROG_TYPE_KPROBE},
+    links::{define_link_wrapper, FdLink, LinkError},
     programs::{
-        define_link_wrapper, load_program,
+        load_program,
         perf_attach::{PerfLinkIdInner, PerfLinkInner},
         probe::{attach, OsStringExt as _, ProbeKind},
-        FdLink, LinkError, ProgramData, ProgramError,
+        ProgramData, ProgramError,
     },
     sys::bpf_link_get_info_by_fd,
     VerifierLogLevel,
@@ -116,7 +117,7 @@ impl UProbe {
 
     /// Creates a program from a pinned entry on a bpffs.
     ///
-    /// Existing links will not be populated. To work with existing links you should use [`crate::programs::links::PinnedLink`].
+    /// Existing links will not be populated. To work with existing links you should use [`crate::links::PinnedLink`].
     ///
     /// On drop, any managed links are detached and the program is unloaded. This will not result in
     /// the program being unloaded from the kernel if it is still pinned.

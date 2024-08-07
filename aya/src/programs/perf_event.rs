@@ -14,11 +14,11 @@ use crate::{
             PERF_TYPE_SOFTWARE, PERF_TYPE_TRACEPOINT,
         },
     },
+    links::{define_link_wrapper, FdLink, LinkError},
     programs::{
-        links::define_link_wrapper,
         load_program, perf_attach,
         perf_attach::{PerfLinkIdInner, PerfLinkInner},
-        FdLink, LinkError, ProgramData, ProgramError,
+        ProgramData, ProgramError,
     },
     sys::{bpf_link_get_info_by_fd, perf_event_open, SyscallError},
 };

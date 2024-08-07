@@ -2,11 +2,9 @@
 
 use crate::{
     generated::{bpf_attach_type::BPF_TRACE_FENTRY, bpf_prog_type::BPF_PROG_TYPE_TRACING},
+    links::{define_link_wrapper, FdLink, FdLinkId},
     obj::btf::{Btf, BtfKind},
-    programs::{
-        define_link_wrapper, load_program, utils::attach_raw_tracepoint, FdLink, FdLinkId,
-        ProgramData, ProgramError,
-    },
+    programs::{load_program, utils::attach_raw_tracepoint, ProgramData, ProgramError},
 };
 
 /// A program that can be attached to the entry point of (almost) any kernel

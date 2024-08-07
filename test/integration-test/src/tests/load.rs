@@ -1,11 +1,9 @@
 use std::{convert::TryInto as _, fs::remove_file, path::Path, thread, time::Duration};
 
 use aya::{
+    links::{FdLink, PinnedLink},
     maps::Array,
-    programs::{
-        links::{FdLink, PinnedLink},
-        loaded_links, loaded_programs, KProbe, TracePoint, UProbe, Xdp, XdpFlags,
-    },
+    programs::{loaded_links, loaded_programs, KProbe, TracePoint, UProbe, Xdp, XdpFlags},
     util::KernelVersion,
     Ebpf,
 };

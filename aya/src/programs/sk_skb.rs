@@ -7,11 +7,9 @@ use crate::{
         bpf_attach_type::{BPF_SK_SKB_STREAM_PARSER, BPF_SK_SKB_STREAM_VERDICT},
         bpf_prog_type::BPF_PROG_TYPE_SK_SKB,
     },
+    links::{define_link_wrapper, ProgAttachLink, ProgAttachLinkId},
     maps::sock::SockMapFd,
-    programs::{
-        define_link_wrapper, load_program, ProgAttachLink, ProgAttachLinkId, ProgramData,
-        ProgramError,
-    },
+    programs::{load_program, ProgramData, ProgramError},
     VerifierLogLevel,
 };
 
@@ -112,7 +110,7 @@ impl SkSkb {
 
     /// Creates a program from a pinned entry on a bpffs.
     ///
-    /// Existing links will not be populated. To work with existing links you should use [`crate::programs::links::PinnedLink`].
+    /// Existing links will not be populated. To work with existing links you should use [`crate::links::PinnedLink`].
     ///
     /// On drop, any managed links are detached and the program is unloaded. This will not result in
     /// the program being unloaded from the kernel if it is still pinned.

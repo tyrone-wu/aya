@@ -3,9 +3,10 @@ use std::os::fd::{AsFd as _, AsRawFd as _, BorrowedFd, RawFd};
 
 use crate::{
     generated::bpf_attach_type::BPF_PERF_EVENT,
+    links::{FdLink, Link},
     programs::{
         probe::{detach_debug_fs, ProbeEvent},
-        FdLink, Link, ProgramError,
+        ProgramError,
     },
     sys::{bpf_link_create, perf_event_ioctl, LinkTarget, SysResult, SyscallError},
     FEATURES, PERF_EVENT_IOC_DISABLE, PERF_EVENT_IOC_ENABLE, PERF_EVENT_IOC_SET_BPF,

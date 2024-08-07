@@ -16,10 +16,9 @@ use crate::{
         bpf_link_type, bpf_prog_type, XDP_FLAGS_DRV_MODE, XDP_FLAGS_HW_MODE, XDP_FLAGS_REPLACE,
         XDP_FLAGS_SKB_MODE, XDP_FLAGS_UPDATE_IF_NOEXIST,
     },
+    links::{define_link_wrapper, FdLink, Link, LinkError},
     obj::programs::XdpAttachType,
-    programs::{
-        define_link_wrapper, load_program, FdLink, Link, LinkError, ProgramData, ProgramError,
-    },
+    programs::{load_program, ProgramData, ProgramError},
     sys::{
         bpf_link_create, bpf_link_get_info_by_fd, bpf_link_update, netlink_set_xdp_fd, LinkTarget,
         SyscallError,
@@ -176,7 +175,7 @@ impl Xdp {
 
     /// Creates a program from a pinned entry on a bpffs.
     ///
-    /// Existing links will not be populated. To work with existing links you should use [`crate::programs::links::PinnedLink`].
+    /// Existing links will not be populated. To work with existing links you should use [`crate::links::PinnedLink`].
     ///
     /// On drop, any managed links are detached and the program is unloaded. This will not result in
     /// the program being unloaded from the kernel if it is still pinned.

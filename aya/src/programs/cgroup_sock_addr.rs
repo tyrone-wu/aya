@@ -6,9 +6,8 @@ pub use aya_obj::programs::CgroupSockAddrAttachType;
 
 use crate::{
     generated::bpf_prog_type::BPF_PROG_TYPE_CGROUP_SOCK_ADDR,
-    programs::{
-        define_link_wrapper, load_program, FdLink, Link, ProgAttachLink, ProgramData, ProgramError,
-    },
+    links::{define_link_wrapper, FdLink, Link, ProgAttachLink},
+    programs::{load_program, ProgramData, ProgramError},
     sys::{bpf_link_create, LinkTarget, SyscallError},
     util::KernelVersion,
     VerifierLogLevel,
@@ -112,7 +111,7 @@ impl CgroupSockAddr {
 
     /// Creates a program from a pinned entry on a bpffs.
     ///
-    /// Existing links will not be populated. To work with existing links you should use [`crate::programs::links::PinnedLink`].
+    /// Existing links will not be populated. To work with existing links you should use [`crate::links::PinnedLink`].
     ///
     /// On drop, any managed links are detached and the program is unloaded. This will not result in
     /// the program being unloaded from the kernel if it is still pinned.

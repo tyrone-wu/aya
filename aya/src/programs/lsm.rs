@@ -2,11 +2,9 @@
 
 use crate::{
     generated::{bpf_attach_type::BPF_LSM_MAC, bpf_prog_type::BPF_PROG_TYPE_LSM},
+    links::{define_link_wrapper, FdLink, FdLinkId},
     obj::btf::{Btf, BtfKind},
-    programs::{
-        define_link_wrapper, load_program, utils::attach_raw_tracepoint, FdLink, FdLinkId,
-        ProgramData, ProgramError,
-    },
+    programs::{load_program, utils::attach_raw_tracepoint, ProgramData, ProgramError},
 };
 
 /// A program that attaches to Linux LSM hooks. Used to implement security policy and

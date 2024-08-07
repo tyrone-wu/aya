@@ -4,11 +4,9 @@ use std::os::fd::AsFd as _;
 
 use crate::{
     generated::{bpf_attach_type::BPF_SK_MSG_VERDICT, bpf_prog_type::BPF_PROG_TYPE_SK_MSG},
+    links::{define_link_wrapper, ProgAttachLink, ProgAttachLinkId},
     maps::sock::SockMapFd,
-    programs::{
-        define_link_wrapper, load_program, ProgAttachLink, ProgAttachLinkId, ProgramData,
-        ProgramError,
-    },
+    programs::{load_program, ProgramData, ProgramError},
 };
 
 /// A program used to intercept messages sent with `sendmsg()`/`sendfile()`.

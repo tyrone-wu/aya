@@ -3,10 +3,8 @@ use std::os::fd::AsFd;
 
 use crate::{
     generated::{bpf_attach_type::BPF_CGROUP_SOCK_OPS, bpf_prog_type::BPF_PROG_TYPE_SOCK_OPS},
-    programs::{
-        define_link_wrapper, load_program, ProgAttachLink, ProgAttachLinkId, ProgramData,
-        ProgramError,
-    },
+    links::{define_link_wrapper, ProgAttachLink, ProgAttachLinkId},
+    programs::{load_program, ProgramData, ProgramError},
 };
 
 /// A program used to work with sockets.

@@ -5,11 +5,12 @@ use thiserror::Error;
 
 use crate::{
     generated::{bpf_link_type, bpf_prog_type::BPF_PROG_TYPE_TRACEPOINT},
+    links::{define_link_wrapper, FdLink, LinkError},
     programs::{
-        define_link_wrapper, load_program,
+        load_program,
         perf_attach::{perf_attach, PerfLinkIdInner, PerfLinkInner},
         utils::find_tracefs_path,
-        FdLink, LinkError, ProgramData, ProgramError,
+        ProgramData, ProgramError,
     },
     sys::{bpf_link_get_info_by_fd, perf_event_open_trace_point, SyscallError},
 };

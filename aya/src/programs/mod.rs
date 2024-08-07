@@ -52,7 +52,6 @@ pub mod extension;
 pub mod fentry;
 pub mod fexit;
 pub mod kprobe;
-pub mod links;
 pub mod lirc_mode2;
 pub mod lsm;
 pub mod perf_attach;
@@ -94,7 +93,6 @@ pub use crate::programs::{
     fentry::FEntry,
     fexit::FExit,
     kprobe::{KProbe, KProbeError},
-    links::Link,
     lirc_mode2::LircMode2,
     lsm::Lsm,
     perf_event::{PerfEvent, PerfEventScope, PerfTypeId, SamplePolicy},
@@ -113,10 +111,11 @@ pub use crate::programs::{
 };
 use crate::{
     generated::{bpf_attach_type, bpf_link_info, bpf_prog_info, bpf_prog_type},
+    links::{Link, LinkMap},
     maps::MapError,
     obj::{self, btf::BtfError, VerifierLog},
     pin::PinError,
-    programs::{links::*, perf_attach::*},
+    programs::perf_attach::*,
     sys::{
         bpf_btf_get_fd_by_id, bpf_get_object, bpf_link_get_fd_by_id, bpf_link_get_info_by_fd,
         bpf_load_program, bpf_pin_object, bpf_prog_get_fd_by_id, bpf_prog_query, iter_link_ids,
@@ -220,7 +219,7 @@ pub enum ProgramError {
 
 /// A [`Program`] file descriptor.
 #[derive(Debug)]
-pub struct ProgramFd(crate::MockableFd);
+pub struct ProgramFd(pub(crate) crate::MockableFd);
 
 impl ProgramFd {
     /// Creates a new instance that shares the same underlying file description as [`self`].
@@ -861,7 +860,7 @@ macro_rules! impl_from_pin {
             impl $struct_name {
                 /// Creates a program from a pinned entry on a bpffs.
                 ///
-                /// Existing links will not be populated. To work with existing links you should use [`crate::programs::links::PinnedLink`].
+                /// Existing links will not be populated. To work with existing links you should use [`crate::links::PinnedLink`].
                 ///
                 /// On drop, any managed links are detached and the program is unloaded. This will not result in
                 /// the program being unloaded from the kernel if it is still pinned.

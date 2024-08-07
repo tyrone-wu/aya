@@ -4,6 +4,384 @@ pub use aya::BtfError
 pub use aya::Endianness
 pub use aya::PinningType
 pub use aya::bpf_map_def
+pub mod aya::links
+pub enum aya::links::LinkError
+pub aya::links::LinkError::InvalidLink
+pub aya::links::LinkError::SyscallError(crate::sys::SyscallError)
+impl core::error::Error for aya::links::LinkError
+pub fn aya::links::LinkError::source(&self) -> core::option::Option<&(dyn core::error::Error + 'static)>
+impl core::fmt::Debug for aya::links::LinkError
+pub fn aya::links::LinkError::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+impl core::fmt::Display for aya::links::LinkError
+pub fn aya::links::LinkError::fmt(&self, __formatter: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+impl core::marker::Freeze for aya::links::LinkError
+impl core::marker::Send for aya::links::LinkError
+impl core::marker::Sync for aya::links::LinkError
+impl core::marker::Unpin for aya::links::LinkError
+impl !core::panic::unwind_safe::RefUnwindSafe for aya::links::LinkError
+impl !core::panic::unwind_safe::UnwindSafe for aya::links::LinkError
+impl<T, U> core::convert::Into<U> for aya::links::LinkError where U: core::convert::From<T>
+pub fn aya::links::LinkError::into(self) -> U
+impl<T, U> core::convert::TryFrom<U> for aya::links::LinkError where U: core::convert::Into<T>
+pub type aya::links::LinkError::Error = core::convert::Infallible
+pub fn aya::links::LinkError::try_from(value: U) -> core::result::Result<T, <T as core::convert::TryFrom<U>>::Error>
+impl<T, U> core::convert::TryInto<U> for aya::links::LinkError where U: core::convert::TryFrom<T>
+pub type aya::links::LinkError::Error = <U as core::convert::TryFrom<T>>::Error
+pub fn aya::links::LinkError::try_into(self) -> core::result::Result<U, <U as core::convert::TryFrom<T>>::Error>
+impl<T> alloc::string::ToString for aya::links::LinkError where T: core::fmt::Display + core::marker::Sized
+pub fn aya::links::LinkError::to_string(&self) -> alloc::string::String
+impl<T> core::any::Any for aya::links::LinkError where T: 'static + core::marker::Sized
+pub fn aya::links::LinkError::type_id(&self) -> core::any::TypeId
+impl<T> core::borrow::Borrow<T> for aya::links::LinkError where T: core::marker::Sized
+pub fn aya::links::LinkError::borrow(&self) -> &T
+impl<T> core::borrow::BorrowMut<T> for aya::links::LinkError where T: core::marker::Sized
+pub fn aya::links::LinkError::borrow_mut(&mut self) -> &mut T
+impl<T> core::convert::From<T> for aya::links::LinkError
+pub fn aya::links::LinkError::from(t: T) -> T
+pub struct aya::links::FdLink
+impl aya::links::FdLink
+pub fn aya::links::FdLink::pin<P: core::convert::AsRef<std::path::Path>>(self, path: P) -> core::result::Result<aya::links::PinnedLink, aya::pin::PinError>
+impl aya::links::Link for aya::links::FdLink
+pub type aya::links::FdLink::Id = aya::links::FdLinkId
+pub fn aya::links::FdLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
+pub fn aya::links::FdLink::id(&self) -> Self::Id
+impl core::convert::From<aya::links::FdLink> for aya::programs::extension::ExtensionLink
+pub fn aya::programs::extension::ExtensionLink::from(b: aya::links::FdLink) -> aya::programs::extension::ExtensionLink
+impl core::convert::From<aya::links::FdLink> for aya::programs::fentry::FEntryLink
+pub fn aya::programs::fentry::FEntryLink::from(b: aya::links::FdLink) -> aya::programs::fentry::FEntryLink
+impl core::convert::From<aya::links::FdLink> for aya::programs::fexit::FExitLink
+pub fn aya::programs::fexit::FExitLink::from(b: aya::links::FdLink) -> aya::programs::fexit::FExitLink
+impl core::convert::From<aya::links::FdLink> for aya::programs::lsm::LsmLink
+pub fn aya::programs::lsm::LsmLink::from(b: aya::links::FdLink) -> aya::programs::lsm::LsmLink
+impl core::convert::From<aya::links::FdLink> for aya::programs::raw_trace_point::RawTracePointLink
+pub fn aya::programs::raw_trace_point::RawTracePointLink::from(b: aya::links::FdLink) -> aya::programs::raw_trace_point::RawTracePointLink
+impl core::convert::From<aya::links::FdLink> for aya::programs::sk_lookup::SkLookupLink
+pub fn aya::programs::sk_lookup::SkLookupLink::from(b: aya::links::FdLink) -> aya::programs::sk_lookup::SkLookupLink
+impl core::convert::From<aya::links::FdLink> for aya::programs::tp_btf::BtfTracePointLink
+pub fn aya::programs::tp_btf::BtfTracePointLink::from(b: aya::links::FdLink) -> aya::programs::tp_btf::BtfTracePointLink
+impl core::convert::From<aya::links::PinnedLink> for aya::links::FdLink
+pub fn aya::links::FdLink::from(p: aya::links::PinnedLink) -> Self
+impl core::convert::From<aya::programs::extension::ExtensionLink> for aya::links::FdLink
+pub fn aya::links::FdLink::from(w: aya::programs::extension::ExtensionLink) -> aya::links::FdLink
+impl core::convert::From<aya::programs::fentry::FEntryLink> for aya::links::FdLink
+pub fn aya::links::FdLink::from(w: aya::programs::fentry::FEntryLink) -> aya::links::FdLink
+impl core::convert::From<aya::programs::fexit::FExitLink> for aya::links::FdLink
+pub fn aya::links::FdLink::from(w: aya::programs::fexit::FExitLink) -> aya::links::FdLink
+impl core::convert::From<aya::programs::lsm::LsmLink> for aya::links::FdLink
+pub fn aya::links::FdLink::from(w: aya::programs::lsm::LsmLink) -> aya::links::FdLink
+impl core::convert::From<aya::programs::raw_trace_point::RawTracePointLink> for aya::links::FdLink
+pub fn aya::links::FdLink::from(w: aya::programs::raw_trace_point::RawTracePointLink) -> aya::links::FdLink
+impl core::convert::From<aya::programs::sk_lookup::SkLookupLink> for aya::links::FdLink
+pub fn aya::links::FdLink::from(w: aya::programs::sk_lookup::SkLookupLink) -> aya::links::FdLink
+impl core::convert::From<aya::programs::tp_btf::BtfTracePointLink> for aya::links::FdLink
+pub fn aya::links::FdLink::from(w: aya::programs::tp_btf::BtfTracePointLink) -> aya::links::FdLink
+impl core::convert::TryFrom<aya::links::FdLink> for aya::programs::kprobe::KProbeLink
+pub type aya::programs::kprobe::KProbeLink::Error = aya::links::LinkError
+pub fn aya::programs::kprobe::KProbeLink::try_from(fd_link: aya::links::FdLink) -> core::result::Result<Self, Self::Error>
+impl core::convert::TryFrom<aya::links::FdLink> for aya::programs::perf_event::PerfEventLink
+pub type aya::programs::perf_event::PerfEventLink::Error = aya::links::LinkError
+pub fn aya::programs::perf_event::PerfEventLink::try_from(fd_link: aya::links::FdLink) -> core::result::Result<Self, Self::Error>
+impl core::convert::TryFrom<aya::links::FdLink> for aya::programs::trace_point::TracePointLink
+pub type aya::programs::trace_point::TracePointLink::Error = aya::links::LinkError
+pub fn aya::programs::trace_point::TracePointLink::try_from(fd_link: aya::links::FdLink) -> core::result::Result<Self, Self::Error>
+impl core::convert::TryFrom<aya::links::FdLink> for aya::programs::uprobe::UProbeLink
+pub type aya::programs::uprobe::UProbeLink::Error = aya::links::LinkError
+pub fn aya::programs::uprobe::UProbeLink::try_from(fd_link: aya::links::FdLink) -> core::result::Result<Self, Self::Error>
+impl core::convert::TryFrom<aya::links::FdLink> for aya::programs::xdp::XdpLink
+pub type aya::programs::xdp::XdpLink::Error = aya::links::LinkError
+pub fn aya::programs::xdp::XdpLink::try_from(fd_link: aya::links::FdLink) -> core::result::Result<Self, Self::Error>
+impl core::convert::TryFrom<aya::programs::kprobe::KProbeLink> for aya::links::FdLink
+pub type aya::links::FdLink::Error = aya::links::LinkError
+pub fn aya::links::FdLink::try_from(value: aya::programs::kprobe::KProbeLink) -> core::result::Result<Self, Self::Error>
+impl core::convert::TryFrom<aya::programs::perf_event::PerfEventLink> for aya::links::FdLink
+pub type aya::links::FdLink::Error = aya::links::LinkError
+pub fn aya::links::FdLink::try_from(value: aya::programs::perf_event::PerfEventLink) -> core::result::Result<Self, Self::Error>
+impl core::convert::TryFrom<aya::programs::trace_point::TracePointLink> for aya::links::FdLink
+pub type aya::links::FdLink::Error = aya::links::LinkError
+pub fn aya::links::FdLink::try_from(value: aya::programs::trace_point::TracePointLink) -> core::result::Result<Self, Self::Error>
+impl core::convert::TryFrom<aya::programs::uprobe::UProbeLink> for aya::links::FdLink
+pub type aya::links::FdLink::Error = aya::links::LinkError
+pub fn aya::links::FdLink::try_from(value: aya::programs::uprobe::UProbeLink) -> core::result::Result<Self, Self::Error>
+impl core::convert::TryFrom<aya::programs::xdp::XdpLink> for aya::links::FdLink
+pub type aya::links::FdLink::Error = aya::links::LinkError
+pub fn aya::links::FdLink::try_from(value: aya::programs::xdp::XdpLink) -> core::result::Result<Self, Self::Error>
+impl core::fmt::Debug for aya::links::FdLink
+pub fn aya::links::FdLink::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+impl core::marker::Freeze for aya::links::FdLink
+impl core::marker::Send for aya::links::FdLink
+impl core::marker::Sync for aya::links::FdLink
+impl core::marker::Unpin for aya::links::FdLink
+impl core::panic::unwind_safe::RefUnwindSafe for aya::links::FdLink
+impl core::panic::unwind_safe::UnwindSafe for aya::links::FdLink
+impl<T, U> core::convert::Into<U> for aya::links::FdLink where U: core::convert::From<T>
+pub fn aya::links::FdLink::into(self) -> U
+impl<T, U> core::convert::TryFrom<U> for aya::links::FdLink where U: core::convert::Into<T>
+pub type aya::links::FdLink::Error = core::convert::Infallible
+pub fn aya::links::FdLink::try_from(value: U) -> core::result::Result<T, <T as core::convert::TryFrom<U>>::Error>
+impl<T, U> core::convert::TryInto<U> for aya::links::FdLink where U: core::convert::TryFrom<T>
+pub type aya::links::FdLink::Error = <U as core::convert::TryFrom<T>>::Error
+pub fn aya::links::FdLink::try_into(self) -> core::result::Result<U, <U as core::convert::TryFrom<T>>::Error>
+impl<T> core::any::Any for aya::links::FdLink where T: 'static + core::marker::Sized
+pub fn aya::links::FdLink::type_id(&self) -> core::any::TypeId
+impl<T> core::borrow::Borrow<T> for aya::links::FdLink where T: core::marker::Sized
+pub fn aya::links::FdLink::borrow(&self) -> &T
+impl<T> core::borrow::BorrowMut<T> for aya::links::FdLink where T: core::marker::Sized
+pub fn aya::links::FdLink::borrow_mut(&mut self) -> &mut T
+impl<T> core::convert::From<T> for aya::links::FdLink
+pub fn aya::links::FdLink::from(t: T) -> T
+pub struct aya::links::FdLinkId(_)
+impl core::cmp::Eq for aya::links::FdLinkId
+impl core::cmp::PartialEq for aya::links::FdLinkId
+pub fn aya::links::FdLinkId::eq(&self, other: &aya::links::FdLinkId) -> bool
+impl core::fmt::Debug for aya::links::FdLinkId
+pub fn aya::links::FdLinkId::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+impl core::hash::Hash for aya::links::FdLinkId
+pub fn aya::links::FdLinkId::hash<__H: core::hash::Hasher>(&self, state: &mut __H)
+impl core::marker::StructuralPartialEq for aya::links::FdLinkId
+impl core::marker::Freeze for aya::links::FdLinkId
+impl core::marker::Send for aya::links::FdLinkId
+impl core::marker::Sync for aya::links::FdLinkId
+impl core::marker::Unpin for aya::links::FdLinkId
+impl core::panic::unwind_safe::RefUnwindSafe for aya::links::FdLinkId
+impl core::panic::unwind_safe::UnwindSafe for aya::links::FdLinkId
+impl<Q, K> equivalent::Equivalent<K> for aya::links::FdLinkId where Q: core::cmp::Eq + core::marker::Sized, K: core::borrow::Borrow<Q> + core::marker::Sized
+pub fn aya::links::FdLinkId::equivalent(&self, key: &K) -> bool
+impl<Q, K> hashbrown::Equivalent<K> for aya::links::FdLinkId where Q: core::cmp::Eq + core::marker::Sized, K: core::borrow::Borrow<Q> + core::marker::Sized
+pub fn aya::links::FdLinkId::equivalent(&self, key: &K) -> bool
+impl<T, U> core::convert::Into<U> for aya::links::FdLinkId where U: core::convert::From<T>
+pub fn aya::links::FdLinkId::into(self) -> U
+impl<T, U> core::convert::TryFrom<U> for aya::links::FdLinkId where U: core::convert::Into<T>
+pub type aya::links::FdLinkId::Error = core::convert::Infallible
+pub fn aya::links::FdLinkId::try_from(value: U) -> core::result::Result<T, <T as core::convert::TryFrom<U>>::Error>
+impl<T, U> core::convert::TryInto<U> for aya::links::FdLinkId where U: core::convert::TryFrom<T>
+pub type aya::links::FdLinkId::Error = <U as core::convert::TryFrom<T>>::Error
+pub fn aya::links::FdLinkId::try_into(self) -> core::result::Result<U, <U as core::convert::TryFrom<T>>::Error>
+impl<T> core::any::Any for aya::links::FdLinkId where T: 'static + core::marker::Sized
+pub fn aya::links::FdLinkId::type_id(&self) -> core::any::TypeId
+impl<T> core::borrow::Borrow<T> for aya::links::FdLinkId where T: core::marker::Sized
+pub fn aya::links::FdLinkId::borrow(&self) -> &T
+impl<T> core::borrow::BorrowMut<T> for aya::links::FdLinkId where T: core::marker::Sized
+pub fn aya::links::FdLinkId::borrow_mut(&mut self) -> &mut T
+impl<T> core::convert::From<T> for aya::links::FdLinkId
+pub fn aya::links::FdLinkId::from(t: T) -> T
+pub struct aya::links::PinnedLink
+impl aya::links::PinnedLink
+pub fn aya::links::PinnedLink::from_pin<P: core::convert::AsRef<std::path::Path>>(path: P) -> core::result::Result<Self, aya::links::LinkError>
+pub fn aya::links::PinnedLink::unpin(self) -> core::result::Result<aya::links::FdLink, std::io::error::Error>
+impl core::convert::From<aya::links::PinnedLink> for aya::links::FdLink
+pub fn aya::links::FdLink::from(p: aya::links::PinnedLink) -> Self
+impl core::fmt::Debug for aya::links::PinnedLink
+pub fn aya::links::PinnedLink::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+impl core::marker::Freeze for aya::links::PinnedLink
+impl core::marker::Send for aya::links::PinnedLink
+impl core::marker::Sync for aya::links::PinnedLink
+impl core::marker::Unpin for aya::links::PinnedLink
+impl core::panic::unwind_safe::RefUnwindSafe for aya::links::PinnedLink
+impl core::panic::unwind_safe::UnwindSafe for aya::links::PinnedLink
+impl<T, U> core::convert::Into<U> for aya::links::PinnedLink where U: core::convert::From<T>
+pub fn aya::links::PinnedLink::into(self) -> U
+impl<T, U> core::convert::TryFrom<U> for aya::links::PinnedLink where U: core::convert::Into<T>
+pub type aya::links::PinnedLink::Error = core::convert::Infallible
+pub fn aya::links::PinnedLink::try_from(value: U) -> core::result::Result<T, <T as core::convert::TryFrom<U>>::Error>
+impl<T, U> core::convert::TryInto<U> for aya::links::PinnedLink where U: core::convert::TryFrom<T>
+pub type aya::links::PinnedLink::Error = <U as core::convert::TryFrom<T>>::Error
+pub fn aya::links::PinnedLink::try_into(self) -> core::result::Result<U, <U as core::convert::TryFrom<T>>::Error>
+impl<T> core::any::Any for aya::links::PinnedLink where T: 'static + core::marker::Sized
+pub fn aya::links::PinnedLink::type_id(&self) -> core::any::TypeId
+impl<T> core::borrow::Borrow<T> for aya::links::PinnedLink where T: core::marker::Sized
+pub fn aya::links::PinnedLink::borrow(&self) -> &T
+impl<T> core::borrow::BorrowMut<T> for aya::links::PinnedLink where T: core::marker::Sized
+pub fn aya::links::PinnedLink::borrow_mut(&mut self) -> &mut T
+impl<T> core::convert::From<T> for aya::links::PinnedLink
+pub fn aya::links::PinnedLink::from(t: T) -> T
+pub struct aya::links::ProgAttachLink
+impl aya::links::Link for aya::links::ProgAttachLink
+pub type aya::links::ProgAttachLink::Id = aya::links::ProgAttachLinkId
+pub fn aya::links::ProgAttachLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
+pub fn aya::links::ProgAttachLink::id(&self) -> Self::Id
+impl core::convert::From<aya::links::ProgAttachLink> for aya::programs::sk_msg::SkMsgLink
+pub fn aya::programs::sk_msg::SkMsgLink::from(b: aya::links::ProgAttachLink) -> aya::programs::sk_msg::SkMsgLink
+impl core::convert::From<aya::links::ProgAttachLink> for aya::programs::sk_skb::SkSkbLink
+pub fn aya::programs::sk_skb::SkSkbLink::from(b: aya::links::ProgAttachLink) -> aya::programs::sk_skb::SkSkbLink
+impl core::convert::From<aya::links::ProgAttachLink> for aya::programs::sock_ops::SockOpsLink
+pub fn aya::programs::sock_ops::SockOpsLink::from(b: aya::links::ProgAttachLink) -> aya::programs::sock_ops::SockOpsLink
+impl core::convert::From<aya::programs::sk_msg::SkMsgLink> for aya::links::ProgAttachLink
+pub fn aya::links::ProgAttachLink::from(w: aya::programs::sk_msg::SkMsgLink) -> aya::links::ProgAttachLink
+impl core::convert::From<aya::programs::sk_skb::SkSkbLink> for aya::links::ProgAttachLink
+pub fn aya::links::ProgAttachLink::from(w: aya::programs::sk_skb::SkSkbLink) -> aya::links::ProgAttachLink
+impl core::convert::From<aya::programs::sock_ops::SockOpsLink> for aya::links::ProgAttachLink
+pub fn aya::links::ProgAttachLink::from(w: aya::programs::sock_ops::SockOpsLink) -> aya::links::ProgAttachLink
+impl core::fmt::Debug for aya::links::ProgAttachLink
+pub fn aya::links::ProgAttachLink::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+impl core::marker::Freeze for aya::links::ProgAttachLink
+impl core::marker::Send for aya::links::ProgAttachLink
+impl core::marker::Sync for aya::links::ProgAttachLink
+impl core::marker::Unpin for aya::links::ProgAttachLink
+impl core::panic::unwind_safe::RefUnwindSafe for aya::links::ProgAttachLink
+impl core::panic::unwind_safe::UnwindSafe for aya::links::ProgAttachLink
+impl<T, U> core::convert::Into<U> for aya::links::ProgAttachLink where U: core::convert::From<T>
+pub fn aya::links::ProgAttachLink::into(self) -> U
+impl<T, U> core::convert::TryFrom<U> for aya::links::ProgAttachLink where U: core::convert::Into<T>
+pub type aya::links::ProgAttachLink::Error = core::convert::Infallible
+pub fn aya::links::ProgAttachLink::try_from(value: U) -> core::result::Result<T, <T as core::convert::TryFrom<U>>::Error>
+impl<T, U> core::convert::TryInto<U> for aya::links::ProgAttachLink where U: core::convert::TryFrom<T>
+pub type aya::links::ProgAttachLink::Error = <U as core::convert::TryFrom<T>>::Error
+pub fn aya::links::ProgAttachLink::try_into(self) -> core::result::Result<U, <U as core::convert::TryFrom<T>>::Error>
+impl<T> core::any::Any for aya::links::ProgAttachLink where T: 'static + core::marker::Sized
+pub fn aya::links::ProgAttachLink::type_id(&self) -> core::any::TypeId
+impl<T> core::borrow::Borrow<T> for aya::links::ProgAttachLink where T: core::marker::Sized
+pub fn aya::links::ProgAttachLink::borrow(&self) -> &T
+impl<T> core::borrow::BorrowMut<T> for aya::links::ProgAttachLink where T: core::marker::Sized
+pub fn aya::links::ProgAttachLink::borrow_mut(&mut self) -> &mut T
+impl<T> core::convert::From<T> for aya::links::ProgAttachLink
+pub fn aya::links::ProgAttachLink::from(t: T) -> T
+pub struct aya::links::ProgAttachLinkId(_, _, _)
+impl core::cmp::Eq for aya::links::ProgAttachLinkId
+impl core::cmp::PartialEq for aya::links::ProgAttachLinkId
+pub fn aya::links::ProgAttachLinkId::eq(&self, other: &aya::links::ProgAttachLinkId) -> bool
+impl core::fmt::Debug for aya::links::ProgAttachLinkId
+pub fn aya::links::ProgAttachLinkId::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+impl core::hash::Hash for aya::links::ProgAttachLinkId
+pub fn aya::links::ProgAttachLinkId::hash<__H: core::hash::Hasher>(&self, state: &mut __H)
+impl core::marker::StructuralPartialEq for aya::links::ProgAttachLinkId
+impl core::marker::Freeze for aya::links::ProgAttachLinkId
+impl core::marker::Send for aya::links::ProgAttachLinkId
+impl core::marker::Sync for aya::links::ProgAttachLinkId
+impl core::marker::Unpin for aya::links::ProgAttachLinkId
+impl core::panic::unwind_safe::RefUnwindSafe for aya::links::ProgAttachLinkId
+impl core::panic::unwind_safe::UnwindSafe for aya::links::ProgAttachLinkId
+impl<Q, K> equivalent::Equivalent<K> for aya::links::ProgAttachLinkId where Q: core::cmp::Eq + core::marker::Sized, K: core::borrow::Borrow<Q> + core::marker::Sized
+pub fn aya::links::ProgAttachLinkId::equivalent(&self, key: &K) -> bool
+impl<Q, K> hashbrown::Equivalent<K> for aya::links::ProgAttachLinkId where Q: core::cmp::Eq + core::marker::Sized, K: core::borrow::Borrow<Q> + core::marker::Sized
+pub fn aya::links::ProgAttachLinkId::equivalent(&self, key: &K) -> bool
+impl<T, U> core::convert::Into<U> for aya::links::ProgAttachLinkId where U: core::convert::From<T>
+pub fn aya::links::ProgAttachLinkId::into(self) -> U
+impl<T, U> core::convert::TryFrom<U> for aya::links::ProgAttachLinkId where U: core::convert::Into<T>
+pub type aya::links::ProgAttachLinkId::Error = core::convert::Infallible
+pub fn aya::links::ProgAttachLinkId::try_from(value: U) -> core::result::Result<T, <T as core::convert::TryFrom<U>>::Error>
+impl<T, U> core::convert::TryInto<U> for aya::links::ProgAttachLinkId where U: core::convert::TryFrom<T>
+pub type aya::links::ProgAttachLinkId::Error = <U as core::convert::TryFrom<T>>::Error
+pub fn aya::links::ProgAttachLinkId::try_into(self) -> core::result::Result<U, <U as core::convert::TryFrom<T>>::Error>
+impl<T> core::any::Any for aya::links::ProgAttachLinkId where T: 'static + core::marker::Sized
+pub fn aya::links::ProgAttachLinkId::type_id(&self) -> core::any::TypeId
+impl<T> core::borrow::Borrow<T> for aya::links::ProgAttachLinkId where T: core::marker::Sized
+pub fn aya::links::ProgAttachLinkId::borrow(&self) -> &T
+impl<T> core::borrow::BorrowMut<T> for aya::links::ProgAttachLinkId where T: core::marker::Sized
+pub fn aya::links::ProgAttachLinkId::borrow_mut(&mut self) -> &mut T
+impl<T> core::convert::From<T> for aya::links::ProgAttachLinkId
+pub fn aya::links::ProgAttachLinkId::from(t: T) -> T
+pub trait aya::links::Link: core::fmt::Debug + 'static
+pub type aya::links::Link::Id: core::fmt::Debug + core::hash::Hash + core::cmp::Eq + core::cmp::PartialEq
+pub fn aya::links::Link::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
+pub fn aya::links::Link::id(&self) -> Self::Id
+impl aya::links::Link for aya::links::FdLink
+pub type aya::links::FdLink::Id = aya::links::FdLinkId
+pub fn aya::links::FdLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
+pub fn aya::links::FdLink::id(&self) -> Self::Id
+impl aya::links::Link for aya::links::ProgAttachLink
+pub type aya::links::ProgAttachLink::Id = aya::links::ProgAttachLinkId
+pub fn aya::links::ProgAttachLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
+pub fn aya::links::ProgAttachLink::id(&self) -> Self::Id
+impl aya::links::Link for aya::programs::cgroup_device::CgroupDeviceLink
+pub type aya::programs::cgroup_device::CgroupDeviceLink::Id = aya::programs::cgroup_device::CgroupDeviceLinkId
+pub fn aya::programs::cgroup_device::CgroupDeviceLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
+pub fn aya::programs::cgroup_device::CgroupDeviceLink::id(&self) -> Self::Id
+impl aya::links::Link for aya::programs::cgroup_skb::CgroupSkbLink
+pub type aya::programs::cgroup_skb::CgroupSkbLink::Id = aya::programs::cgroup_skb::CgroupSkbLinkId
+pub fn aya::programs::cgroup_skb::CgroupSkbLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
+pub fn aya::programs::cgroup_skb::CgroupSkbLink::id(&self) -> Self::Id
+impl aya::links::Link for aya::programs::cgroup_sock::CgroupSockLink
+pub type aya::programs::cgroup_sock::CgroupSockLink::Id = aya::programs::cgroup_sock::CgroupSockLinkId
+pub fn aya::programs::cgroup_sock::CgroupSockLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
+pub fn aya::programs::cgroup_sock::CgroupSockLink::id(&self) -> Self::Id
+impl aya::links::Link for aya::programs::cgroup_sock_addr::CgroupSockAddrLink
+pub type aya::programs::cgroup_sock_addr::CgroupSockAddrLink::Id = aya::programs::cgroup_sock_addr::CgroupSockAddrLinkId
+pub fn aya::programs::cgroup_sock_addr::CgroupSockAddrLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
+pub fn aya::programs::cgroup_sock_addr::CgroupSockAddrLink::id(&self) -> Self::Id
+impl aya::links::Link for aya::programs::cgroup_sockopt::CgroupSockoptLink
+pub type aya::programs::cgroup_sockopt::CgroupSockoptLink::Id = aya::programs::cgroup_sockopt::CgroupSockoptLinkId
+pub fn aya::programs::cgroup_sockopt::CgroupSockoptLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
+pub fn aya::programs::cgroup_sockopt::CgroupSockoptLink::id(&self) -> Self::Id
+impl aya::links::Link for aya::programs::cgroup_sysctl::CgroupSysctlLink
+pub type aya::programs::cgroup_sysctl::CgroupSysctlLink::Id = aya::programs::cgroup_sysctl::CgroupSysctlLinkId
+pub fn aya::programs::cgroup_sysctl::CgroupSysctlLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
+pub fn aya::programs::cgroup_sysctl::CgroupSysctlLink::id(&self) -> Self::Id
+impl aya::links::Link for aya::programs::extension::ExtensionLink
+pub type aya::programs::extension::ExtensionLink::Id = aya::programs::extension::ExtensionLinkId
+pub fn aya::programs::extension::ExtensionLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
+pub fn aya::programs::extension::ExtensionLink::id(&self) -> Self::Id
+impl aya::links::Link for aya::programs::fentry::FEntryLink
+pub type aya::programs::fentry::FEntryLink::Id = aya::programs::fentry::FEntryLinkId
+pub fn aya::programs::fentry::FEntryLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
+pub fn aya::programs::fentry::FEntryLink::id(&self) -> Self::Id
+impl aya::links::Link for aya::programs::fexit::FExitLink
+pub type aya::programs::fexit::FExitLink::Id = aya::programs::fexit::FExitLinkId
+pub fn aya::programs::fexit::FExitLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
+pub fn aya::programs::fexit::FExitLink::id(&self) -> Self::Id
+impl aya::links::Link for aya::programs::kprobe::KProbeLink
+pub type aya::programs::kprobe::KProbeLink::Id = aya::programs::kprobe::KProbeLinkId
+pub fn aya::programs::kprobe::KProbeLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
+pub fn aya::programs::kprobe::KProbeLink::id(&self) -> Self::Id
+impl aya::links::Link for aya::programs::lirc_mode2::LircLink
+pub type aya::programs::lirc_mode2::LircLink::Id = aya::programs::lirc_mode2::LircLinkId
+pub fn aya::programs::lirc_mode2::LircLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
+pub fn aya::programs::lirc_mode2::LircLink::id(&self) -> Self::Id
+impl aya::links::Link for aya::programs::lsm::LsmLink
+pub type aya::programs::lsm::LsmLink::Id = aya::programs::lsm::LsmLinkId
+pub fn aya::programs::lsm::LsmLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
+pub fn aya::programs::lsm::LsmLink::id(&self) -> Self::Id
+impl aya::links::Link for aya::programs::perf_attach::PerfLink
+pub type aya::programs::perf_attach::PerfLink::Id = aya::programs::perf_attach::PerfLinkId
+pub fn aya::programs::perf_attach::PerfLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
+pub fn aya::programs::perf_attach::PerfLink::id(&self) -> Self::Id
+impl aya::links::Link for aya::programs::perf_event::PerfEventLink
+pub type aya::programs::perf_event::PerfEventLink::Id = aya::programs::perf_event::PerfEventLinkId
+pub fn aya::programs::perf_event::PerfEventLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
+pub fn aya::programs::perf_event::PerfEventLink::id(&self) -> Self::Id
+impl aya::links::Link for aya::programs::raw_trace_point::RawTracePointLink
+pub type aya::programs::raw_trace_point::RawTracePointLink::Id = aya::programs::raw_trace_point::RawTracePointLinkId
+pub fn aya::programs::raw_trace_point::RawTracePointLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
+pub fn aya::programs::raw_trace_point::RawTracePointLink::id(&self) -> Self::Id
+impl aya::links::Link for aya::programs::sk_lookup::SkLookupLink
+pub type aya::programs::sk_lookup::SkLookupLink::Id = aya::programs::sk_lookup::SkLookupLinkId
+pub fn aya::programs::sk_lookup::SkLookupLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
+pub fn aya::programs::sk_lookup::SkLookupLink::id(&self) -> Self::Id
+impl aya::links::Link for aya::programs::sk_msg::SkMsgLink
+pub type aya::programs::sk_msg::SkMsgLink::Id = aya::programs::sk_msg::SkMsgLinkId
+pub fn aya::programs::sk_msg::SkMsgLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
+pub fn aya::programs::sk_msg::SkMsgLink::id(&self) -> Self::Id
+impl aya::links::Link for aya::programs::sk_skb::SkSkbLink
+pub type aya::programs::sk_skb::SkSkbLink::Id = aya::programs::sk_skb::SkSkbLinkId
+pub fn aya::programs::sk_skb::SkSkbLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
+pub fn aya::programs::sk_skb::SkSkbLink::id(&self) -> Self::Id
+impl aya::links::Link for aya::programs::sock_ops::SockOpsLink
+pub type aya::programs::sock_ops::SockOpsLink::Id = aya::programs::sock_ops::SockOpsLinkId
+pub fn aya::programs::sock_ops::SockOpsLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
+pub fn aya::programs::sock_ops::SockOpsLink::id(&self) -> Self::Id
+impl aya::links::Link for aya::programs::socket_filter::SocketFilterLink
+pub type aya::programs::socket_filter::SocketFilterLink::Id = aya::programs::socket_filter::SocketFilterLinkId
+pub fn aya::programs::socket_filter::SocketFilterLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
+pub fn aya::programs::socket_filter::SocketFilterLink::id(&self) -> Self::Id
+impl aya::links::Link for aya::programs::tc::SchedClassifierLink
+pub type aya::programs::tc::SchedClassifierLink::Id = aya::programs::tc::SchedClassifierLinkId
+pub fn aya::programs::tc::SchedClassifierLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
+pub fn aya::programs::tc::SchedClassifierLink::id(&self) -> Self::Id
+impl aya::links::Link for aya::programs::tp_btf::BtfTracePointLink
+pub type aya::programs::tp_btf::BtfTracePointLink::Id = aya::programs::tp_btf::BtfTracePointLinkId
+pub fn aya::programs::tp_btf::BtfTracePointLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
+pub fn aya::programs::tp_btf::BtfTracePointLink::id(&self) -> Self::Id
+impl aya::links::Link for aya::programs::trace_point::TracePointLink
+pub type aya::programs::trace_point::TracePointLink::Id = aya::programs::trace_point::TracePointLinkId
+pub fn aya::programs::trace_point::TracePointLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
+pub fn aya::programs::trace_point::TracePointLink::id(&self) -> Self::Id
+impl aya::links::Link for aya::programs::uprobe::UProbeLink
+pub type aya::programs::uprobe::UProbeLink::Id = aya::programs::uprobe::UProbeLinkId
+pub fn aya::programs::uprobe::UProbeLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
+pub fn aya::programs::uprobe::UProbeLink::id(&self) -> Self::Id
+impl aya::links::Link for aya::programs::xdp::XdpLink
+pub type aya::programs::xdp::XdpLink::Id = aya::programs::xdp::XdpLinkId
+pub fn aya::programs::xdp::XdpLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
+pub fn aya::programs::xdp::XdpLink::id(&self) -> Self::Id
 pub mod aya::maps
 pub mod aya::maps::array
 pub struct aya::maps::array::Array<T, V: aya::Pod>
@@ -2497,7 +2875,7 @@ pub fn aya::programs::cgroup_device::CgroupDevice::borrow_mut(&mut self) -> &mut
 impl<T> core::convert::From<T> for aya::programs::cgroup_device::CgroupDevice
 pub fn aya::programs::cgroup_device::CgroupDevice::from(t: T) -> T
 pub struct aya::programs::cgroup_device::CgroupDeviceLink(_)
-impl aya::programs::links::Link for aya::programs::cgroup_device::CgroupDeviceLink
+impl aya::links::Link for aya::programs::cgroup_device::CgroupDeviceLink
 pub type aya::programs::cgroup_device::CgroupDeviceLink::Id = aya::programs::cgroup_device::CgroupDeviceLinkId
 pub fn aya::programs::cgroup_device::CgroupDeviceLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
 pub fn aya::programs::cgroup_device::CgroupDeviceLink::id(&self) -> Self::Id
@@ -2651,7 +3029,7 @@ pub fn aya::programs::cgroup_skb::CgroupSkb::borrow_mut(&mut self) -> &mut T
 impl<T> core::convert::From<T> for aya::programs::cgroup_skb::CgroupSkb
 pub fn aya::programs::cgroup_skb::CgroupSkb::from(t: T) -> T
 pub struct aya::programs::cgroup_skb::CgroupSkbLink(_)
-impl aya::programs::links::Link for aya::programs::cgroup_skb::CgroupSkbLink
+impl aya::links::Link for aya::programs::cgroup_skb::CgroupSkbLink
 pub type aya::programs::cgroup_skb::CgroupSkbLink::Id = aya::programs::cgroup_skb::CgroupSkbLinkId
 pub fn aya::programs::cgroup_skb::CgroupSkbLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
 pub fn aya::programs::cgroup_skb::CgroupSkbLink::id(&self) -> Self::Id
@@ -2767,7 +3145,7 @@ pub fn aya::programs::cgroup_sock::CgroupSock::borrow_mut(&mut self) -> &mut T
 impl<T> core::convert::From<T> for aya::programs::cgroup_sock::CgroupSock
 pub fn aya::programs::cgroup_sock::CgroupSock::from(t: T) -> T
 pub struct aya::programs::cgroup_sock::CgroupSockLink(_)
-impl aya::programs::links::Link for aya::programs::cgroup_sock::CgroupSockLink
+impl aya::links::Link for aya::programs::cgroup_sock::CgroupSockLink
 pub type aya::programs::cgroup_sock::CgroupSockLink::Id = aya::programs::cgroup_sock::CgroupSockLinkId
 pub fn aya::programs::cgroup_sock::CgroupSockLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
 pub fn aya::programs::cgroup_sock::CgroupSockLink::id(&self) -> Self::Id
@@ -2883,7 +3261,7 @@ pub fn aya::programs::cgroup_sock_addr::CgroupSockAddr::borrow_mut(&mut self) ->
 impl<T> core::convert::From<T> for aya::programs::cgroup_sock_addr::CgroupSockAddr
 pub fn aya::programs::cgroup_sock_addr::CgroupSockAddr::from(t: T) -> T
 pub struct aya::programs::cgroup_sock_addr::CgroupSockAddrLink(_)
-impl aya::programs::links::Link for aya::programs::cgroup_sock_addr::CgroupSockAddrLink
+impl aya::links::Link for aya::programs::cgroup_sock_addr::CgroupSockAddrLink
 pub type aya::programs::cgroup_sock_addr::CgroupSockAddrLink::Id = aya::programs::cgroup_sock_addr::CgroupSockAddrLinkId
 pub fn aya::programs::cgroup_sock_addr::CgroupSockAddrLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
 pub fn aya::programs::cgroup_sock_addr::CgroupSockAddrLink::id(&self) -> Self::Id
@@ -2999,7 +3377,7 @@ pub fn aya::programs::cgroup_sockopt::CgroupSockopt::borrow_mut(&mut self) -> &m
 impl<T> core::convert::From<T> for aya::programs::cgroup_sockopt::CgroupSockopt
 pub fn aya::programs::cgroup_sockopt::CgroupSockopt::from(t: T) -> T
 pub struct aya::programs::cgroup_sockopt::CgroupSockoptLink(_)
-impl aya::programs::links::Link for aya::programs::cgroup_sockopt::CgroupSockoptLink
+impl aya::links::Link for aya::programs::cgroup_sockopt::CgroupSockoptLink
 pub type aya::programs::cgroup_sockopt::CgroupSockoptLink::Id = aya::programs::cgroup_sockopt::CgroupSockoptLinkId
 pub fn aya::programs::cgroup_sockopt::CgroupSockoptLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
 pub fn aya::programs::cgroup_sockopt::CgroupSockoptLink::id(&self) -> Self::Id
@@ -3115,7 +3493,7 @@ pub fn aya::programs::cgroup_sysctl::CgroupSysctl::borrow_mut(&mut self) -> &mut
 impl<T> core::convert::From<T> for aya::programs::cgroup_sysctl::CgroupSysctl
 pub fn aya::programs::cgroup_sysctl::CgroupSysctl::from(t: T) -> T
 pub struct aya::programs::cgroup_sysctl::CgroupSysctlLink(_)
-impl aya::programs::links::Link for aya::programs::cgroup_sysctl::CgroupSysctlLink
+impl aya::links::Link for aya::programs::cgroup_sysctl::CgroupSysctlLink
 pub type aya::programs::cgroup_sysctl::CgroupSysctlLink::Id = aya::programs::cgroup_sysctl::CgroupSysctlLinkId
 pub fn aya::programs::cgroup_sysctl::CgroupSysctlLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
 pub fn aya::programs::cgroup_sysctl::CgroupSysctlLink::id(&self) -> Self::Id
@@ -3265,14 +3643,14 @@ pub fn aya::programs::extension::Extension::borrow_mut(&mut self) -> &mut T
 impl<T> core::convert::From<T> for aya::programs::extension::Extension
 pub fn aya::programs::extension::Extension::from(t: T) -> T
 pub struct aya::programs::extension::ExtensionLink(_)
-impl aya::programs::links::Link for aya::programs::extension::ExtensionLink
+impl aya::links::Link for aya::programs::extension::ExtensionLink
 pub type aya::programs::extension::ExtensionLink::Id = aya::programs::extension::ExtensionLinkId
 pub fn aya::programs::extension::ExtensionLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
 pub fn aya::programs::extension::ExtensionLink::id(&self) -> Self::Id
-impl core::convert::From<aya::programs::extension::ExtensionLink> for aya::programs::links::FdLink
-pub fn aya::programs::links::FdLink::from(w: aya::programs::extension::ExtensionLink) -> aya::programs::links::FdLink
-impl core::convert::From<aya::programs::links::FdLink> for aya::programs::extension::ExtensionLink
-pub fn aya::programs::extension::ExtensionLink::from(b: aya::programs::links::FdLink) -> aya::programs::extension::ExtensionLink
+impl core::convert::From<aya::links::FdLink> for aya::programs::extension::ExtensionLink
+pub fn aya::programs::extension::ExtensionLink::from(b: aya::links::FdLink) -> aya::programs::extension::ExtensionLink
+impl core::convert::From<aya::programs::extension::ExtensionLink> for aya::links::FdLink
+pub fn aya::links::FdLink::from(w: aya::programs::extension::ExtensionLink) -> aya::links::FdLink
 impl core::fmt::Debug for aya::programs::extension::ExtensionLink
 pub fn aya::programs::extension::ExtensionLink::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::ops::drop::Drop for aya::programs::extension::ExtensionLink
@@ -3385,14 +3763,14 @@ pub fn aya::programs::fentry::FEntry::borrow_mut(&mut self) -> &mut T
 impl<T> core::convert::From<T> for aya::programs::fentry::FEntry
 pub fn aya::programs::fentry::FEntry::from(t: T) -> T
 pub struct aya::programs::fentry::FEntryLink(_)
-impl aya::programs::links::Link for aya::programs::fentry::FEntryLink
+impl aya::links::Link for aya::programs::fentry::FEntryLink
 pub type aya::programs::fentry::FEntryLink::Id = aya::programs::fentry::FEntryLinkId
 pub fn aya::programs::fentry::FEntryLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
 pub fn aya::programs::fentry::FEntryLink::id(&self) -> Self::Id
-impl core::convert::From<aya::programs::fentry::FEntryLink> for aya::programs::links::FdLink
-pub fn aya::programs::links::FdLink::from(w: aya::programs::fentry::FEntryLink) -> aya::programs::links::FdLink
-impl core::convert::From<aya::programs::links::FdLink> for aya::programs::fentry::FEntryLink
-pub fn aya::programs::fentry::FEntryLink::from(b: aya::programs::links::FdLink) -> aya::programs::fentry::FEntryLink
+impl core::convert::From<aya::links::FdLink> for aya::programs::fentry::FEntryLink
+pub fn aya::programs::fentry::FEntryLink::from(b: aya::links::FdLink) -> aya::programs::fentry::FEntryLink
+impl core::convert::From<aya::programs::fentry::FEntryLink> for aya::links::FdLink
+pub fn aya::links::FdLink::from(w: aya::programs::fentry::FEntryLink) -> aya::links::FdLink
 impl core::fmt::Debug for aya::programs::fentry::FEntryLink
 pub fn aya::programs::fentry::FEntryLink::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::ops::drop::Drop for aya::programs::fentry::FEntryLink
@@ -3505,14 +3883,14 @@ pub fn aya::programs::fexit::FExit::borrow_mut(&mut self) -> &mut T
 impl<T> core::convert::From<T> for aya::programs::fexit::FExit
 pub fn aya::programs::fexit::FExit::from(t: T) -> T
 pub struct aya::programs::fexit::FExitLink(_)
-impl aya::programs::links::Link for aya::programs::fexit::FExitLink
+impl aya::links::Link for aya::programs::fexit::FExitLink
 pub type aya::programs::fexit::FExitLink::Id = aya::programs::fexit::FExitLinkId
 pub fn aya::programs::fexit::FExitLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
 pub fn aya::programs::fexit::FExitLink::id(&self) -> Self::Id
-impl core::convert::From<aya::programs::fexit::FExitLink> for aya::programs::links::FdLink
-pub fn aya::programs::links::FdLink::from(w: aya::programs::fexit::FExitLink) -> aya::programs::links::FdLink
-impl core::convert::From<aya::programs::links::FdLink> for aya::programs::fexit::FExitLink
-pub fn aya::programs::fexit::FExitLink::from(b: aya::programs::links::FdLink) -> aya::programs::fexit::FExitLink
+impl core::convert::From<aya::links::FdLink> for aya::programs::fexit::FExitLink
+pub fn aya::programs::fexit::FExitLink::from(b: aya::links::FdLink) -> aya::programs::fexit::FExitLink
+impl core::convert::From<aya::programs::fexit::FExitLink> for aya::links::FdLink
+pub fn aya::links::FdLink::from(w: aya::programs::fexit::FExitLink) -> aya::links::FdLink
 impl core::fmt::Debug for aya::programs::fexit::FExitLink
 pub fn aya::programs::fexit::FExitLink::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::ops::drop::Drop for aya::programs::fexit::FExitLink
@@ -3661,16 +4039,16 @@ pub fn aya::programs::kprobe::KProbe::borrow_mut(&mut self) -> &mut T
 impl<T> core::convert::From<T> for aya::programs::kprobe::KProbe
 pub fn aya::programs::kprobe::KProbe::from(t: T) -> T
 pub struct aya::programs::kprobe::KProbeLink(_)
-impl aya::programs::links::Link for aya::programs::kprobe::KProbeLink
+impl aya::links::Link for aya::programs::kprobe::KProbeLink
 pub type aya::programs::kprobe::KProbeLink::Id = aya::programs::kprobe::KProbeLinkId
 pub fn aya::programs::kprobe::KProbeLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
 pub fn aya::programs::kprobe::KProbeLink::id(&self) -> Self::Id
-impl core::convert::TryFrom<aya::programs::kprobe::KProbeLink> for aya::programs::links::FdLink
-pub type aya::programs::links::FdLink::Error = aya::programs::links::LinkError
-pub fn aya::programs::links::FdLink::try_from(value: aya::programs::kprobe::KProbeLink) -> core::result::Result<Self, Self::Error>
-impl core::convert::TryFrom<aya::programs::links::FdLink> for aya::programs::kprobe::KProbeLink
-pub type aya::programs::kprobe::KProbeLink::Error = aya::programs::links::LinkError
-pub fn aya::programs::kprobe::KProbeLink::try_from(fd_link: aya::programs::links::FdLink) -> core::result::Result<Self, Self::Error>
+impl core::convert::TryFrom<aya::links::FdLink> for aya::programs::kprobe::KProbeLink
+pub type aya::programs::kprobe::KProbeLink::Error = aya::links::LinkError
+pub fn aya::programs::kprobe::KProbeLink::try_from(fd_link: aya::links::FdLink) -> core::result::Result<Self, Self::Error>
+impl core::convert::TryFrom<aya::programs::kprobe::KProbeLink> for aya::links::FdLink
+pub type aya::links::FdLink::Error = aya::links::LinkError
+pub fn aya::links::FdLink::try_from(value: aya::programs::kprobe::KProbeLink) -> core::result::Result<Self, Self::Error>
 impl core::fmt::Debug for aya::programs::kprobe::KProbeLink
 pub fn aya::programs::kprobe::KProbeLink::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::ops::drop::Drop for aya::programs::kprobe::KProbeLink
@@ -3732,389 +4110,11 @@ impl<T> core::borrow::BorrowMut<T> for aya::programs::kprobe::KProbeLinkId where
 pub fn aya::programs::kprobe::KProbeLinkId::borrow_mut(&mut self) -> &mut T
 impl<T> core::convert::From<T> for aya::programs::kprobe::KProbeLinkId
 pub fn aya::programs::kprobe::KProbeLinkId::from(t: T) -> T
-pub mod aya::programs::links
-pub enum aya::programs::links::LinkError
-pub aya::programs::links::LinkError::InvalidLink
-pub aya::programs::links::LinkError::SyscallError(crate::sys::SyscallError)
-impl core::error::Error for aya::programs::links::LinkError
-pub fn aya::programs::links::LinkError::source(&self) -> core::option::Option<&(dyn core::error::Error + 'static)>
-impl core::fmt::Debug for aya::programs::links::LinkError
-pub fn aya::programs::links::LinkError::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
-impl core::fmt::Display for aya::programs::links::LinkError
-pub fn aya::programs::links::LinkError::fmt(&self, __formatter: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
-impl core::marker::Freeze for aya::programs::links::LinkError
-impl core::marker::Send for aya::programs::links::LinkError
-impl core::marker::Sync for aya::programs::links::LinkError
-impl core::marker::Unpin for aya::programs::links::LinkError
-impl !core::panic::unwind_safe::RefUnwindSafe for aya::programs::links::LinkError
-impl !core::panic::unwind_safe::UnwindSafe for aya::programs::links::LinkError
-impl<T, U> core::convert::Into<U> for aya::programs::links::LinkError where U: core::convert::From<T>
-pub fn aya::programs::links::LinkError::into(self) -> U
-impl<T, U> core::convert::TryFrom<U> for aya::programs::links::LinkError where U: core::convert::Into<T>
-pub type aya::programs::links::LinkError::Error = core::convert::Infallible
-pub fn aya::programs::links::LinkError::try_from(value: U) -> core::result::Result<T, <T as core::convert::TryFrom<U>>::Error>
-impl<T, U> core::convert::TryInto<U> for aya::programs::links::LinkError where U: core::convert::TryFrom<T>
-pub type aya::programs::links::LinkError::Error = <U as core::convert::TryFrom<T>>::Error
-pub fn aya::programs::links::LinkError::try_into(self) -> core::result::Result<U, <U as core::convert::TryFrom<T>>::Error>
-impl<T> alloc::string::ToString for aya::programs::links::LinkError where T: core::fmt::Display + core::marker::Sized
-pub fn aya::programs::links::LinkError::to_string(&self) -> alloc::string::String
-impl<T> core::any::Any for aya::programs::links::LinkError where T: 'static + core::marker::Sized
-pub fn aya::programs::links::LinkError::type_id(&self) -> core::any::TypeId
-impl<T> core::borrow::Borrow<T> for aya::programs::links::LinkError where T: core::marker::Sized
-pub fn aya::programs::links::LinkError::borrow(&self) -> &T
-impl<T> core::borrow::BorrowMut<T> for aya::programs::links::LinkError where T: core::marker::Sized
-pub fn aya::programs::links::LinkError::borrow_mut(&mut self) -> &mut T
-impl<T> core::convert::From<T> for aya::programs::links::LinkError
-pub fn aya::programs::links::LinkError::from(t: T) -> T
-pub struct aya::programs::links::FdLink
-impl aya::programs::links::FdLink
-pub fn aya::programs::links::FdLink::pin<P: core::convert::AsRef<std::path::Path>>(self, path: P) -> core::result::Result<aya::programs::links::PinnedLink, aya::pin::PinError>
-impl aya::programs::links::Link for aya::programs::links::FdLink
-pub type aya::programs::links::FdLink::Id = aya::programs::links::FdLinkId
-pub fn aya::programs::links::FdLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::links::FdLink::id(&self) -> Self::Id
-impl core::convert::From<aya::programs::extension::ExtensionLink> for aya::programs::links::FdLink
-pub fn aya::programs::links::FdLink::from(w: aya::programs::extension::ExtensionLink) -> aya::programs::links::FdLink
-impl core::convert::From<aya::programs::fentry::FEntryLink> for aya::programs::links::FdLink
-pub fn aya::programs::links::FdLink::from(w: aya::programs::fentry::FEntryLink) -> aya::programs::links::FdLink
-impl core::convert::From<aya::programs::fexit::FExitLink> for aya::programs::links::FdLink
-pub fn aya::programs::links::FdLink::from(w: aya::programs::fexit::FExitLink) -> aya::programs::links::FdLink
-impl core::convert::From<aya::programs::links::FdLink> for aya::programs::extension::ExtensionLink
-pub fn aya::programs::extension::ExtensionLink::from(b: aya::programs::links::FdLink) -> aya::programs::extension::ExtensionLink
-impl core::convert::From<aya::programs::links::FdLink> for aya::programs::fentry::FEntryLink
-pub fn aya::programs::fentry::FEntryLink::from(b: aya::programs::links::FdLink) -> aya::programs::fentry::FEntryLink
-impl core::convert::From<aya::programs::links::FdLink> for aya::programs::fexit::FExitLink
-pub fn aya::programs::fexit::FExitLink::from(b: aya::programs::links::FdLink) -> aya::programs::fexit::FExitLink
-impl core::convert::From<aya::programs::links::FdLink> for aya::programs::lsm::LsmLink
-pub fn aya::programs::lsm::LsmLink::from(b: aya::programs::links::FdLink) -> aya::programs::lsm::LsmLink
-impl core::convert::From<aya::programs::links::FdLink> for aya::programs::raw_trace_point::RawTracePointLink
-pub fn aya::programs::raw_trace_point::RawTracePointLink::from(b: aya::programs::links::FdLink) -> aya::programs::raw_trace_point::RawTracePointLink
-impl core::convert::From<aya::programs::links::FdLink> for aya::programs::sk_lookup::SkLookupLink
-pub fn aya::programs::sk_lookup::SkLookupLink::from(b: aya::programs::links::FdLink) -> aya::programs::sk_lookup::SkLookupLink
-impl core::convert::From<aya::programs::links::FdLink> for aya::programs::tp_btf::BtfTracePointLink
-pub fn aya::programs::tp_btf::BtfTracePointLink::from(b: aya::programs::links::FdLink) -> aya::programs::tp_btf::BtfTracePointLink
-impl core::convert::From<aya::programs::links::PinnedLink> for aya::programs::links::FdLink
-pub fn aya::programs::links::FdLink::from(p: aya::programs::links::PinnedLink) -> Self
-impl core::convert::From<aya::programs::lsm::LsmLink> for aya::programs::links::FdLink
-pub fn aya::programs::links::FdLink::from(w: aya::programs::lsm::LsmLink) -> aya::programs::links::FdLink
-impl core::convert::From<aya::programs::raw_trace_point::RawTracePointLink> for aya::programs::links::FdLink
-pub fn aya::programs::links::FdLink::from(w: aya::programs::raw_trace_point::RawTracePointLink) -> aya::programs::links::FdLink
-impl core::convert::From<aya::programs::sk_lookup::SkLookupLink> for aya::programs::links::FdLink
-pub fn aya::programs::links::FdLink::from(w: aya::programs::sk_lookup::SkLookupLink) -> aya::programs::links::FdLink
-impl core::convert::From<aya::programs::tp_btf::BtfTracePointLink> for aya::programs::links::FdLink
-pub fn aya::programs::links::FdLink::from(w: aya::programs::tp_btf::BtfTracePointLink) -> aya::programs::links::FdLink
-impl core::convert::TryFrom<aya::programs::kprobe::KProbeLink> for aya::programs::links::FdLink
-pub type aya::programs::links::FdLink::Error = aya::programs::links::LinkError
-pub fn aya::programs::links::FdLink::try_from(value: aya::programs::kprobe::KProbeLink) -> core::result::Result<Self, Self::Error>
-impl core::convert::TryFrom<aya::programs::links::FdLink> for aya::programs::kprobe::KProbeLink
-pub type aya::programs::kprobe::KProbeLink::Error = aya::programs::links::LinkError
-pub fn aya::programs::kprobe::KProbeLink::try_from(fd_link: aya::programs::links::FdLink) -> core::result::Result<Self, Self::Error>
-impl core::convert::TryFrom<aya::programs::links::FdLink> for aya::programs::perf_event::PerfEventLink
-pub type aya::programs::perf_event::PerfEventLink::Error = aya::programs::links::LinkError
-pub fn aya::programs::perf_event::PerfEventLink::try_from(fd_link: aya::programs::links::FdLink) -> core::result::Result<Self, Self::Error>
-impl core::convert::TryFrom<aya::programs::links::FdLink> for aya::programs::trace_point::TracePointLink
-pub type aya::programs::trace_point::TracePointLink::Error = aya::programs::links::LinkError
-pub fn aya::programs::trace_point::TracePointLink::try_from(fd_link: aya::programs::links::FdLink) -> core::result::Result<Self, Self::Error>
-impl core::convert::TryFrom<aya::programs::links::FdLink> for aya::programs::uprobe::UProbeLink
-pub type aya::programs::uprobe::UProbeLink::Error = aya::programs::links::LinkError
-pub fn aya::programs::uprobe::UProbeLink::try_from(fd_link: aya::programs::links::FdLink) -> core::result::Result<Self, Self::Error>
-impl core::convert::TryFrom<aya::programs::links::FdLink> for aya::programs::xdp::XdpLink
-pub type aya::programs::xdp::XdpLink::Error = aya::programs::links::LinkError
-pub fn aya::programs::xdp::XdpLink::try_from(fd_link: aya::programs::links::FdLink) -> core::result::Result<Self, Self::Error>
-impl core::convert::TryFrom<aya::programs::perf_event::PerfEventLink> for aya::programs::links::FdLink
-pub type aya::programs::links::FdLink::Error = aya::programs::links::LinkError
-pub fn aya::programs::links::FdLink::try_from(value: aya::programs::perf_event::PerfEventLink) -> core::result::Result<Self, Self::Error>
-impl core::convert::TryFrom<aya::programs::trace_point::TracePointLink> for aya::programs::links::FdLink
-pub type aya::programs::links::FdLink::Error = aya::programs::links::LinkError
-pub fn aya::programs::links::FdLink::try_from(value: aya::programs::trace_point::TracePointLink) -> core::result::Result<Self, Self::Error>
-impl core::convert::TryFrom<aya::programs::uprobe::UProbeLink> for aya::programs::links::FdLink
-pub type aya::programs::links::FdLink::Error = aya::programs::links::LinkError
-pub fn aya::programs::links::FdLink::try_from(value: aya::programs::uprobe::UProbeLink) -> core::result::Result<Self, Self::Error>
-impl core::convert::TryFrom<aya::programs::xdp::XdpLink> for aya::programs::links::FdLink
-pub type aya::programs::links::FdLink::Error = aya::programs::links::LinkError
-pub fn aya::programs::links::FdLink::try_from(value: aya::programs::xdp::XdpLink) -> core::result::Result<Self, Self::Error>
-impl core::fmt::Debug for aya::programs::links::FdLink
-pub fn aya::programs::links::FdLink::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
-impl core::marker::Freeze for aya::programs::links::FdLink
-impl core::marker::Send for aya::programs::links::FdLink
-impl core::marker::Sync for aya::programs::links::FdLink
-impl core::marker::Unpin for aya::programs::links::FdLink
-impl core::panic::unwind_safe::RefUnwindSafe for aya::programs::links::FdLink
-impl core::panic::unwind_safe::UnwindSafe for aya::programs::links::FdLink
-impl<T, U> core::convert::Into<U> for aya::programs::links::FdLink where U: core::convert::From<T>
-pub fn aya::programs::links::FdLink::into(self) -> U
-impl<T, U> core::convert::TryFrom<U> for aya::programs::links::FdLink where U: core::convert::Into<T>
-pub type aya::programs::links::FdLink::Error = core::convert::Infallible
-pub fn aya::programs::links::FdLink::try_from(value: U) -> core::result::Result<T, <T as core::convert::TryFrom<U>>::Error>
-impl<T, U> core::convert::TryInto<U> for aya::programs::links::FdLink where U: core::convert::TryFrom<T>
-pub type aya::programs::links::FdLink::Error = <U as core::convert::TryFrom<T>>::Error
-pub fn aya::programs::links::FdLink::try_into(self) -> core::result::Result<U, <U as core::convert::TryFrom<T>>::Error>
-impl<T> core::any::Any for aya::programs::links::FdLink where T: 'static + core::marker::Sized
-pub fn aya::programs::links::FdLink::type_id(&self) -> core::any::TypeId
-impl<T> core::borrow::Borrow<T> for aya::programs::links::FdLink where T: core::marker::Sized
-pub fn aya::programs::links::FdLink::borrow(&self) -> &T
-impl<T> core::borrow::BorrowMut<T> for aya::programs::links::FdLink where T: core::marker::Sized
-pub fn aya::programs::links::FdLink::borrow_mut(&mut self) -> &mut T
-impl<T> core::convert::From<T> for aya::programs::links::FdLink
-pub fn aya::programs::links::FdLink::from(t: T) -> T
-pub struct aya::programs::links::FdLinkId(_)
-impl core::cmp::Eq for aya::programs::links::FdLinkId
-impl core::cmp::PartialEq for aya::programs::links::FdLinkId
-pub fn aya::programs::links::FdLinkId::eq(&self, other: &aya::programs::links::FdLinkId) -> bool
-impl core::fmt::Debug for aya::programs::links::FdLinkId
-pub fn aya::programs::links::FdLinkId::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
-impl core::hash::Hash for aya::programs::links::FdLinkId
-pub fn aya::programs::links::FdLinkId::hash<__H: core::hash::Hasher>(&self, state: &mut __H)
-impl core::marker::StructuralPartialEq for aya::programs::links::FdLinkId
-impl core::marker::Freeze for aya::programs::links::FdLinkId
-impl core::marker::Send for aya::programs::links::FdLinkId
-impl core::marker::Sync for aya::programs::links::FdLinkId
-impl core::marker::Unpin for aya::programs::links::FdLinkId
-impl core::panic::unwind_safe::RefUnwindSafe for aya::programs::links::FdLinkId
-impl core::panic::unwind_safe::UnwindSafe for aya::programs::links::FdLinkId
-impl<Q, K> equivalent::Equivalent<K> for aya::programs::links::FdLinkId where Q: core::cmp::Eq + core::marker::Sized, K: core::borrow::Borrow<Q> + core::marker::Sized
-pub fn aya::programs::links::FdLinkId::equivalent(&self, key: &K) -> bool
-impl<Q, K> hashbrown::Equivalent<K> for aya::programs::links::FdLinkId where Q: core::cmp::Eq + core::marker::Sized, K: core::borrow::Borrow<Q> + core::marker::Sized
-pub fn aya::programs::links::FdLinkId::equivalent(&self, key: &K) -> bool
-impl<T, U> core::convert::Into<U> for aya::programs::links::FdLinkId where U: core::convert::From<T>
-pub fn aya::programs::links::FdLinkId::into(self) -> U
-impl<T, U> core::convert::TryFrom<U> for aya::programs::links::FdLinkId where U: core::convert::Into<T>
-pub type aya::programs::links::FdLinkId::Error = core::convert::Infallible
-pub fn aya::programs::links::FdLinkId::try_from(value: U) -> core::result::Result<T, <T as core::convert::TryFrom<U>>::Error>
-impl<T, U> core::convert::TryInto<U> for aya::programs::links::FdLinkId where U: core::convert::TryFrom<T>
-pub type aya::programs::links::FdLinkId::Error = <U as core::convert::TryFrom<T>>::Error
-pub fn aya::programs::links::FdLinkId::try_into(self) -> core::result::Result<U, <U as core::convert::TryFrom<T>>::Error>
-impl<T> core::any::Any for aya::programs::links::FdLinkId where T: 'static + core::marker::Sized
-pub fn aya::programs::links::FdLinkId::type_id(&self) -> core::any::TypeId
-impl<T> core::borrow::Borrow<T> for aya::programs::links::FdLinkId where T: core::marker::Sized
-pub fn aya::programs::links::FdLinkId::borrow(&self) -> &T
-impl<T> core::borrow::BorrowMut<T> for aya::programs::links::FdLinkId where T: core::marker::Sized
-pub fn aya::programs::links::FdLinkId::borrow_mut(&mut self) -> &mut T
-impl<T> core::convert::From<T> for aya::programs::links::FdLinkId
-pub fn aya::programs::links::FdLinkId::from(t: T) -> T
-pub struct aya::programs::links::PinnedLink
-impl aya::programs::links::PinnedLink
-pub fn aya::programs::links::PinnedLink::from_pin<P: core::convert::AsRef<std::path::Path>>(path: P) -> core::result::Result<Self, aya::programs::links::LinkError>
-pub fn aya::programs::links::PinnedLink::unpin(self) -> core::result::Result<aya::programs::links::FdLink, std::io::error::Error>
-impl core::convert::From<aya::programs::links::PinnedLink> for aya::programs::links::FdLink
-pub fn aya::programs::links::FdLink::from(p: aya::programs::links::PinnedLink) -> Self
-impl core::fmt::Debug for aya::programs::links::PinnedLink
-pub fn aya::programs::links::PinnedLink::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
-impl core::marker::Freeze for aya::programs::links::PinnedLink
-impl core::marker::Send for aya::programs::links::PinnedLink
-impl core::marker::Sync for aya::programs::links::PinnedLink
-impl core::marker::Unpin for aya::programs::links::PinnedLink
-impl core::panic::unwind_safe::RefUnwindSafe for aya::programs::links::PinnedLink
-impl core::panic::unwind_safe::UnwindSafe for aya::programs::links::PinnedLink
-impl<T, U> core::convert::Into<U> for aya::programs::links::PinnedLink where U: core::convert::From<T>
-pub fn aya::programs::links::PinnedLink::into(self) -> U
-impl<T, U> core::convert::TryFrom<U> for aya::programs::links::PinnedLink where U: core::convert::Into<T>
-pub type aya::programs::links::PinnedLink::Error = core::convert::Infallible
-pub fn aya::programs::links::PinnedLink::try_from(value: U) -> core::result::Result<T, <T as core::convert::TryFrom<U>>::Error>
-impl<T, U> core::convert::TryInto<U> for aya::programs::links::PinnedLink where U: core::convert::TryFrom<T>
-pub type aya::programs::links::PinnedLink::Error = <U as core::convert::TryFrom<T>>::Error
-pub fn aya::programs::links::PinnedLink::try_into(self) -> core::result::Result<U, <U as core::convert::TryFrom<T>>::Error>
-impl<T> core::any::Any for aya::programs::links::PinnedLink where T: 'static + core::marker::Sized
-pub fn aya::programs::links::PinnedLink::type_id(&self) -> core::any::TypeId
-impl<T> core::borrow::Borrow<T> for aya::programs::links::PinnedLink where T: core::marker::Sized
-pub fn aya::programs::links::PinnedLink::borrow(&self) -> &T
-impl<T> core::borrow::BorrowMut<T> for aya::programs::links::PinnedLink where T: core::marker::Sized
-pub fn aya::programs::links::PinnedLink::borrow_mut(&mut self) -> &mut T
-impl<T> core::convert::From<T> for aya::programs::links::PinnedLink
-pub fn aya::programs::links::PinnedLink::from(t: T) -> T
-pub struct aya::programs::links::ProgAttachLink
-impl aya::programs::links::Link for aya::programs::links::ProgAttachLink
-pub type aya::programs::links::ProgAttachLink::Id = aya::programs::links::ProgAttachLinkId
-pub fn aya::programs::links::ProgAttachLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::links::ProgAttachLink::id(&self) -> Self::Id
-impl core::convert::From<aya::programs::links::ProgAttachLink> for aya::programs::sk_msg::SkMsgLink
-pub fn aya::programs::sk_msg::SkMsgLink::from(b: aya::programs::links::ProgAttachLink) -> aya::programs::sk_msg::SkMsgLink
-impl core::convert::From<aya::programs::links::ProgAttachLink> for aya::programs::sk_skb::SkSkbLink
-pub fn aya::programs::sk_skb::SkSkbLink::from(b: aya::programs::links::ProgAttachLink) -> aya::programs::sk_skb::SkSkbLink
-impl core::convert::From<aya::programs::links::ProgAttachLink> for aya::programs::sock_ops::SockOpsLink
-pub fn aya::programs::sock_ops::SockOpsLink::from(b: aya::programs::links::ProgAttachLink) -> aya::programs::sock_ops::SockOpsLink
-impl core::convert::From<aya::programs::sk_msg::SkMsgLink> for aya::programs::links::ProgAttachLink
-pub fn aya::programs::links::ProgAttachLink::from(w: aya::programs::sk_msg::SkMsgLink) -> aya::programs::links::ProgAttachLink
-impl core::convert::From<aya::programs::sk_skb::SkSkbLink> for aya::programs::links::ProgAttachLink
-pub fn aya::programs::links::ProgAttachLink::from(w: aya::programs::sk_skb::SkSkbLink) -> aya::programs::links::ProgAttachLink
-impl core::convert::From<aya::programs::sock_ops::SockOpsLink> for aya::programs::links::ProgAttachLink
-pub fn aya::programs::links::ProgAttachLink::from(w: aya::programs::sock_ops::SockOpsLink) -> aya::programs::links::ProgAttachLink
-impl core::fmt::Debug for aya::programs::links::ProgAttachLink
-pub fn aya::programs::links::ProgAttachLink::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
-impl core::marker::Freeze for aya::programs::links::ProgAttachLink
-impl core::marker::Send for aya::programs::links::ProgAttachLink
-impl core::marker::Sync for aya::programs::links::ProgAttachLink
-impl core::marker::Unpin for aya::programs::links::ProgAttachLink
-impl core::panic::unwind_safe::RefUnwindSafe for aya::programs::links::ProgAttachLink
-impl core::panic::unwind_safe::UnwindSafe for aya::programs::links::ProgAttachLink
-impl<T, U> core::convert::Into<U> for aya::programs::links::ProgAttachLink where U: core::convert::From<T>
-pub fn aya::programs::links::ProgAttachLink::into(self) -> U
-impl<T, U> core::convert::TryFrom<U> for aya::programs::links::ProgAttachLink where U: core::convert::Into<T>
-pub type aya::programs::links::ProgAttachLink::Error = core::convert::Infallible
-pub fn aya::programs::links::ProgAttachLink::try_from(value: U) -> core::result::Result<T, <T as core::convert::TryFrom<U>>::Error>
-impl<T, U> core::convert::TryInto<U> for aya::programs::links::ProgAttachLink where U: core::convert::TryFrom<T>
-pub type aya::programs::links::ProgAttachLink::Error = <U as core::convert::TryFrom<T>>::Error
-pub fn aya::programs::links::ProgAttachLink::try_into(self) -> core::result::Result<U, <U as core::convert::TryFrom<T>>::Error>
-impl<T> core::any::Any for aya::programs::links::ProgAttachLink where T: 'static + core::marker::Sized
-pub fn aya::programs::links::ProgAttachLink::type_id(&self) -> core::any::TypeId
-impl<T> core::borrow::Borrow<T> for aya::programs::links::ProgAttachLink where T: core::marker::Sized
-pub fn aya::programs::links::ProgAttachLink::borrow(&self) -> &T
-impl<T> core::borrow::BorrowMut<T> for aya::programs::links::ProgAttachLink where T: core::marker::Sized
-pub fn aya::programs::links::ProgAttachLink::borrow_mut(&mut self) -> &mut T
-impl<T> core::convert::From<T> for aya::programs::links::ProgAttachLink
-pub fn aya::programs::links::ProgAttachLink::from(t: T) -> T
-pub struct aya::programs::links::ProgAttachLinkId(_, _, _)
-impl core::cmp::Eq for aya::programs::links::ProgAttachLinkId
-impl core::cmp::PartialEq for aya::programs::links::ProgAttachLinkId
-pub fn aya::programs::links::ProgAttachLinkId::eq(&self, other: &aya::programs::links::ProgAttachLinkId) -> bool
-impl core::fmt::Debug for aya::programs::links::ProgAttachLinkId
-pub fn aya::programs::links::ProgAttachLinkId::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
-impl core::hash::Hash for aya::programs::links::ProgAttachLinkId
-pub fn aya::programs::links::ProgAttachLinkId::hash<__H: core::hash::Hasher>(&self, state: &mut __H)
-impl core::marker::StructuralPartialEq for aya::programs::links::ProgAttachLinkId
-impl core::marker::Freeze for aya::programs::links::ProgAttachLinkId
-impl core::marker::Send for aya::programs::links::ProgAttachLinkId
-impl core::marker::Sync for aya::programs::links::ProgAttachLinkId
-impl core::marker::Unpin for aya::programs::links::ProgAttachLinkId
-impl core::panic::unwind_safe::RefUnwindSafe for aya::programs::links::ProgAttachLinkId
-impl core::panic::unwind_safe::UnwindSafe for aya::programs::links::ProgAttachLinkId
-impl<Q, K> equivalent::Equivalent<K> for aya::programs::links::ProgAttachLinkId where Q: core::cmp::Eq + core::marker::Sized, K: core::borrow::Borrow<Q> + core::marker::Sized
-pub fn aya::programs::links::ProgAttachLinkId::equivalent(&self, key: &K) -> bool
-impl<Q, K> hashbrown::Equivalent<K> for aya::programs::links::ProgAttachLinkId where Q: core::cmp::Eq + core::marker::Sized, K: core::borrow::Borrow<Q> + core::marker::Sized
-pub fn aya::programs::links::ProgAttachLinkId::equivalent(&self, key: &K) -> bool
-impl<T, U> core::convert::Into<U> for aya::programs::links::ProgAttachLinkId where U: core::convert::From<T>
-pub fn aya::programs::links::ProgAttachLinkId::into(self) -> U
-impl<T, U> core::convert::TryFrom<U> for aya::programs::links::ProgAttachLinkId where U: core::convert::Into<T>
-pub type aya::programs::links::ProgAttachLinkId::Error = core::convert::Infallible
-pub fn aya::programs::links::ProgAttachLinkId::try_from(value: U) -> core::result::Result<T, <T as core::convert::TryFrom<U>>::Error>
-impl<T, U> core::convert::TryInto<U> for aya::programs::links::ProgAttachLinkId where U: core::convert::TryFrom<T>
-pub type aya::programs::links::ProgAttachLinkId::Error = <U as core::convert::TryFrom<T>>::Error
-pub fn aya::programs::links::ProgAttachLinkId::try_into(self) -> core::result::Result<U, <U as core::convert::TryFrom<T>>::Error>
-impl<T> core::any::Any for aya::programs::links::ProgAttachLinkId where T: 'static + core::marker::Sized
-pub fn aya::programs::links::ProgAttachLinkId::type_id(&self) -> core::any::TypeId
-impl<T> core::borrow::Borrow<T> for aya::programs::links::ProgAttachLinkId where T: core::marker::Sized
-pub fn aya::programs::links::ProgAttachLinkId::borrow(&self) -> &T
-impl<T> core::borrow::BorrowMut<T> for aya::programs::links::ProgAttachLinkId where T: core::marker::Sized
-pub fn aya::programs::links::ProgAttachLinkId::borrow_mut(&mut self) -> &mut T
-impl<T> core::convert::From<T> for aya::programs::links::ProgAttachLinkId
-pub fn aya::programs::links::ProgAttachLinkId::from(t: T) -> T
-pub trait aya::programs::links::Link: core::fmt::Debug + 'static
-pub type aya::programs::links::Link::Id: core::fmt::Debug + core::hash::Hash + core::cmp::Eq + core::cmp::PartialEq
-pub fn aya::programs::links::Link::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::links::Link::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::cgroup_device::CgroupDeviceLink
-pub type aya::programs::cgroup_device::CgroupDeviceLink::Id = aya::programs::cgroup_device::CgroupDeviceLinkId
-pub fn aya::programs::cgroup_device::CgroupDeviceLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::cgroup_device::CgroupDeviceLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::cgroup_skb::CgroupSkbLink
-pub type aya::programs::cgroup_skb::CgroupSkbLink::Id = aya::programs::cgroup_skb::CgroupSkbLinkId
-pub fn aya::programs::cgroup_skb::CgroupSkbLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::cgroup_skb::CgroupSkbLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::cgroup_sock::CgroupSockLink
-pub type aya::programs::cgroup_sock::CgroupSockLink::Id = aya::programs::cgroup_sock::CgroupSockLinkId
-pub fn aya::programs::cgroup_sock::CgroupSockLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::cgroup_sock::CgroupSockLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::cgroup_sock_addr::CgroupSockAddrLink
-pub type aya::programs::cgroup_sock_addr::CgroupSockAddrLink::Id = aya::programs::cgroup_sock_addr::CgroupSockAddrLinkId
-pub fn aya::programs::cgroup_sock_addr::CgroupSockAddrLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::cgroup_sock_addr::CgroupSockAddrLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::cgroup_sockopt::CgroupSockoptLink
-pub type aya::programs::cgroup_sockopt::CgroupSockoptLink::Id = aya::programs::cgroup_sockopt::CgroupSockoptLinkId
-pub fn aya::programs::cgroup_sockopt::CgroupSockoptLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::cgroup_sockopt::CgroupSockoptLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::cgroup_sysctl::CgroupSysctlLink
-pub type aya::programs::cgroup_sysctl::CgroupSysctlLink::Id = aya::programs::cgroup_sysctl::CgroupSysctlLinkId
-pub fn aya::programs::cgroup_sysctl::CgroupSysctlLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::cgroup_sysctl::CgroupSysctlLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::extension::ExtensionLink
-pub type aya::programs::extension::ExtensionLink::Id = aya::programs::extension::ExtensionLinkId
-pub fn aya::programs::extension::ExtensionLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::extension::ExtensionLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::fentry::FEntryLink
-pub type aya::programs::fentry::FEntryLink::Id = aya::programs::fentry::FEntryLinkId
-pub fn aya::programs::fentry::FEntryLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::fentry::FEntryLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::fexit::FExitLink
-pub type aya::programs::fexit::FExitLink::Id = aya::programs::fexit::FExitLinkId
-pub fn aya::programs::fexit::FExitLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::fexit::FExitLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::kprobe::KProbeLink
-pub type aya::programs::kprobe::KProbeLink::Id = aya::programs::kprobe::KProbeLinkId
-pub fn aya::programs::kprobe::KProbeLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::kprobe::KProbeLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::links::FdLink
-pub type aya::programs::links::FdLink::Id = aya::programs::links::FdLinkId
-pub fn aya::programs::links::FdLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::links::FdLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::links::ProgAttachLink
-pub type aya::programs::links::ProgAttachLink::Id = aya::programs::links::ProgAttachLinkId
-pub fn aya::programs::links::ProgAttachLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::links::ProgAttachLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::lirc_mode2::LircLink
-pub type aya::programs::lirc_mode2::LircLink::Id = aya::programs::lirc_mode2::LircLinkId
-pub fn aya::programs::lirc_mode2::LircLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::lirc_mode2::LircLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::lsm::LsmLink
-pub type aya::programs::lsm::LsmLink::Id = aya::programs::lsm::LsmLinkId
-pub fn aya::programs::lsm::LsmLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::lsm::LsmLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::perf_attach::PerfLink
-pub type aya::programs::perf_attach::PerfLink::Id = aya::programs::perf_attach::PerfLinkId
-pub fn aya::programs::perf_attach::PerfLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::perf_attach::PerfLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::perf_event::PerfEventLink
-pub type aya::programs::perf_event::PerfEventLink::Id = aya::programs::perf_event::PerfEventLinkId
-pub fn aya::programs::perf_event::PerfEventLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::perf_event::PerfEventLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::raw_trace_point::RawTracePointLink
-pub type aya::programs::raw_trace_point::RawTracePointLink::Id = aya::programs::raw_trace_point::RawTracePointLinkId
-pub fn aya::programs::raw_trace_point::RawTracePointLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::raw_trace_point::RawTracePointLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::sk_lookup::SkLookupLink
-pub type aya::programs::sk_lookup::SkLookupLink::Id = aya::programs::sk_lookup::SkLookupLinkId
-pub fn aya::programs::sk_lookup::SkLookupLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::sk_lookup::SkLookupLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::sk_msg::SkMsgLink
-pub type aya::programs::sk_msg::SkMsgLink::Id = aya::programs::sk_msg::SkMsgLinkId
-pub fn aya::programs::sk_msg::SkMsgLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::sk_msg::SkMsgLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::sk_skb::SkSkbLink
-pub type aya::programs::sk_skb::SkSkbLink::Id = aya::programs::sk_skb::SkSkbLinkId
-pub fn aya::programs::sk_skb::SkSkbLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::sk_skb::SkSkbLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::sock_ops::SockOpsLink
-pub type aya::programs::sock_ops::SockOpsLink::Id = aya::programs::sock_ops::SockOpsLinkId
-pub fn aya::programs::sock_ops::SockOpsLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::sock_ops::SockOpsLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::socket_filter::SocketFilterLink
-pub type aya::programs::socket_filter::SocketFilterLink::Id = aya::programs::socket_filter::SocketFilterLinkId
-pub fn aya::programs::socket_filter::SocketFilterLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::socket_filter::SocketFilterLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::tc::SchedClassifierLink
-pub type aya::programs::tc::SchedClassifierLink::Id = aya::programs::tc::SchedClassifierLinkId
-pub fn aya::programs::tc::SchedClassifierLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::tc::SchedClassifierLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::tp_btf::BtfTracePointLink
-pub type aya::programs::tp_btf::BtfTracePointLink::Id = aya::programs::tp_btf::BtfTracePointLinkId
-pub fn aya::programs::tp_btf::BtfTracePointLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::tp_btf::BtfTracePointLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::trace_point::TracePointLink
-pub type aya::programs::trace_point::TracePointLink::Id = aya::programs::trace_point::TracePointLinkId
-pub fn aya::programs::trace_point::TracePointLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::trace_point::TracePointLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::uprobe::UProbeLink
-pub type aya::programs::uprobe::UProbeLink::Id = aya::programs::uprobe::UProbeLinkId
-pub fn aya::programs::uprobe::UProbeLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::uprobe::UProbeLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::xdp::XdpLink
-pub type aya::programs::xdp::XdpLink::Id = aya::programs::xdp::XdpLinkId
-pub fn aya::programs::xdp::XdpLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::xdp::XdpLink::id(&self) -> Self::Id
 pub mod aya::programs::lirc_mode2
 pub struct aya::programs::lirc_mode2::LircLink
 impl aya::programs::lirc_mode2::LircLink
 pub fn aya::programs::lirc_mode2::LircLink::info(&self) -> core::result::Result<aya::programs::ProgramInfo, aya::programs::ProgramError>
-impl aya::programs::links::Link for aya::programs::lirc_mode2::LircLink
+impl aya::links::Link for aya::programs::lirc_mode2::LircLink
 pub type aya::programs::lirc_mode2::LircLink::Id = aya::programs::lirc_mode2::LircLinkId
 pub fn aya::programs::lirc_mode2::LircLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
 pub fn aya::programs::lirc_mode2::LircLink::id(&self) -> Self::Id
@@ -4278,14 +4278,14 @@ pub fn aya::programs::lsm::Lsm::borrow_mut(&mut self) -> &mut T
 impl<T> core::convert::From<T> for aya::programs::lsm::Lsm
 pub fn aya::programs::lsm::Lsm::from(t: T) -> T
 pub struct aya::programs::lsm::LsmLink(_)
-impl aya::programs::links::Link for aya::programs::lsm::LsmLink
+impl aya::links::Link for aya::programs::lsm::LsmLink
 pub type aya::programs::lsm::LsmLink::Id = aya::programs::lsm::LsmLinkId
 pub fn aya::programs::lsm::LsmLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
 pub fn aya::programs::lsm::LsmLink::id(&self) -> Self::Id
-impl core::convert::From<aya::programs::links::FdLink> for aya::programs::lsm::LsmLink
-pub fn aya::programs::lsm::LsmLink::from(b: aya::programs::links::FdLink) -> aya::programs::lsm::LsmLink
-impl core::convert::From<aya::programs::lsm::LsmLink> for aya::programs::links::FdLink
-pub fn aya::programs::links::FdLink::from(w: aya::programs::lsm::LsmLink) -> aya::programs::links::FdLink
+impl core::convert::From<aya::links::FdLink> for aya::programs::lsm::LsmLink
+pub fn aya::programs::lsm::LsmLink::from(b: aya::links::FdLink) -> aya::programs::lsm::LsmLink
+impl core::convert::From<aya::programs::lsm::LsmLink> for aya::links::FdLink
+pub fn aya::links::FdLink::from(w: aya::programs::lsm::LsmLink) -> aya::links::FdLink
 impl core::fmt::Debug for aya::programs::lsm::LsmLink
 pub fn aya::programs::lsm::LsmLink::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::ops::drop::Drop for aya::programs::lsm::LsmLink
@@ -4349,7 +4349,7 @@ impl<T> core::convert::From<T> for aya::programs::lsm::LsmLinkId
 pub fn aya::programs::lsm::LsmLinkId::from(t: T) -> T
 pub mod aya::programs::perf_attach
 pub struct aya::programs::perf_attach::PerfLink
-impl aya::programs::links::Link for aya::programs::perf_attach::PerfLink
+impl aya::links::Link for aya::programs::perf_attach::PerfLink
 pub type aya::programs::perf_attach::PerfLink::Id = aya::programs::perf_attach::PerfLinkId
 pub fn aya::programs::perf_attach::PerfLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
 pub fn aya::programs::perf_attach::PerfLink::id(&self) -> Self::Id
@@ -4585,16 +4585,16 @@ pub fn aya::programs::perf_event::PerfEvent::borrow_mut(&mut self) -> &mut T
 impl<T> core::convert::From<T> for aya::programs::perf_event::PerfEvent
 pub fn aya::programs::perf_event::PerfEvent::from(t: T) -> T
 pub struct aya::programs::perf_event::PerfEventLink(_)
-impl aya::programs::links::Link for aya::programs::perf_event::PerfEventLink
+impl aya::links::Link for aya::programs::perf_event::PerfEventLink
 pub type aya::programs::perf_event::PerfEventLink::Id = aya::programs::perf_event::PerfEventLinkId
 pub fn aya::programs::perf_event::PerfEventLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
 pub fn aya::programs::perf_event::PerfEventLink::id(&self) -> Self::Id
-impl core::convert::TryFrom<aya::programs::links::FdLink> for aya::programs::perf_event::PerfEventLink
-pub type aya::programs::perf_event::PerfEventLink::Error = aya::programs::links::LinkError
-pub fn aya::programs::perf_event::PerfEventLink::try_from(fd_link: aya::programs::links::FdLink) -> core::result::Result<Self, Self::Error>
-impl core::convert::TryFrom<aya::programs::perf_event::PerfEventLink> for aya::programs::links::FdLink
-pub type aya::programs::links::FdLink::Error = aya::programs::links::LinkError
-pub fn aya::programs::links::FdLink::try_from(value: aya::programs::perf_event::PerfEventLink) -> core::result::Result<Self, Self::Error>
+impl core::convert::TryFrom<aya::links::FdLink> for aya::programs::perf_event::PerfEventLink
+pub type aya::programs::perf_event::PerfEventLink::Error = aya::links::LinkError
+pub fn aya::programs::perf_event::PerfEventLink::try_from(fd_link: aya::links::FdLink) -> core::result::Result<Self, Self::Error>
+impl core::convert::TryFrom<aya::programs::perf_event::PerfEventLink> for aya::links::FdLink
+pub type aya::links::FdLink::Error = aya::links::LinkError
+pub fn aya::links::FdLink::try_from(value: aya::programs::perf_event::PerfEventLink) -> core::result::Result<Self, Self::Error>
 impl core::fmt::Debug for aya::programs::perf_event::PerfEventLink
 pub fn aya::programs::perf_event::PerfEventLink::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::ops::drop::Drop for aya::programs::perf_event::PerfEventLink
@@ -4707,14 +4707,14 @@ pub fn aya::programs::raw_trace_point::RawTracePoint::borrow_mut(&mut self) -> &
 impl<T> core::convert::From<T> for aya::programs::raw_trace_point::RawTracePoint
 pub fn aya::programs::raw_trace_point::RawTracePoint::from(t: T) -> T
 pub struct aya::programs::raw_trace_point::RawTracePointLink(_)
-impl aya::programs::links::Link for aya::programs::raw_trace_point::RawTracePointLink
+impl aya::links::Link for aya::programs::raw_trace_point::RawTracePointLink
 pub type aya::programs::raw_trace_point::RawTracePointLink::Id = aya::programs::raw_trace_point::RawTracePointLinkId
 pub fn aya::programs::raw_trace_point::RawTracePointLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
 pub fn aya::programs::raw_trace_point::RawTracePointLink::id(&self) -> Self::Id
-impl core::convert::From<aya::programs::links::FdLink> for aya::programs::raw_trace_point::RawTracePointLink
-pub fn aya::programs::raw_trace_point::RawTracePointLink::from(b: aya::programs::links::FdLink) -> aya::programs::raw_trace_point::RawTracePointLink
-impl core::convert::From<aya::programs::raw_trace_point::RawTracePointLink> for aya::programs::links::FdLink
-pub fn aya::programs::links::FdLink::from(w: aya::programs::raw_trace_point::RawTracePointLink) -> aya::programs::links::FdLink
+impl core::convert::From<aya::links::FdLink> for aya::programs::raw_trace_point::RawTracePointLink
+pub fn aya::programs::raw_trace_point::RawTracePointLink::from(b: aya::links::FdLink) -> aya::programs::raw_trace_point::RawTracePointLink
+impl core::convert::From<aya::programs::raw_trace_point::RawTracePointLink> for aya::links::FdLink
+pub fn aya::links::FdLink::from(w: aya::programs::raw_trace_point::RawTracePointLink) -> aya::links::FdLink
 impl core::fmt::Debug for aya::programs::raw_trace_point::RawTracePointLink
 pub fn aya::programs::raw_trace_point::RawTracePointLink::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::ops::drop::Drop for aya::programs::raw_trace_point::RawTracePointLink
@@ -4827,14 +4827,14 @@ pub fn aya::programs::sk_lookup::SkLookup::borrow_mut(&mut self) -> &mut T
 impl<T> core::convert::From<T> for aya::programs::sk_lookup::SkLookup
 pub fn aya::programs::sk_lookup::SkLookup::from(t: T) -> T
 pub struct aya::programs::sk_lookup::SkLookupLink(_)
-impl aya::programs::links::Link for aya::programs::sk_lookup::SkLookupLink
+impl aya::links::Link for aya::programs::sk_lookup::SkLookupLink
 pub type aya::programs::sk_lookup::SkLookupLink::Id = aya::programs::sk_lookup::SkLookupLinkId
 pub fn aya::programs::sk_lookup::SkLookupLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
 pub fn aya::programs::sk_lookup::SkLookupLink::id(&self) -> Self::Id
-impl core::convert::From<aya::programs::links::FdLink> for aya::programs::sk_lookup::SkLookupLink
-pub fn aya::programs::sk_lookup::SkLookupLink::from(b: aya::programs::links::FdLink) -> aya::programs::sk_lookup::SkLookupLink
-impl core::convert::From<aya::programs::sk_lookup::SkLookupLink> for aya::programs::links::FdLink
-pub fn aya::programs::links::FdLink::from(w: aya::programs::sk_lookup::SkLookupLink) -> aya::programs::links::FdLink
+impl core::convert::From<aya::links::FdLink> for aya::programs::sk_lookup::SkLookupLink
+pub fn aya::programs::sk_lookup::SkLookupLink::from(b: aya::links::FdLink) -> aya::programs::sk_lookup::SkLookupLink
+impl core::convert::From<aya::programs::sk_lookup::SkLookupLink> for aya::links::FdLink
+pub fn aya::links::FdLink::from(w: aya::programs::sk_lookup::SkLookupLink) -> aya::links::FdLink
 impl core::fmt::Debug for aya::programs::sk_lookup::SkLookupLink
 pub fn aya::programs::sk_lookup::SkLookupLink::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::ops::drop::Drop for aya::programs::sk_lookup::SkLookupLink
@@ -4947,14 +4947,14 @@ pub fn aya::programs::sk_msg::SkMsg::borrow_mut(&mut self) -> &mut T
 impl<T> core::convert::From<T> for aya::programs::sk_msg::SkMsg
 pub fn aya::programs::sk_msg::SkMsg::from(t: T) -> T
 pub struct aya::programs::sk_msg::SkMsgLink(_)
-impl aya::programs::links::Link for aya::programs::sk_msg::SkMsgLink
+impl aya::links::Link for aya::programs::sk_msg::SkMsgLink
 pub type aya::programs::sk_msg::SkMsgLink::Id = aya::programs::sk_msg::SkMsgLinkId
 pub fn aya::programs::sk_msg::SkMsgLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
 pub fn aya::programs::sk_msg::SkMsgLink::id(&self) -> Self::Id
-impl core::convert::From<aya::programs::links::ProgAttachLink> for aya::programs::sk_msg::SkMsgLink
-pub fn aya::programs::sk_msg::SkMsgLink::from(b: aya::programs::links::ProgAttachLink) -> aya::programs::sk_msg::SkMsgLink
-impl core::convert::From<aya::programs::sk_msg::SkMsgLink> for aya::programs::links::ProgAttachLink
-pub fn aya::programs::links::ProgAttachLink::from(w: aya::programs::sk_msg::SkMsgLink) -> aya::programs::links::ProgAttachLink
+impl core::convert::From<aya::links::ProgAttachLink> for aya::programs::sk_msg::SkMsgLink
+pub fn aya::programs::sk_msg::SkMsgLink::from(b: aya::links::ProgAttachLink) -> aya::programs::sk_msg::SkMsgLink
+impl core::convert::From<aya::programs::sk_msg::SkMsgLink> for aya::links::ProgAttachLink
+pub fn aya::links::ProgAttachLink::from(w: aya::programs::sk_msg::SkMsgLink) -> aya::links::ProgAttachLink
 impl core::fmt::Debug for aya::programs::sk_msg::SkMsgLink
 pub fn aya::programs::sk_msg::SkMsgLink::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::ops::drop::Drop for aya::programs::sk_msg::SkMsgLink
@@ -5104,14 +5104,14 @@ pub fn aya::programs::sk_skb::SkSkb::borrow_mut(&mut self) -> &mut T
 impl<T> core::convert::From<T> for aya::programs::sk_skb::SkSkb
 pub fn aya::programs::sk_skb::SkSkb::from(t: T) -> T
 pub struct aya::programs::sk_skb::SkSkbLink(_)
-impl aya::programs::links::Link for aya::programs::sk_skb::SkSkbLink
+impl aya::links::Link for aya::programs::sk_skb::SkSkbLink
 pub type aya::programs::sk_skb::SkSkbLink::Id = aya::programs::sk_skb::SkSkbLinkId
 pub fn aya::programs::sk_skb::SkSkbLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
 pub fn aya::programs::sk_skb::SkSkbLink::id(&self) -> Self::Id
-impl core::convert::From<aya::programs::links::ProgAttachLink> for aya::programs::sk_skb::SkSkbLink
-pub fn aya::programs::sk_skb::SkSkbLink::from(b: aya::programs::links::ProgAttachLink) -> aya::programs::sk_skb::SkSkbLink
-impl core::convert::From<aya::programs::sk_skb::SkSkbLink> for aya::programs::links::ProgAttachLink
-pub fn aya::programs::links::ProgAttachLink::from(w: aya::programs::sk_skb::SkSkbLink) -> aya::programs::links::ProgAttachLink
+impl core::convert::From<aya::links::ProgAttachLink> for aya::programs::sk_skb::SkSkbLink
+pub fn aya::programs::sk_skb::SkSkbLink::from(b: aya::links::ProgAttachLink) -> aya::programs::sk_skb::SkSkbLink
+impl core::convert::From<aya::programs::sk_skb::SkSkbLink> for aya::links::ProgAttachLink
+pub fn aya::links::ProgAttachLink::from(w: aya::programs::sk_skb::SkSkbLink) -> aya::links::ProgAttachLink
 impl core::fmt::Debug for aya::programs::sk_skb::SkSkbLink
 pub fn aya::programs::sk_skb::SkSkbLink::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::ops::drop::Drop for aya::programs::sk_skb::SkSkbLink
@@ -5224,14 +5224,14 @@ pub fn aya::programs::sock_ops::SockOps::borrow_mut(&mut self) -> &mut T
 impl<T> core::convert::From<T> for aya::programs::sock_ops::SockOps
 pub fn aya::programs::sock_ops::SockOps::from(t: T) -> T
 pub struct aya::programs::sock_ops::SockOpsLink(_)
-impl aya::programs::links::Link for aya::programs::sock_ops::SockOpsLink
+impl aya::links::Link for aya::programs::sock_ops::SockOpsLink
 pub type aya::programs::sock_ops::SockOpsLink::Id = aya::programs::sock_ops::SockOpsLinkId
 pub fn aya::programs::sock_ops::SockOpsLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
 pub fn aya::programs::sock_ops::SockOpsLink::id(&self) -> Self::Id
-impl core::convert::From<aya::programs::links::ProgAttachLink> for aya::programs::sock_ops::SockOpsLink
-pub fn aya::programs::sock_ops::SockOpsLink::from(b: aya::programs::links::ProgAttachLink) -> aya::programs::sock_ops::SockOpsLink
-impl core::convert::From<aya::programs::sock_ops::SockOpsLink> for aya::programs::links::ProgAttachLink
-pub fn aya::programs::links::ProgAttachLink::from(w: aya::programs::sock_ops::SockOpsLink) -> aya::programs::links::ProgAttachLink
+impl core::convert::From<aya::links::ProgAttachLink> for aya::programs::sock_ops::SockOpsLink
+pub fn aya::programs::sock_ops::SockOpsLink::from(b: aya::links::ProgAttachLink) -> aya::programs::sock_ops::SockOpsLink
+impl core::convert::From<aya::programs::sock_ops::SockOpsLink> for aya::links::ProgAttachLink
+pub fn aya::links::ProgAttachLink::from(w: aya::programs::sock_ops::SockOpsLink) -> aya::links::ProgAttachLink
 impl core::fmt::Debug for aya::programs::sock_ops::SockOpsLink
 pub fn aya::programs::sock_ops::SockOpsLink::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::ops::drop::Drop for aya::programs::sock_ops::SockOpsLink
@@ -5379,7 +5379,7 @@ pub fn aya::programs::socket_filter::SocketFilter::borrow_mut(&mut self) -> &mut
 impl<T> core::convert::From<T> for aya::programs::socket_filter::SocketFilter
 pub fn aya::programs::socket_filter::SocketFilter::from(t: T) -> T
 pub struct aya::programs::socket_filter::SocketFilterLink
-impl aya::programs::links::Link for aya::programs::socket_filter::SocketFilterLink
+impl aya::links::Link for aya::programs::socket_filter::SocketFilterLink
 pub type aya::programs::socket_filter::SocketFilterLink::Id = aya::programs::socket_filter::SocketFilterLinkId
 pub fn aya::programs::socket_filter::SocketFilterLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
 pub fn aya::programs::socket_filter::SocketFilterLink::id(&self) -> Self::Id
@@ -5584,7 +5584,7 @@ pub fn aya::programs::tc::SchedClassifierLink::attach_type(&self) -> aya::progra
 pub fn aya::programs::tc::SchedClassifierLink::attached(if_name: &str, attach_type: aya::programs::tc::TcAttachType, priority: u16, handle: u32) -> core::result::Result<Self, std::io::error::Error>
 pub fn aya::programs::tc::SchedClassifierLink::handle(&self) -> u32
 pub fn aya::programs::tc::SchedClassifierLink::priority(&self) -> u16
-impl aya::programs::links::Link for aya::programs::tc::SchedClassifierLink
+impl aya::links::Link for aya::programs::tc::SchedClassifierLink
 pub type aya::programs::tc::SchedClassifierLink::Id = aya::programs::tc::SchedClassifierLinkId
 pub fn aya::programs::tc::SchedClassifierLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
 pub fn aya::programs::tc::SchedClassifierLink::id(&self) -> Self::Id
@@ -5729,14 +5729,14 @@ pub fn aya::programs::tp_btf::BtfTracePoint::borrow_mut(&mut self) -> &mut T
 impl<T> core::convert::From<T> for aya::programs::tp_btf::BtfTracePoint
 pub fn aya::programs::tp_btf::BtfTracePoint::from(t: T) -> T
 pub struct aya::programs::tp_btf::BtfTracePointLink(_)
-impl aya::programs::links::Link for aya::programs::tp_btf::BtfTracePointLink
+impl aya::links::Link for aya::programs::tp_btf::BtfTracePointLink
 pub type aya::programs::tp_btf::BtfTracePointLink::Id = aya::programs::tp_btf::BtfTracePointLinkId
 pub fn aya::programs::tp_btf::BtfTracePointLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
 pub fn aya::programs::tp_btf::BtfTracePointLink::id(&self) -> Self::Id
-impl core::convert::From<aya::programs::links::FdLink> for aya::programs::tp_btf::BtfTracePointLink
-pub fn aya::programs::tp_btf::BtfTracePointLink::from(b: aya::programs::links::FdLink) -> aya::programs::tp_btf::BtfTracePointLink
-impl core::convert::From<aya::programs::tp_btf::BtfTracePointLink> for aya::programs::links::FdLink
-pub fn aya::programs::links::FdLink::from(w: aya::programs::tp_btf::BtfTracePointLink) -> aya::programs::links::FdLink
+impl core::convert::From<aya::links::FdLink> for aya::programs::tp_btf::BtfTracePointLink
+pub fn aya::programs::tp_btf::BtfTracePointLink::from(b: aya::links::FdLink) -> aya::programs::tp_btf::BtfTracePointLink
+impl core::convert::From<aya::programs::tp_btf::BtfTracePointLink> for aya::links::FdLink
+pub fn aya::links::FdLink::from(w: aya::programs::tp_btf::BtfTracePointLink) -> aya::links::FdLink
 impl core::fmt::Debug for aya::programs::tp_btf::BtfTracePointLink
 pub fn aya::programs::tp_btf::BtfTracePointLink::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::ops::drop::Drop for aya::programs::tp_btf::BtfTracePointLink
@@ -5885,16 +5885,16 @@ pub fn aya::programs::trace_point::TracePoint::borrow_mut(&mut self) -> &mut T
 impl<T> core::convert::From<T> for aya::programs::trace_point::TracePoint
 pub fn aya::programs::trace_point::TracePoint::from(t: T) -> T
 pub struct aya::programs::trace_point::TracePointLink(_)
-impl aya::programs::links::Link for aya::programs::trace_point::TracePointLink
+impl aya::links::Link for aya::programs::trace_point::TracePointLink
 pub type aya::programs::trace_point::TracePointLink::Id = aya::programs::trace_point::TracePointLinkId
 pub fn aya::programs::trace_point::TracePointLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
 pub fn aya::programs::trace_point::TracePointLink::id(&self) -> Self::Id
-impl core::convert::TryFrom<aya::programs::links::FdLink> for aya::programs::trace_point::TracePointLink
-pub type aya::programs::trace_point::TracePointLink::Error = aya::programs::links::LinkError
-pub fn aya::programs::trace_point::TracePointLink::try_from(fd_link: aya::programs::links::FdLink) -> core::result::Result<Self, Self::Error>
-impl core::convert::TryFrom<aya::programs::trace_point::TracePointLink> for aya::programs::links::FdLink
-pub type aya::programs::links::FdLink::Error = aya::programs::links::LinkError
-pub fn aya::programs::links::FdLink::try_from(value: aya::programs::trace_point::TracePointLink) -> core::result::Result<Self, Self::Error>
+impl core::convert::TryFrom<aya::links::FdLink> for aya::programs::trace_point::TracePointLink
+pub type aya::programs::trace_point::TracePointLink::Error = aya::links::LinkError
+pub fn aya::programs::trace_point::TracePointLink::try_from(fd_link: aya::links::FdLink) -> core::result::Result<Self, Self::Error>
+impl core::convert::TryFrom<aya::programs::trace_point::TracePointLink> for aya::links::FdLink
+pub type aya::links::FdLink::Error = aya::links::LinkError
+pub fn aya::links::FdLink::try_from(value: aya::programs::trace_point::TracePointLink) -> core::result::Result<Self, Self::Error>
 impl core::fmt::Debug for aya::programs::trace_point::TracePointLink
 pub fn aya::programs::trace_point::TracePointLink::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::ops::drop::Drop for aya::programs::trace_point::TracePointLink
@@ -6050,16 +6050,16 @@ pub fn aya::programs::uprobe::UProbe::borrow_mut(&mut self) -> &mut T
 impl<T> core::convert::From<T> for aya::programs::uprobe::UProbe
 pub fn aya::programs::uprobe::UProbe::from(t: T) -> T
 pub struct aya::programs::uprobe::UProbeLink(_)
-impl aya::programs::links::Link for aya::programs::uprobe::UProbeLink
+impl aya::links::Link for aya::programs::uprobe::UProbeLink
 pub type aya::programs::uprobe::UProbeLink::Id = aya::programs::uprobe::UProbeLinkId
 pub fn aya::programs::uprobe::UProbeLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
 pub fn aya::programs::uprobe::UProbeLink::id(&self) -> Self::Id
-impl core::convert::TryFrom<aya::programs::links::FdLink> for aya::programs::uprobe::UProbeLink
-pub type aya::programs::uprobe::UProbeLink::Error = aya::programs::links::LinkError
-pub fn aya::programs::uprobe::UProbeLink::try_from(fd_link: aya::programs::links::FdLink) -> core::result::Result<Self, Self::Error>
-impl core::convert::TryFrom<aya::programs::uprobe::UProbeLink> for aya::programs::links::FdLink
-pub type aya::programs::links::FdLink::Error = aya::programs::links::LinkError
-pub fn aya::programs::links::FdLink::try_from(value: aya::programs::uprobe::UProbeLink) -> core::result::Result<Self, Self::Error>
+impl core::convert::TryFrom<aya::links::FdLink> for aya::programs::uprobe::UProbeLink
+pub type aya::programs::uprobe::UProbeLink::Error = aya::links::LinkError
+pub fn aya::programs::uprobe::UProbeLink::try_from(fd_link: aya::links::FdLink) -> core::result::Result<Self, Self::Error>
+impl core::convert::TryFrom<aya::programs::uprobe::UProbeLink> for aya::links::FdLink
+pub type aya::links::FdLink::Error = aya::links::LinkError
+pub fn aya::links::FdLink::try_from(value: aya::programs::uprobe::UProbeLink) -> core::result::Result<Self, Self::Error>
 impl core::fmt::Debug for aya::programs::uprobe::UProbeLink
 pub fn aya::programs::uprobe::UProbeLink::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::ops::drop::Drop for aya::programs::uprobe::UProbeLink
@@ -6323,16 +6323,16 @@ pub unsafe fn aya::programs::xdp::XdpFlags::clone_to_uninit(&self, dst: *mut T)
 impl<T> core::convert::From<T> for aya::programs::xdp::XdpFlags
 pub fn aya::programs::xdp::XdpFlags::from(t: T) -> T
 pub struct aya::programs::xdp::XdpLink(_)
-impl aya::programs::links::Link for aya::programs::xdp::XdpLink
+impl aya::links::Link for aya::programs::xdp::XdpLink
 pub type aya::programs::xdp::XdpLink::Id = aya::programs::xdp::XdpLinkId
 pub fn aya::programs::xdp::XdpLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
 pub fn aya::programs::xdp::XdpLink::id(&self) -> Self::Id
-impl core::convert::TryFrom<aya::programs::links::FdLink> for aya::programs::xdp::XdpLink
-pub type aya::programs::xdp::XdpLink::Error = aya::programs::links::LinkError
-pub fn aya::programs::xdp::XdpLink::try_from(fd_link: aya::programs::links::FdLink) -> core::result::Result<Self, Self::Error>
-impl core::convert::TryFrom<aya::programs::xdp::XdpLink> for aya::programs::links::FdLink
-pub type aya::programs::links::FdLink::Error = aya::programs::links::LinkError
-pub fn aya::programs::links::FdLink::try_from(value: aya::programs::xdp::XdpLink) -> core::result::Result<Self, Self::Error>
+impl core::convert::TryFrom<aya::links::FdLink> for aya::programs::xdp::XdpLink
+pub type aya::programs::xdp::XdpLink::Error = aya::links::LinkError
+pub fn aya::programs::xdp::XdpLink::try_from(fd_link: aya::links::FdLink) -> core::result::Result<Self, Self::Error>
+impl core::convert::TryFrom<aya::programs::xdp::XdpLink> for aya::links::FdLink
+pub type aya::links::FdLink::Error = aya::links::LinkError
+pub fn aya::links::FdLink::try_from(value: aya::programs::xdp::XdpLink) -> core::result::Result<Self, Self::Error>
 impl core::fmt::Debug for aya::programs::xdp::XdpLink
 pub fn aya::programs::xdp::XdpLink::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::ops::drop::Drop for aya::programs::xdp::XdpLink
@@ -8568,118 +8568,6 @@ impl<T> core::clone::CloneToUninit for aya::programs::xdp::XdpFlags where T: cor
 pub unsafe fn aya::programs::xdp::XdpFlags::clone_to_uninit(&self, dst: *mut T)
 impl<T> core::convert::From<T> for aya::programs::xdp::XdpFlags
 pub fn aya::programs::xdp::XdpFlags::from(t: T) -> T
-pub trait aya::programs::Link: core::fmt::Debug + 'static
-pub type aya::programs::Link::Id: core::fmt::Debug + core::hash::Hash + core::cmp::Eq + core::cmp::PartialEq
-pub fn aya::programs::Link::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::Link::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::cgroup_device::CgroupDeviceLink
-pub type aya::programs::cgroup_device::CgroupDeviceLink::Id = aya::programs::cgroup_device::CgroupDeviceLinkId
-pub fn aya::programs::cgroup_device::CgroupDeviceLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::cgroup_device::CgroupDeviceLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::cgroup_skb::CgroupSkbLink
-pub type aya::programs::cgroup_skb::CgroupSkbLink::Id = aya::programs::cgroup_skb::CgroupSkbLinkId
-pub fn aya::programs::cgroup_skb::CgroupSkbLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::cgroup_skb::CgroupSkbLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::cgroup_sock::CgroupSockLink
-pub type aya::programs::cgroup_sock::CgroupSockLink::Id = aya::programs::cgroup_sock::CgroupSockLinkId
-pub fn aya::programs::cgroup_sock::CgroupSockLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::cgroup_sock::CgroupSockLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::cgroup_sock_addr::CgroupSockAddrLink
-pub type aya::programs::cgroup_sock_addr::CgroupSockAddrLink::Id = aya::programs::cgroup_sock_addr::CgroupSockAddrLinkId
-pub fn aya::programs::cgroup_sock_addr::CgroupSockAddrLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::cgroup_sock_addr::CgroupSockAddrLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::cgroup_sockopt::CgroupSockoptLink
-pub type aya::programs::cgroup_sockopt::CgroupSockoptLink::Id = aya::programs::cgroup_sockopt::CgroupSockoptLinkId
-pub fn aya::programs::cgroup_sockopt::CgroupSockoptLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::cgroup_sockopt::CgroupSockoptLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::cgroup_sysctl::CgroupSysctlLink
-pub type aya::programs::cgroup_sysctl::CgroupSysctlLink::Id = aya::programs::cgroup_sysctl::CgroupSysctlLinkId
-pub fn aya::programs::cgroup_sysctl::CgroupSysctlLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::cgroup_sysctl::CgroupSysctlLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::extension::ExtensionLink
-pub type aya::programs::extension::ExtensionLink::Id = aya::programs::extension::ExtensionLinkId
-pub fn aya::programs::extension::ExtensionLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::extension::ExtensionLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::fentry::FEntryLink
-pub type aya::programs::fentry::FEntryLink::Id = aya::programs::fentry::FEntryLinkId
-pub fn aya::programs::fentry::FEntryLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::fentry::FEntryLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::fexit::FExitLink
-pub type aya::programs::fexit::FExitLink::Id = aya::programs::fexit::FExitLinkId
-pub fn aya::programs::fexit::FExitLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::fexit::FExitLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::kprobe::KProbeLink
-pub type aya::programs::kprobe::KProbeLink::Id = aya::programs::kprobe::KProbeLinkId
-pub fn aya::programs::kprobe::KProbeLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::kprobe::KProbeLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::links::FdLink
-pub type aya::programs::links::FdLink::Id = aya::programs::links::FdLinkId
-pub fn aya::programs::links::FdLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::links::FdLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::links::ProgAttachLink
-pub type aya::programs::links::ProgAttachLink::Id = aya::programs::links::ProgAttachLinkId
-pub fn aya::programs::links::ProgAttachLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::links::ProgAttachLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::lirc_mode2::LircLink
-pub type aya::programs::lirc_mode2::LircLink::Id = aya::programs::lirc_mode2::LircLinkId
-pub fn aya::programs::lirc_mode2::LircLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::lirc_mode2::LircLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::lsm::LsmLink
-pub type aya::programs::lsm::LsmLink::Id = aya::programs::lsm::LsmLinkId
-pub fn aya::programs::lsm::LsmLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::lsm::LsmLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::perf_attach::PerfLink
-pub type aya::programs::perf_attach::PerfLink::Id = aya::programs::perf_attach::PerfLinkId
-pub fn aya::programs::perf_attach::PerfLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::perf_attach::PerfLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::perf_event::PerfEventLink
-pub type aya::programs::perf_event::PerfEventLink::Id = aya::programs::perf_event::PerfEventLinkId
-pub fn aya::programs::perf_event::PerfEventLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::perf_event::PerfEventLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::raw_trace_point::RawTracePointLink
-pub type aya::programs::raw_trace_point::RawTracePointLink::Id = aya::programs::raw_trace_point::RawTracePointLinkId
-pub fn aya::programs::raw_trace_point::RawTracePointLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::raw_trace_point::RawTracePointLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::sk_lookup::SkLookupLink
-pub type aya::programs::sk_lookup::SkLookupLink::Id = aya::programs::sk_lookup::SkLookupLinkId
-pub fn aya::programs::sk_lookup::SkLookupLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::sk_lookup::SkLookupLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::sk_msg::SkMsgLink
-pub type aya::programs::sk_msg::SkMsgLink::Id = aya::programs::sk_msg::SkMsgLinkId
-pub fn aya::programs::sk_msg::SkMsgLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::sk_msg::SkMsgLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::sk_skb::SkSkbLink
-pub type aya::programs::sk_skb::SkSkbLink::Id = aya::programs::sk_skb::SkSkbLinkId
-pub fn aya::programs::sk_skb::SkSkbLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::sk_skb::SkSkbLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::sock_ops::SockOpsLink
-pub type aya::programs::sock_ops::SockOpsLink::Id = aya::programs::sock_ops::SockOpsLinkId
-pub fn aya::programs::sock_ops::SockOpsLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::sock_ops::SockOpsLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::socket_filter::SocketFilterLink
-pub type aya::programs::socket_filter::SocketFilterLink::Id = aya::programs::socket_filter::SocketFilterLinkId
-pub fn aya::programs::socket_filter::SocketFilterLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::socket_filter::SocketFilterLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::tc::SchedClassifierLink
-pub type aya::programs::tc::SchedClassifierLink::Id = aya::programs::tc::SchedClassifierLinkId
-pub fn aya::programs::tc::SchedClassifierLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::tc::SchedClassifierLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::tp_btf::BtfTracePointLink
-pub type aya::programs::tp_btf::BtfTracePointLink::Id = aya::programs::tp_btf::BtfTracePointLinkId
-pub fn aya::programs::tp_btf::BtfTracePointLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::tp_btf::BtfTracePointLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::trace_point::TracePointLink
-pub type aya::programs::trace_point::TracePointLink::Id = aya::programs::trace_point::TracePointLinkId
-pub fn aya::programs::trace_point::TracePointLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::trace_point::TracePointLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::uprobe::UProbeLink
-pub type aya::programs::uprobe::UProbeLink::Id = aya::programs::uprobe::UProbeLinkId
-pub fn aya::programs::uprobe::UProbeLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::uprobe::UProbeLink::id(&self) -> Self::Id
-impl aya::programs::links::Link for aya::programs::xdp::XdpLink
-pub type aya::programs::xdp::XdpLink::Id = aya::programs::xdp::XdpLinkId
-pub fn aya::programs::xdp::XdpLink::detach(self) -> core::result::Result<(), aya::programs::ProgramError>
-pub fn aya::programs::xdp::XdpLink::id(&self) -> Self::Id
 pub fn aya::programs::loaded_programs() -> impl core::iter::traits::iterator::Iterator<Item = core::result::Result<aya::programs::ProgramInfo, aya::programs::ProgramError>>
 pub mod aya::util
 pub struct aya::util::KernelVersion
