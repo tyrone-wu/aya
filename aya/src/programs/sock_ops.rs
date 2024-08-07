@@ -1,12 +1,13 @@
 //! Socket option programs.
+
 use std::os::fd::AsFd;
 
-use crate::{
-    generated::{bpf_attach_type::BPF_CGROUP_SOCK_OPS, bpf_prog_type::BPF_PROG_TYPE_SOCK_OPS},
-    programs::{
-        define_link_wrapper, load_program, ProgAttachLink, ProgAttachLinkId, ProgramData,
-        ProgramError,
-    },
+use aya_obj::generated::{
+    bpf_attach_type::BPF_CGROUP_SOCK_OPS, bpf_prog_type::BPF_PROG_TYPE_SOCK_OPS,
+};
+
+use crate::programs::{
+    define_link_wrapper, load_program, ProgAttachLink, ProgAttachLinkId, ProgramData, ProgramError,
 };
 
 /// A program used to work with sockets.

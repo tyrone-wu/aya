@@ -8,30 +8,27 @@ use std::{
 };
 
 use assert_matches::assert_matches;
-use libc::{ENOENT, ENOSPC};
-use obj::{
-    btf::{BtfEnum64, Enum64},
-    maps::{bpf_map_def, LegacyMap},
-    EbpfSectionKind, VerifierLog,
-};
-
-use crate::{
+use aya_obj::{
+    btf::{
+        Btf, BtfEnum64, BtfParam, BtfType, DataSec, DataSecEntry, DeclTag, Enum64, Float, Func,
+        FuncLinkage, FuncProto, FuncSecInfo, Int, IntEncoding, LineSecInfo, Ptr, TypeTag, Var,
+        VarLinkage,
+    },
+    copy_instructions,
     generated::{
         bpf_attach_type, bpf_attr, bpf_btf_info, bpf_cmd, bpf_insn, bpf_link_info, bpf_map_info,
         bpf_map_type, bpf_prog_info, bpf_prog_type, BPF_F_REPLACE,
     },
+    maps::{bpf_map_def, LegacyMap},
+    EbpfSectionKind, VerifierLog,
+};
+use libc::{ENOENT, ENOSPC};
+
+use crate::{
     maps::{MapData, PerCpuValues},
-    obj::{
-        self,
-        btf::{
-            BtfParam, BtfType, DataSec, DataSecEntry, DeclTag, Float, Func, FuncLinkage, FuncProto,
-            FuncSecInfo, Int, IntEncoding, LineSecInfo, Ptr, TypeTag, Var, VarLinkage,
-        },
-        copy_instructions,
-    },
     sys::{syscall, SysResult, Syscall, SyscallError},
     util::KernelVersion,
-    Btf, Pod, VerifierLogLevel, BPF_OBJ_NAME_LEN,
+    Pod, VerifierLogLevel, BPF_OBJ_NAME_LEN,
 };
 
 pub(crate) fn bpf_create_map(

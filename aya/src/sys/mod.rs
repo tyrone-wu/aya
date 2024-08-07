@@ -11,6 +11,7 @@ use std::{
     os::fd::{AsRawFd as _, BorrowedFd},
 };
 
+use aya_obj::generated::{bpf_attr, bpf_cmd, perf_event_attr};
 pub(crate) use bpf::*;
 #[cfg(test)]
 pub(crate) use fake::*;
@@ -20,8 +21,6 @@ pub use netlink::netlink_set_link_up;
 pub(crate) use netlink::*;
 pub(crate) use perf_event::*;
 use thiserror::Error;
-
-use crate::generated::{bpf_attr, bpf_cmd, perf_event_attr};
 
 pub(crate) type SysResult<T> = Result<T, (i64, io::Error)>;
 

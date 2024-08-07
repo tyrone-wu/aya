@@ -1,4 +1,5 @@
 //! Program links.
+
 use std::{
     collections::{hash_map::Entry, HashMap},
     ffi::CString,
@@ -7,10 +8,10 @@ use std::{
     path::{Path, PathBuf},
 };
 
+use aya_obj::generated::bpf_attach_type;
 use thiserror::Error;
 
 use crate::{
-    generated::bpf_attach_type,
     pin::PinError,
     programs::{ProgramError, ProgramFd},
     sys::{bpf_get_object, bpf_pin_object, bpf_prog_attach, bpf_prog_detach, SyscallError},

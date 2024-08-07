@@ -199,14 +199,14 @@ mod tests {
     use std::{io, net::Ipv4Addr};
 
     use assert_matches::assert_matches;
+    use aya_obj::generated::{
+        bpf_cmd,
+        bpf_map_type::{BPF_MAP_TYPE_ARRAY, BPF_MAP_TYPE_LPM_TRIE},
+    };
     use libc::{EFAULT, ENOENT};
 
     use super::*;
     use crate::{
-        generated::{
-            bpf_cmd,
-            bpf_map_type::{BPF_MAP_TYPE_ARRAY, BPF_MAP_TYPE_LPM_TRIE},
-        },
         maps::{
             test_utils::{self, new_map},
             Map,

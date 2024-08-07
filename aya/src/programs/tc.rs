@@ -6,12 +6,12 @@ use std::{
     path::Path,
 };
 
+use aya_obj::generated::{
+    bpf_prog_type::BPF_PROG_TYPE_SCHED_CLS, TC_H_CLSACT, TC_H_MIN_EGRESS, TC_H_MIN_INGRESS,
+};
 use thiserror::Error;
 
 use crate::{
-    generated::{
-        bpf_prog_type::BPF_PROG_TYPE_SCHED_CLS, TC_H_CLSACT, TC_H_MIN_EGRESS, TC_H_MIN_INGRESS,
-    },
     programs::{define_link_wrapper, load_program, Link, ProgramData, ProgramError},
     sys::{
         netlink_find_filter_with_name, netlink_qdisc_add_clsact, netlink_qdisc_attach,

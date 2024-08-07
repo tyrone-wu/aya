@@ -106,14 +106,14 @@ mod tests {
     use std::io;
 
     use assert_matches::assert_matches;
+    use aya_obj::generated::{
+        bpf_attr, bpf_cmd,
+        bpf_map_type::{BPF_MAP_TYPE_HASH, BPF_MAP_TYPE_LRU_HASH},
+    };
     use libc::{EFAULT, ENOENT};
 
     use super::*;
     use crate::{
-        generated::{
-            bpf_attr, bpf_cmd,
-            bpf_map_type::{BPF_MAP_TYPE_HASH, BPF_MAP_TYPE_LRU_HASH},
-        },
         maps::{
             test_utils::{self, new_map},
             Map,

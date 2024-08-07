@@ -59,15 +59,16 @@ use std::{
     ptr,
 };
 
-use aya_obj::generated::bpf_map_type;
+use aya_obj::{
+    generated::{bpf_map_info, bpf_map_type},
+    maps::{InvalidMapTypeError, PinningType},
+    parse_map_info, EbpfSectionKind,
+};
 use libc::{getrlimit, rlim_t, rlimit, RLIMIT_MEMLOCK, RLIM_INFINITY};
 use log::warn;
-use obj::maps::InvalidMapTypeError;
 use thiserror::Error;
 
 use crate::{
-    generated::bpf_map_info,
-    obj::{self, parse_map_info, EbpfSectionKind},
     pin::PinError,
     sys::{
         bpf_create_map, bpf_get_object, bpf_map_freeze, bpf_map_get_fd_by_id,
@@ -75,7 +76,7 @@ use crate::{
         iter_map_ids, SyscallError,
     },
     util::{bytes_of_bpf_name, nr_cpus, KernelVersion},
-    PinningType, Pod,
+    Pod,
 };
 
 pub mod array;
@@ -1066,11 +1067,14 @@ pub fn loaded_maps() -> impl Iterator<Item = Result<MapInfo, MapError>> {
 
 #[cfg(test)]
 mod test_utils {
-    use crate::{
-        bpf_map_def,
+    use aya_obj::{
         generated::{bpf_cmd, bpf_map_type},
+        maps::{bpf_map_def, LegacyMap},
+        EbpfSectionKind,
+    };
+
+    use crate::{
         maps::MapData,
-        obj::{maps::LegacyMap, EbpfSectionKind},
         sys::{override_syscall, Syscall},
     };
 
@@ -1126,17 +1130,15 @@ mod tests {
     use std::os::fd::AsRawFd as _;
 
     use assert_matches::assert_matches;
+    use aya_obj::generated::bpf_cmd;
     use libc::{c_char, EFAULT};
 
     fn new_obj_map() -> aya_obj::maps::Map {
-        test_utils::new_obj_map::<u32>(crate::generated::bpf_map_type::BPF_MAP_TYPE_HASH)
+        test_utils::new_obj_map::<u32>(aya_obj::generated::bpf_map_type::BPF_MAP_TYPE_HASH)
     }
 
     use super::*;
-    use crate::{
-        generated::bpf_cmd,
-        sys::{override_syscall, Syscall},
-    };
+    use crate::sys::{override_syscall, Syscall};
 
     #[test]
     fn test_from_map_id() {
@@ -1208,7 +1210,7 @@ mod tests {
         // Create with max_entries > ncpus is clamped to ncpus
         assert_matches!(
             MapData::create(test_utils::new_obj_map_with_max_entries::<u32>(
-                crate::generated::bpf_map_type::BPF_MAP_TYPE_PERF_EVENT_ARRAY,
+                aya_obj::generated::bpf_map_type::BPF_MAP_TYPE_PERF_EVENT_ARRAY,
                 65535,
             ), "foo", None),
             Ok(MapData {
@@ -1223,7 +1225,7 @@ mod tests {
         // Create with max_entries = 0 is set to ncpus
         assert_matches!(
             MapData::create(test_utils::new_obj_map_with_max_entries::<u32>(
-                crate::generated::bpf_map_type::BPF_MAP_TYPE_PERF_EVENT_ARRAY,
+                aya_obj::generated::bpf_map_type::BPF_MAP_TYPE_PERF_EVENT_ARRAY,
                 0,
             ), "foo", None),
             Ok(MapData {
@@ -1238,7 +1240,7 @@ mod tests {
         // Create with max_entries < ncpus is unchanged
         assert_matches!(
             MapData::create(test_utils::new_obj_map_with_max_entries::<u32>(
-                crate::generated::bpf_map_type::BPF_MAP_TYPE_PERF_EVENT_ARRAY,
+                aya_obj::generated::bpf_map_type::BPF_MAP_TYPE_PERF_EVENT_ARRAY,
                 1,
             ), "foo", None),
             Ok(MapData {
@@ -1257,7 +1259,7 @@ mod tests {
         ignore = "`let map_info = unsafe { &mut *(attr.info.info as *mut bpf_map_info) }` is trying to retag from <wildcard> for Unique permission, but no exposed tags have suitable permission in the borrow stack for this location"
     )]
     fn test_name() {
-        use crate::generated::bpf_map_info;
+        use aya_obj::generated::bpf_map_info;
 
         const TEST_NAME: &str = "foo";
 
@@ -1293,7 +1295,7 @@ mod tests {
         ignore = "`let map_info = unsafe { &mut *(attr.info.info as *mut bpf_map_info) }` is trying to retag from <wildcard> for Unique permission, but no exposed tags have suitable permission in the borrow stack for this location"
     )]
     fn test_loaded_maps() {
-        use crate::generated::bpf_map_info;
+        use aya_obj::generated::bpf_map_info;
 
         override_syscall(|call| match call {
             Syscall::Ebpf {
