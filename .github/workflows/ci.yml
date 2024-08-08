@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - aya/link-info
 
   pull_request:
     branches:
