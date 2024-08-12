@@ -1,4 +1,7 @@
+//! System call related operations.
+
 mod bpf;
+pub(crate) mod feature_probes;
 mod netlink;
 mod perf_event;
 
