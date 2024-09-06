@@ -12,6 +12,7 @@ homepage.workspace = true
 edition.workspace = true
 
 [dependencies]
+aya-ebpf = { path = "../ebpf/aya-ebpf", version = "^0.1.0", default-features = false }
 bytes = { workspace = true }
 core-error = { workspace = true, default-features = true }
 hashbrown = { workspace = true, default-features = true }
