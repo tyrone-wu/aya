@@ -14,7 +14,7 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
-  LLVM_VERSION: 18
+  LLVM_VERSION: 19
 
 jobs:
   lint:
@@ -196,6 +196,12 @@ jobs:
         with:
           submodules: recursive
 
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: nightly
+          components: rust-src
+          targets: aarch64-unknown-linux-musl,x86_64-unknown-linux-musl
+
       - name: Install prerequisites
         if: runner.os == 'Linux'
         # ubuntu-22.04 comes with clang 14[0] which doesn't include support for signed and 64bit
@@ -228,7 +234,9 @@ jobs:
         #
         # The clang shipped on macOS doesn't support BPF, so we need LLVM from brew.
         #
-        # We also need LLVM for bpf-linker, see comment below.
+        # We also need the newest LLVM static libraries for bpf-linker, potentially newer than the
+        # ones packaged in brew. Therefore, we use the LLVM tarball from Rust CI. That tarball does
+        # not provide clang, it provides only static libs.
         run: |
           set -euxo pipefail
           brew update
@@ -241,18 +249,30 @@ jobs:
           echo $(brew --prefix)/opt/gnu-tar/libexec/gnubin >> $GITHUB_PATH
           echo $(brew --prefix)/opt/llvm/bin >> $GITHUB_PATH
 
-      - uses: dtolnay/rust-toolchain@master
-        with:
-          toolchain: nightly
-          components: rust-src
-          targets: aarch64-unknown-linux-musl,x86_64-unknown-linux-musl
+          # LLVM packaged in brew is usually too old for bpf-linker or any other package repository for macOS.
+          # Use LLVM tarball from Rust CI.
+
+          # Get the partial SHA from Rust nightly.
+          rustc_sha=$(rustc +nightly --version | grep -oE '[a-f0-9]{7,40}')
+          # Get the full SHA from GitHub.
+          rustc_sha=$(curl -s https://api.github.com/repos/rust-lang/rust/commits/$rustc_sha \
+            --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+            --header 'content-type: application/json' \
+            | jq -r '.sha')
+          mkdir -p /usr/local/lib/rustc-llvm
+          wget -q -O - https://ci-artifacts.rust-lang.org/rustc-builds/$rustc_sha/rust-dev-nightly-x86_64-apple-darwin.tar.xz | \
+            tar -xJ --strip-components 2 -C /usr/local/lib/rustc-llvm
+          echo /usr/local/lib/rust-llvm >> $GITHUB_PATH
 
       - uses: Swatinem/rust-cache@v2
 
       - name: bpf-linker
         if: runner.os == 'macOS'
         # NB: rustc doesn't ship libLLVM.so on macOS, so disable proxying (default feature). We also
-        # --force so that bpf-linker gets always relinked against the latest LLVM installed by brew.
+        # --force so that bpf-linker gets always relinked against the latest LLVM from the Rust CI
+        # tarball.
+        env:
+          LLVM_SYS_191_PREFIX: /usr/local/lib/rustc-llvm
         run: cargo install --force bpf-linker --git https://github.com/aya-rs/bpf-linker.git --no-default-features
 
       - name: Download debian kernels
