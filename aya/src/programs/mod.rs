@@ -68,6 +68,7 @@ pub mod tp_btf;
 pub mod trace_point;
 pub mod uprobe;
 pub mod xdp;
+pub mod netfilter;
 
 use std::{
     ffi::CString,
