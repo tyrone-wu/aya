@@ -91,6 +91,16 @@ impl LinkInfo {
                     target_btf_id,
                 })
             }
+            LinkType::Cgroup => {
+                // SAFETY: union access
+                let cgroup = unsafe { &self.0.__bindgen_anon_1.cgroup };
+                let attach_type = AttachType::try_from(cgroup.attach_type);
+
+                Ok(LinkMetadata::Cgroup {
+                    id: cgroup.cgroup_id,
+                    attach_type,
+                })
+            }
             _ => Ok(LinkMetadata::NotImplemented),
         }
     }
@@ -143,6 +153,16 @@ pub enum LinkMetadata {
         ///
         /// Introduced in kernel v5.13.
         target_btf_id: Option<u32>,
+    },
+
+    /// [`LinkType::Cgroup`] metadata.
+    ///
+    /// Introduced in kernel v5.8.
+    Cgroup {
+        /// The ID of the cGroup that the link is attached to.
+        id: u64,
+        /// The [`AttachType`] of the link.
+        attach_type: Result<AttachType, LinkError>,
     },
 
     /// For metadata that have not been implemented yet.

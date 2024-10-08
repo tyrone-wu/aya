@@ -5,14 +5,21 @@
 //       isn't supported on the kernel.
 //       Issue is that `bpf_obj_get_info_by_fd()` will need to be public. :/
 
-use std::{fs, panic, path::Path, time::SystemTime};
+use std::{
+    fs::{self, File},
+    panic,
+    path::Path,
+    time::SystemTime,
+};
 
 use assert_matches::assert_matches;
 use aya::{
     features,
     links::{loaded_links, AttachType, LinkInfo, LinkMetadata, LinkType},
     maps::{loaded_maps, Array, HashMap, IterableMap as _, MapType},
-    programs::{loaded_programs, FEntry, ProgramType, RawTracePoint, SocketFilter, TracePoint},
+    programs::{
+        loaded_programs, CgroupSkb, FEntry, ProgramType, RawTracePoint, SocketFilter, TracePoint,
+    },
     sys::enable_stats,
     util::KernelVersion,
     Btf, Ebpf,
@@ -405,6 +412,55 @@ fn test_link_info_tracing() {
             ));
             kernel_assert!(target_obj_id.is_some(), KernelVersion::new(5, 13, 0));
             kernel_assert!(target_btf_id.is_some(), KernelVersion::new(5, 13, 0));
+        }
+    ));
+}
+
+#[test]
+fn test_link_info_cgroup() {
+    let mut bpf: Ebpf = Ebpf::load(crate::TEST).unwrap();
+    let prog: &mut CgroupSkb = bpf.program_mut("cgroup_skb").unwrap().try_into().unwrap();
+    if let Err(err) = prog.load() {
+        if is_prog_einval(&err) {
+            eprintln!(
+                "ignoring test completely as `BPF_PROG_TYPE_CGROUP_SKB` is not available on the host"
+            );
+            return;
+        }
+        panic!("{err}");
+    }
+    prog.attach(
+        File::open("/sys/fs/cgroup").unwrap(),
+        aya::programs::cgroup_skb::CgroupSkbAttachType::Ingress,
+        aya::programs::links::CgroupAttachMode::Single,
+    )
+    .unwrap();
+
+    let link_info = match get_link_info() {
+        Some(info) => info,
+        None => return,
+    };
+
+    assert_matches!(link_info.link_type(), Ok(link_type) => kernel_assert_eq!(
+        LinkType::Cgroup,
+        link_type,
+        KernelVersion::new(5, 8, 0),
+    ));
+    kernel_assert!(link_info.id() > 0, KernelVersion::new(5, 8, 0));
+    assert_matches!(prog.info(), Ok(prog_info) => kernel_assert_eq!(
+        prog_info.id(),
+        link_info.program_id(),
+        KernelVersion::new(5, 8, 0),
+    ));
+    assert_matches!(link_info.metadata(), Ok(metadata) => assert_matches!(
+        metadata,
+        LinkMetadata::Cgroup { id, attach_type } => {
+            kernel_assert_eq!(1, id, KernelVersion::new(5, 8, 0));
+            assert_matches!(attach_type, Ok(attach_type) => kernel_assert_eq!(
+                AttachType::CgroupInetIngress,
+                attach_type,
+                KernelVersion::new(5, 8, 0),
+            ));
         }
     ));
 }
