@@ -198,3 +198,19 @@ impl TryFrom<u32> for crate::generated::bpf_cgroup_iter_order {
         })
     }
 }
+
+impl TryFrom<u32> for crate::generated::nf_inet_hooks {
+    type Error = InvalidTypeBinding<u32>;
+
+    fn try_from(hook: u32) -> Result<Self, Self::Error> {
+        use crate::generated::nf_inet_hooks::*;
+        Ok(match hook {
+            x if x == NF_INET_PRE_ROUTING as u32 => NF_INET_PRE_ROUTING,
+            x if x == NF_INET_LOCAL_IN as u32 => NF_INET_LOCAL_IN,
+            x if x == NF_INET_FORWARD as u32 => NF_INET_FORWARD,
+            x if x == NF_INET_LOCAL_OUT as u32 => NF_INET_LOCAL_OUT,
+            x if x == NF_INET_POST_ROUTING as u32 => NF_INET_POST_ROUTING,
+            _ => return Err(InvalidTypeBinding { value: hook }),
+        })
+    }
+}

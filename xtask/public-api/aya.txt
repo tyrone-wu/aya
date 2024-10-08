@@ -104,6 +104,51 @@ impl<T> core::clone::CloneToUninit for aya::links::AttachType where T: core::clo
 pub unsafe fn aya::links::AttachType::clone_to_uninit(&self, dst: *mut T)
 impl<T> core::convert::From<T> for aya::links::AttachType
 pub fn aya::links::AttachType::from(t: T) -> T
+pub enum aya::links::InetHook
+pub aya::links::InetHook::Forward = 2
+pub aya::links::InetHook::LocalIn = 1
+pub aya::links::InetHook::LocalOut = 3
+pub aya::links::InetHook::PostRouting = 4
+pub aya::links::InetHook::PreRouting = 0
+impl core::clone::Clone for aya::links::InetHook
+pub fn aya::links::InetHook::clone(&self) -> aya::links::InetHook
+impl core::cmp::PartialEq for aya::links::InetHook
+pub fn aya::links::InetHook::eq(&self, other: &aya::links::InetHook) -> bool
+impl core::convert::TryFrom<aya_obj::generated::linux_bindings_x86_64::nf_inet_hooks> for aya::links::InetHook
+pub type aya::links::InetHook::Error = aya::programs::links::LinkError
+pub fn aya::links::InetHook::try_from(hook: aya_obj::generated::linux_bindings_x86_64::nf_inet_hooks) -> core::result::Result<Self, Self::Error>
+impl core::fmt::Debug for aya::links::InetHook
+pub fn aya::links::InetHook::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+impl core::marker::Copy for aya::links::InetHook
+impl core::marker::StructuralPartialEq for aya::links::InetHook
+impl core::marker::Freeze for aya::links::InetHook
+impl core::marker::Send for aya::links::InetHook
+impl core::marker::Sync for aya::links::InetHook
+impl core::marker::Unpin for aya::links::InetHook
+impl core::panic::unwind_safe::RefUnwindSafe for aya::links::InetHook
+impl core::panic::unwind_safe::UnwindSafe for aya::links::InetHook
+impl<T, U> core::convert::Into<U> for aya::links::InetHook where U: core::convert::From<T>
+pub fn aya::links::InetHook::into(self) -> U
+impl<T, U> core::convert::TryFrom<U> for aya::links::InetHook where U: core::convert::Into<T>
+pub type aya::links::InetHook::Error = core::convert::Infallible
+pub fn aya::links::InetHook::try_from(value: U) -> core::result::Result<T, <T as core::convert::TryFrom<U>>::Error>
+impl<T, U> core::convert::TryInto<U> for aya::links::InetHook where U: core::convert::TryFrom<T>
+pub type aya::links::InetHook::Error = <U as core::convert::TryFrom<T>>::Error
+pub fn aya::links::InetHook::try_into(self) -> core::result::Result<U, <U as core::convert::TryFrom<T>>::Error>
+impl<T> alloc::borrow::ToOwned for aya::links::InetHook where T: core::clone::Clone
+pub type aya::links::InetHook::Owned = T
+pub fn aya::links::InetHook::clone_into(&self, target: &mut T)
+pub fn aya::links::InetHook::to_owned(&self) -> T
+impl<T> core::any::Any for aya::links::InetHook where T: 'static + core::marker::Sized
+pub fn aya::links::InetHook::type_id(&self) -> core::any::TypeId
+impl<T> core::borrow::Borrow<T> for aya::links::InetHook where T: core::marker::Sized
+pub fn aya::links::InetHook::borrow(&self) -> &T
+impl<T> core::borrow::BorrowMut<T> for aya::links::InetHook where T: core::marker::Sized
+pub fn aya::links::InetHook::borrow_mut(&mut self) -> &mut T
+impl<T> core::clone::CloneToUninit for aya::links::InetHook where T: core::clone::Clone
+pub unsafe fn aya::links::InetHook::clone_to_uninit(&self, dst: *mut T)
+impl<T> core::convert::From<T> for aya::links::InetHook
+pub fn aya::links::InetHook::from(t: T) -> T
 pub enum aya::links::LinkMetadata
 pub aya::links::LinkMetadata::Cgroup
 pub aya::links::LinkMetadata::Cgroup::attach_type: core::result::Result<aya::links::AttachType, aya::programs::links::LinkError>
@@ -134,6 +179,10 @@ pub aya::links::LinkMetadata::KProbeMulti::return_probe: bool
 pub aya::links::LinkMetadata::NetNs
 pub aya::links::LinkMetadata::NetNs::attach_type: core::result::Result<aya::links::AttachType, aya::programs::links::LinkError>
 pub aya::links::LinkMetadata::NetNs::net_namespace_inode: u32
+pub aya::links::LinkMetadata::Netfilter
+pub aya::links::LinkMetadata::Netfilter::hook: core::result::Result<aya::links::InetHook, aya::programs::links::LinkError>
+pub aya::links::LinkMetadata::Netfilter::priority: i32
+pub aya::links::LinkMetadata::Netfilter::protocol_family: core::result::Result<aya::links::ProtocolFamily, aya::programs::links::LinkError>
 pub aya::links::LinkMetadata::NotAvailable
 pub aya::links::LinkMetadata::PerfEvent
 pub aya::links::LinkMetadata::PerfEvent::cookie: u64
@@ -242,6 +291,48 @@ impl<T> core::clone::CloneToUninit for aya::links::LinkType where T: core::clone
 pub unsafe fn aya::links::LinkType::clone_to_uninit(&self, dst: *mut T)
 impl<T> core::convert::From<T> for aya::links::LinkType
 pub fn aya::links::LinkType::from(t: T) -> T
+pub enum aya::links::ProtocolFamily
+pub aya::links::ProtocolFamily::Ipv4 = 2
+pub aya::links::ProtocolFamily::Ipv6 = 10
+impl core::clone::Clone for aya::links::ProtocolFamily
+pub fn aya::links::ProtocolFamily::clone(&self) -> aya::links::ProtocolFamily
+impl core::cmp::PartialEq for aya::links::ProtocolFamily
+pub fn aya::links::ProtocolFamily::eq(&self, other: &aya::links::ProtocolFamily) -> bool
+impl core::convert::TryFrom<u32> for aya::links::ProtocolFamily
+pub type aya::links::ProtocolFamily::Error = aya::programs::links::LinkError
+pub fn aya::links::ProtocolFamily::try_from(pf: u32) -> core::result::Result<Self, Self::Error>
+impl core::fmt::Debug for aya::links::ProtocolFamily
+pub fn aya::links::ProtocolFamily::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+impl core::marker::Copy for aya::links::ProtocolFamily
+impl core::marker::StructuralPartialEq for aya::links::ProtocolFamily
+impl core::marker::Freeze for aya::links::ProtocolFamily
+impl core::marker::Send for aya::links::ProtocolFamily
+impl core::marker::Sync for aya::links::ProtocolFamily
+impl core::marker::Unpin for aya::links::ProtocolFamily
+impl core::panic::unwind_safe::RefUnwindSafe for aya::links::ProtocolFamily
+impl core::panic::unwind_safe::UnwindSafe for aya::links::ProtocolFamily
+impl<T, U> core::convert::Into<U> for aya::links::ProtocolFamily where U: core::convert::From<T>
+pub fn aya::links::ProtocolFamily::into(self) -> U
+impl<T, U> core::convert::TryFrom<U> for aya::links::ProtocolFamily where U: core::convert::Into<T>
+pub type aya::links::ProtocolFamily::Error = core::convert::Infallible
+pub fn aya::links::ProtocolFamily::try_from(value: U) -> core::result::Result<T, <T as core::convert::TryFrom<U>>::Error>
+impl<T, U> core::convert::TryInto<U> for aya::links::ProtocolFamily where U: core::convert::TryFrom<T>
+pub type aya::links::ProtocolFamily::Error = <U as core::convert::TryFrom<T>>::Error
+pub fn aya::links::ProtocolFamily::try_into(self) -> core::result::Result<U, <U as core::convert::TryFrom<T>>::Error>
+impl<T> alloc::borrow::ToOwned for aya::links::ProtocolFamily where T: core::clone::Clone
+pub type aya::links::ProtocolFamily::Owned = T
+pub fn aya::links::ProtocolFamily::clone_into(&self, target: &mut T)
+pub fn aya::links::ProtocolFamily::to_owned(&self) -> T
+impl<T> core::any::Any for aya::links::ProtocolFamily where T: 'static + core::marker::Sized
+pub fn aya::links::ProtocolFamily::type_id(&self) -> core::any::TypeId
+impl<T> core::borrow::Borrow<T> for aya::links::ProtocolFamily where T: core::marker::Sized
+pub fn aya::links::ProtocolFamily::borrow(&self) -> &T
+impl<T> core::borrow::BorrowMut<T> for aya::links::ProtocolFamily where T: core::marker::Sized
+pub fn aya::links::ProtocolFamily::borrow_mut(&mut self) -> &mut T
+impl<T> core::clone::CloneToUninit for aya::links::ProtocolFamily where T: core::clone::Clone
+pub unsafe fn aya::links::ProtocolFamily::clone_to_uninit(&self, dst: *mut T)
+impl<T> core::convert::From<T> for aya::links::ProtocolFamily
+pub fn aya::links::ProtocolFamily::from(t: T) -> T
 pub struct aya::links::LinkInfo(_)
 impl aya::links::LinkInfo
 pub fn aya::links::LinkInfo::from_id(id: u32) -> core::result::Result<Self, aya::programs::links::LinkError>

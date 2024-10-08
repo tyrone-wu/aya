@@ -7,8 +7,9 @@ use std::{
 
 use aya_obj::generated::{
     bpf_attach_type, bpf_cgroup_iter_order, bpf_link_info, bpf_link_type, bpf_perf_event_type,
-    perf_hw_cache_id, perf_hw_cache_op_id, perf_hw_cache_op_result_id, perf_hw_id, perf_sw_ids,
-    perf_type_id, BPF_F_KPROBE_MULTI_RETURN, BPF_F_UPROBE_MULTI_RETURN,
+    nf_inet_hooks, perf_hw_cache_id, perf_hw_cache_op_id, perf_hw_cache_op_result_id, perf_hw_id,
+    perf_sw_ids, perf_type_id, BPF_F_KPROBE_MULTI_RETURN, BPF_F_UPROBE_MULTI_RETURN, NFPROTO_IPV4,
+    NFPROTO_IPV6,
 };
 
 #[allow(unused_imports)] // Used in rustdoc linking
@@ -188,6 +189,27 @@ impl LinkInfo {
                 Ok(LinkMetadata::Xdp {
                     interface_index: xdp.ifindex,
                     interface_name,
+                })
+            }
+            LinkType::Netfilter => {
+                // SAFETY: union access
+                let netfilter = unsafe { &self.0.__bindgen_anon_1.netfilter };
+                if netfilter.pf == 0 {
+                    return Ok(LinkMetadata::NotAvailable);
+                }
+
+                let protocol_family = ProtocolFamily::try_from(netfilter.pf);
+                let hook = nf_inet_hooks::try_from(netfilter.hooknum)
+                    .unwrap_or(nf_inet_hooks::NF_INET_NUMHOOKS)
+                    .try_into();
+                // Kernel bug: The `netfilter.flags` field is never populated (remains 0).
+                // let defrag = (netfilter.flags & BPF_F_NETFILTER_IP_DEFRAG) != 0;
+
+                Ok(LinkMetadata::Netfilter {
+                    protocol_family,
+                    hook,
+                    priority: netfilter.priority,
+                    // defrag,
                 })
             }
             LinkType::KProbeMulti => {
@@ -572,6 +594,22 @@ pub enum LinkMetadata {
         ///
         /// `None` is returned if the name was not valid unicode.
         interface_name: Option<String>,
+    },
+
+    /// [`LinkType::Netfilter`] metadata.
+    ///
+    /// Introduced in kernel v6.4.
+    Netfilter {
+        /// The protocol family of the packets to intercept.
+        protocol_family: Result<ProtocolFamily, LinkError>,
+        /// The netfilter hook location that the link is attached to.
+        hook: Result<InetHook, LinkError>,
+        /// The priority of the netfilter function.
+        priority: i32,
+        // /// Whether IP packet defragmentation is enabled.
+        // ///
+        // /// Note this field is bugged in that it is never populated, so this is always `false`.
+        // defrag: bool,
     },
 
     /// [`LinkType::KProbeMulti`] metadata.
@@ -1304,6 +1342,72 @@ impl TryFrom<bpf_cgroup_iter_order> for CgroupIterOrder {
             BPF_CGROUP_ITER_DESCENDANTS_PRE => Self::DescendantsPre,
             BPF_CGROUP_ITER_DESCENDANTS_POST => Self::DescendantsPost,
             BPF_CGROUP_ITER_ANCESTORS_UP => Self::AncestorsUp,
+            _ => return Err(LinkError::InvalidAttachment),
+        })
+    }
+}
+
+/// The protocol/address family of the packets to process or intercept.
+///
+/// Note that BPF netfilter only supports `NFPROTO_IPV4` and `NFPROTO_IPV6`.
+// TODO: move this into appropriate location once this program type is implemented
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum ProtocolFamily {
+    /// Target IPv4 packets.
+    #[doc(alias = "NFPROTO_IPV4")]
+    Ipv4 = NFPROTO_IPV4 as isize,
+    /// Target IPv6 packets.
+    #[doc(alias = "NFPROTO_IPV6")]
+    Ipv6 = NFPROTO_IPV6 as isize,
+}
+
+impl TryFrom<u32> for ProtocolFamily {
+    type Error = LinkError;
+
+    fn try_from(pf: u32) -> Result<Self, Self::Error> {
+        Ok(match pf {
+            NFPROTO_IPV4 => Self::Ipv4,
+            NFPROTO_IPV6 => Self::Ipv6,
+            _ => return Err(LinkError::InvalidAttachment),
+        })
+    }
+}
+
+/// The hook location in the network stack.
+// TODO: move this into appropriate location once this program type is implemented
+#[doc(alias = "nf_inet_hooks")]
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum InetHook {
+    /// When an incoming packet has entered the network stack, and before the routing decision is made.
+    #[doc(alias = "NF_INET_PRE_ROUTING")]
+    PreRouting = nf_inet_hooks::NF_INET_PRE_ROUTING as isize,
+    /// After the routing decision of an incoming packet is determined and is destined for the
+    /// current host.
+    #[doc(alias = "NF_INET_LOCAL_IN")]
+    LocalIn = nf_inet_hooks::NF_INET_LOCAL_IN as isize,
+    /// After the routing decision of a packet is determined, and its forwarded destination is not
+    /// the current host.
+    #[doc(alias = "NF_INET_FORWARD")]
+    Forward = nf_inet_hooks::NF_INET_FORWARD as isize,
+    /// Packets created by the current host that are destined outbound. This is after the outgoing
+    /// packet has hit the network stack, and before the routing decision is made.
+    #[doc(alias = "NF_INET_LOCAL_OUT")]
+    LocalOut = nf_inet_hooks::NF_INET_LOCAL_OUT as isize,
+    /// After the routing decision of an outgoing packet is determined, before leaving the host.
+    #[doc(alias = "NF_INET_POST_ROUTING")]
+    PostRouting = nf_inet_hooks::NF_INET_POST_ROUTING as isize,
+}
+
+impl TryFrom<nf_inet_hooks> for InetHook {
+    type Error = LinkError;
+
+    fn try_from(hook: nf_inet_hooks) -> Result<Self, Self::Error> {
+        Ok(match hook {
+            nf_inet_hooks::NF_INET_PRE_ROUTING => Self::PreRouting,
+            nf_inet_hooks::NF_INET_LOCAL_IN => Self::LocalIn,
+            nf_inet_hooks::NF_INET_FORWARD => Self::Forward,
+            nf_inet_hooks::NF_INET_LOCAL_OUT => Self::LocalOut,
+            nf_inet_hooks::NF_INET_POST_ROUTING => Self::PostRouting,
             _ => return Err(LinkError::InvalidAttachment),
         })
     }
