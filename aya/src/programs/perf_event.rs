@@ -23,7 +23,7 @@ use crate::{
 
 /// The type of perf event and their respective configuration.
 #[doc(alias = "perf_type_id")]
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum PerfEventConfig {
     /// The hardware event to report.
     #[doc(alias = "PERF_TYPE_HARDWARE")]
@@ -82,7 +82,7 @@ pub enum PerfEventConfig {
 
 /// The "generalized" hardware CPU events provided by the kernel.
 #[doc(alias = "perf_hw_id")]
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum HardwareEvent {
     /// The total CPU cycles.
     #[doc(alias = "PERF_COUNT_HW_CPU_CYCLES")]
@@ -118,7 +118,7 @@ pub enum HardwareEvent {
 
 /// The software-defined events provided by the kernel.
 #[doc(alias = "perf_sw_ids")]
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum SoftwareEvent {
     /// The CPU clock timer.
     #[doc(alias = "PERF_COUNT_SW_CPU_CLOCK")]
@@ -160,7 +160,7 @@ pub enum SoftwareEvent {
 
 /// The hardware CPU cache events.
 #[doc(alias = "perf_hw_cache_id")]
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum HwCacheEvent {
     /// Measures Level 1 data cache.
     #[doc(alias = "PERF_COUNT_HW_CACHE_L1D")]
@@ -187,7 +187,7 @@ pub enum HwCacheEvent {
 
 /// The hardware CPU cache operations.
 #[doc(alias = "perf_hw_cache_op_id")]
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum HwCacheOp {
     /// Read access.
     #[doc(alias = "PERF_COUNT_HW_CACHE_OP_READ")]
@@ -202,7 +202,7 @@ pub enum HwCacheOp {
 
 /// The hardware CPU cache result.
 #[doc(alias = "perf_hw_cache_op_result_id")]
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum HwCacheResult {
     /// Cache accesses.
     #[doc(alias = "PERF_COUNT_HW_CACHE_RESULT_ACCESS")]
@@ -425,3 +425,87 @@ define_link_wrapper!(
     PerfLinkInner,
     PerfLinkIdInner
 );
+
+impl TryFrom<perf_hw_id> for HardwareEvent {
+    type Error = LinkError;
+
+    fn try_from(hw_id: perf_hw_id) -> Result<Self, Self::Error> {
+        Ok(match hw_id {
+            perf_hw_id::PERF_COUNT_HW_CPU_CYCLES => Self::CpuCycles,
+            perf_hw_id::PERF_COUNT_HW_INSTRUCTIONS => Self::Instructions,
+            perf_hw_id::PERF_COUNT_HW_CACHE_REFERENCES => Self::CacheReferences,
+            perf_hw_id::PERF_COUNT_HW_CACHE_MISSES => Self::CacheMisses,
+            perf_hw_id::PERF_COUNT_HW_BRANCH_INSTRUCTIONS => Self::BranchInstructions,
+            perf_hw_id::PERF_COUNT_HW_BRANCH_MISSES => Self::BranchMisses,
+            perf_hw_id::PERF_COUNT_HW_BUS_CYCLES => Self::BusCycles,
+            perf_hw_id::PERF_COUNT_HW_STALLED_CYCLES_FRONTEND => Self::StalledCyclesFrontend,
+            perf_hw_id::PERF_COUNT_HW_STALLED_CYCLES_BACKEND => Self::StalledCyclesBackend,
+            perf_hw_id::PERF_COUNT_HW_REF_CPU_CYCLES => Self::RefCpuCycles,
+            _ => return Err(LinkError::InvalidAttachment),
+        })
+    }
+}
+
+impl TryFrom<perf_sw_ids> for SoftwareEvent {
+    type Error = LinkError;
+
+    fn try_from(sw_id: perf_sw_ids) -> Result<Self, Self::Error> {
+        Ok(match sw_id {
+            perf_sw_ids::PERF_COUNT_SW_CPU_CLOCK => Self::CpuClock,
+            perf_sw_ids::PERF_COUNT_SW_TASK_CLOCK => Self::TaskClock,
+            perf_sw_ids::PERF_COUNT_SW_PAGE_FAULTS => Self::PageFaults,
+            perf_sw_ids::PERF_COUNT_SW_CONTEXT_SWITCHES => Self::ContextSwitches,
+            perf_sw_ids::PERF_COUNT_SW_CPU_MIGRATIONS => Self::CpuMigrations,
+            perf_sw_ids::PERF_COUNT_SW_PAGE_FAULTS_MIN => Self::PageFaultsMin,
+            perf_sw_ids::PERF_COUNT_SW_PAGE_FAULTS_MAJ => Self::PageFaultsMaj,
+            perf_sw_ids::PERF_COUNT_SW_ALIGNMENT_FAULTS => Self::AlignmentFaults,
+            perf_sw_ids::PERF_COUNT_SW_EMULATION_FAULTS => Self::EmulationFaults,
+            perf_sw_ids::PERF_COUNT_SW_DUMMY => Self::Dummy,
+            perf_sw_ids::PERF_COUNT_SW_BPF_OUTPUT => Self::BpfOutput,
+            perf_sw_ids::PERF_COUNT_SW_CGROUP_SWITCHES => Self::CgroupSwitches,
+            _ => return Err(LinkError::InvalidAttachment),
+        })
+    }
+}
+
+impl TryFrom<perf_hw_cache_id> for HwCacheEvent {
+    type Error = LinkError;
+
+    fn try_from(cache_id: perf_hw_cache_id) -> Result<Self, Self::Error> {
+        Ok(match cache_id {
+            perf_hw_cache_id::PERF_COUNT_HW_CACHE_L1D => Self::L1d,
+            perf_hw_cache_id::PERF_COUNT_HW_CACHE_L1I => Self::L1i,
+            perf_hw_cache_id::PERF_COUNT_HW_CACHE_LL => Self::Ll,
+            perf_hw_cache_id::PERF_COUNT_HW_CACHE_DTLB => Self::Dtlb,
+            perf_hw_cache_id::PERF_COUNT_HW_CACHE_ITLB => Self::Itlb,
+            perf_hw_cache_id::PERF_COUNT_HW_CACHE_BPU => Self::Bpu,
+            perf_hw_cache_id::PERF_COUNT_HW_CACHE_NODE => Self::Node,
+            _ => return Err(LinkError::InvalidAttachment),
+        })
+    }
+}
+
+impl TryFrom<perf_hw_cache_op_id> for HwCacheOp {
+    type Error = LinkError;
+
+    fn try_from(cache_op: perf_hw_cache_op_id) -> Result<Self, Self::Error> {
+        Ok(match cache_op {
+            perf_hw_cache_op_id::PERF_COUNT_HW_CACHE_OP_READ => Self::Read,
+            perf_hw_cache_op_id::PERF_COUNT_HW_CACHE_OP_WRITE => Self::Write,
+            perf_hw_cache_op_id::PERF_COUNT_HW_CACHE_OP_PREFETCH => Self::Prefetch,
+            _ => return Err(LinkError::InvalidAttachment),
+        })
+    }
+}
+
+impl TryFrom<perf_hw_cache_op_result_id> for HwCacheResult {
+    type Error = LinkError;
+
+    fn try_from(cache_res: perf_hw_cache_op_result_id) -> Result<Self, Self::Error> {
+        Ok(match cache_res {
+            perf_hw_cache_op_result_id::PERF_COUNT_HW_CACHE_RESULT_ACCESS => Self::Access,
+            perf_hw_cache_op_result_id::PERF_COUNT_HW_CACHE_RESULT_MISS => Self::Miss,
+            _ => return Err(LinkError::InvalidAttachment),
+        })
+    }
+}

@@ -1715,6 +1715,56 @@ impl<T> core::clone::CloneToUninit for aya_obj::generated::bpf_map_type where T:
 pub unsafe fn aya_obj::generated::bpf_map_type::clone_to_uninit(&self, dst: *mut T)
 impl<T> core::convert::From<T> for aya_obj::generated::bpf_map_type
 pub fn aya_obj::generated::bpf_map_type::from(t: T) -> T
+#[repr(u32)] pub enum aya_obj::generated::bpf_perf_event_type
+pub aya_obj::generated::bpf_perf_event_type::BPF_PERF_EVENT_EVENT = 6
+pub aya_obj::generated::bpf_perf_event_type::BPF_PERF_EVENT_KPROBE = 3
+pub aya_obj::generated::bpf_perf_event_type::BPF_PERF_EVENT_KRETPROBE = 4
+pub aya_obj::generated::bpf_perf_event_type::BPF_PERF_EVENT_TRACEPOINT = 5
+pub aya_obj::generated::bpf_perf_event_type::BPF_PERF_EVENT_UNSPEC = 0
+pub aya_obj::generated::bpf_perf_event_type::BPF_PERF_EVENT_UPROBE = 1
+pub aya_obj::generated::bpf_perf_event_type::BPF_PERF_EVENT_URETPROBE = 2
+impl core::clone::Clone for aya_obj::generated::bpf_perf_event_type
+pub fn aya_obj::generated::bpf_perf_event_type::clone(&self) -> aya_obj::generated::bpf_perf_event_type
+impl core::cmp::Eq for aya_obj::generated::bpf_perf_event_type
+impl core::cmp::PartialEq for aya_obj::generated::bpf_perf_event_type
+pub fn aya_obj::generated::bpf_perf_event_type::eq(&self, other: &aya_obj::generated::bpf_perf_event_type) -> bool
+impl core::convert::TryFrom<u32> for aya_obj::generated::bpf_perf_event_type
+pub type aya_obj::generated::bpf_perf_event_type::Error = aya_obj::InvalidTypeBinding<u32>
+pub fn aya_obj::generated::bpf_perf_event_type::try_from(prog_type: u32) -> core::result::Result<Self, Self::Error>
+impl core::fmt::Debug for aya_obj::generated::bpf_perf_event_type
+pub fn aya_obj::generated::bpf_perf_event_type::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+impl core::hash::Hash for aya_obj::generated::bpf_perf_event_type
+pub fn aya_obj::generated::bpf_perf_event_type::hash<__H: core::hash::Hasher>(&self, state: &mut __H)
+impl core::marker::Copy for aya_obj::generated::bpf_perf_event_type
+impl core::marker::StructuralPartialEq for aya_obj::generated::bpf_perf_event_type
+impl core::marker::Freeze for aya_obj::generated::bpf_perf_event_type
+impl core::marker::Send for aya_obj::generated::bpf_perf_event_type
+impl core::marker::Sync for aya_obj::generated::bpf_perf_event_type
+impl core::marker::Unpin for aya_obj::generated::bpf_perf_event_type
+impl core::panic::unwind_safe::RefUnwindSafe for aya_obj::generated::bpf_perf_event_type
+impl core::panic::unwind_safe::UnwindSafe for aya_obj::generated::bpf_perf_event_type
+impl<T, U> core::convert::Into<U> for aya_obj::generated::bpf_perf_event_type where U: core::convert::From<T>
+pub fn aya_obj::generated::bpf_perf_event_type::into(self) -> U
+impl<T, U> core::convert::TryFrom<U> for aya_obj::generated::bpf_perf_event_type where U: core::convert::Into<T>
+pub type aya_obj::generated::bpf_perf_event_type::Error = core::convert::Infallible
+pub fn aya_obj::generated::bpf_perf_event_type::try_from(value: U) -> core::result::Result<T, <T as core::convert::TryFrom<U>>::Error>
+impl<T, U> core::convert::TryInto<U> for aya_obj::generated::bpf_perf_event_type where U: core::convert::TryFrom<T>
+pub type aya_obj::generated::bpf_perf_event_type::Error = <U as core::convert::TryFrom<T>>::Error
+pub fn aya_obj::generated::bpf_perf_event_type::try_into(self) -> core::result::Result<U, <U as core::convert::TryFrom<T>>::Error>
+impl<T> alloc::borrow::ToOwned for aya_obj::generated::bpf_perf_event_type where T: core::clone::Clone
+pub type aya_obj::generated::bpf_perf_event_type::Owned = T
+pub fn aya_obj::generated::bpf_perf_event_type::clone_into(&self, target: &mut T)
+pub fn aya_obj::generated::bpf_perf_event_type::to_owned(&self) -> T
+impl<T> core::any::Any for aya_obj::generated::bpf_perf_event_type where T: 'static + core::marker::Sized
+pub fn aya_obj::generated::bpf_perf_event_type::type_id(&self) -> core::any::TypeId
+impl<T> core::borrow::Borrow<T> for aya_obj::generated::bpf_perf_event_type where T: core::marker::Sized
+pub fn aya_obj::generated::bpf_perf_event_type::borrow(&self) -> &T
+impl<T> core::borrow::BorrowMut<T> for aya_obj::generated::bpf_perf_event_type where T: core::marker::Sized
+pub fn aya_obj::generated::bpf_perf_event_type::borrow_mut(&mut self) -> &mut T
+impl<T> core::clone::CloneToUninit for aya_obj::generated::bpf_perf_event_type where T: core::clone::Clone
+pub unsafe fn aya_obj::generated::bpf_perf_event_type::clone_to_uninit(&self, dst: *mut T)
+impl<T> core::convert::From<T> for aya_obj::generated::bpf_perf_event_type
+pub fn aya_obj::generated::bpf_perf_event_type::from(t: T) -> T
 #[repr(u32)] pub enum aya_obj::generated::bpf_prog_type
 pub aya_obj::generated::bpf_prog_type::BPF_PROG_TYPE_CGROUP_DEVICE = 15
 pub aya_obj::generated::bpf_prog_type::BPF_PROG_TYPE_CGROUP_SKB = 8
@@ -2018,6 +2068,9 @@ pub fn aya_obj::generated::perf_hw_cache_id::clone(&self) -> aya_obj::generated:
 impl core::cmp::Eq for aya_obj::generated::perf_hw_cache_id
 impl core::cmp::PartialEq for aya_obj::generated::perf_hw_cache_id
 pub fn aya_obj::generated::perf_hw_cache_id::eq(&self, other: &aya_obj::generated::perf_hw_cache_id) -> bool
+impl core::convert::TryFrom<u64> for aya_obj::generated::perf_hw_cache_id
+pub type aya_obj::generated::perf_hw_cache_id::Error = aya_obj::InvalidTypeBinding<u64>
+pub fn aya_obj::generated::perf_hw_cache_id::try_from(cache_id: u64) -> core::result::Result<Self, Self::Error>
 impl core::fmt::Debug for aya_obj::generated::perf_hw_cache_id
 pub fn aya_obj::generated::perf_hw_cache_id::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::hash::Hash for aya_obj::generated::perf_hw_cache_id
@@ -2062,6 +2115,9 @@ pub fn aya_obj::generated::perf_hw_cache_op_id::clone(&self) -> aya_obj::generat
 impl core::cmp::Eq for aya_obj::generated::perf_hw_cache_op_id
 impl core::cmp::PartialEq for aya_obj::generated::perf_hw_cache_op_id
 pub fn aya_obj::generated::perf_hw_cache_op_id::eq(&self, other: &aya_obj::generated::perf_hw_cache_op_id) -> bool
+impl core::convert::TryFrom<u64> for aya_obj::generated::perf_hw_cache_op_id
+pub type aya_obj::generated::perf_hw_cache_op_id::Error = aya_obj::InvalidTypeBinding<u64>
+pub fn aya_obj::generated::perf_hw_cache_op_id::try_from(cache_op_id: u64) -> core::result::Result<Self, Self::Error>
 impl core::fmt::Debug for aya_obj::generated::perf_hw_cache_op_id
 pub fn aya_obj::generated::perf_hw_cache_op_id::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::hash::Hash for aya_obj::generated::perf_hw_cache_op_id
@@ -2105,6 +2161,9 @@ pub fn aya_obj::generated::perf_hw_cache_op_result_id::clone(&self) -> aya_obj::
 impl core::cmp::Eq for aya_obj::generated::perf_hw_cache_op_result_id
 impl core::cmp::PartialEq for aya_obj::generated::perf_hw_cache_op_result_id
 pub fn aya_obj::generated::perf_hw_cache_op_result_id::eq(&self, other: &aya_obj::generated::perf_hw_cache_op_result_id) -> bool
+impl core::convert::TryFrom<u64> for aya_obj::generated::perf_hw_cache_op_result_id
+pub type aya_obj::generated::perf_hw_cache_op_result_id::Error = aya_obj::InvalidTypeBinding<u64>
+pub fn aya_obj::generated::perf_hw_cache_op_result_id::try_from(hw_cache_res: u64) -> core::result::Result<Self, Self::Error>
 impl core::fmt::Debug for aya_obj::generated::perf_hw_cache_op_result_id
 pub fn aya_obj::generated::perf_hw_cache_op_result_id::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::hash::Hash for aya_obj::generated::perf_hw_cache_op_result_id
@@ -2156,6 +2215,9 @@ pub fn aya_obj::generated::perf_hw_id::clone(&self) -> aya_obj::generated::perf_
 impl core::cmp::Eq for aya_obj::generated::perf_hw_id
 impl core::cmp::PartialEq for aya_obj::generated::perf_hw_id
 pub fn aya_obj::generated::perf_hw_id::eq(&self, other: &aya_obj::generated::perf_hw_id) -> bool
+impl core::convert::TryFrom<u64> for aya_obj::generated::perf_hw_id
+pub type aya_obj::generated::perf_hw_id::Error = aya_obj::InvalidTypeBinding<u64>
+pub fn aya_obj::generated::perf_hw_id::try_from(hw_id: u64) -> core::result::Result<Self, Self::Error>
 impl core::fmt::Debug for aya_obj::generated::perf_hw_id
 pub fn aya_obj::generated::perf_hw_id::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::hash::Hash for aya_obj::generated::perf_hw_id
@@ -2209,6 +2271,9 @@ pub fn aya_obj::generated::perf_sw_ids::clone(&self) -> aya_obj::generated::perf
 impl core::cmp::Eq for aya_obj::generated::perf_sw_ids
 impl core::cmp::PartialEq for aya_obj::generated::perf_sw_ids
 pub fn aya_obj::generated::perf_sw_ids::eq(&self, other: &aya_obj::generated::perf_sw_ids) -> bool
+impl core::convert::TryFrom<u64> for aya_obj::generated::perf_sw_ids
+pub type aya_obj::generated::perf_sw_ids::Error = aya_obj::InvalidTypeBinding<u64>
+pub fn aya_obj::generated::perf_sw_ids::try_from(sw_id: u64) -> core::result::Result<Self, Self::Error>
 impl core::fmt::Debug for aya_obj::generated::perf_sw_ids
 pub fn aya_obj::generated::perf_sw_ids::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::hash::Hash for aya_obj::generated::perf_sw_ids
@@ -2256,6 +2321,9 @@ pub fn aya_obj::generated::perf_type_id::clone(&self) -> aya_obj::generated::per
 impl core::cmp::Eq for aya_obj::generated::perf_type_id
 impl core::cmp::PartialEq for aya_obj::generated::perf_type_id
 pub fn aya_obj::generated::perf_type_id::eq(&self, other: &aya_obj::generated::perf_type_id) -> bool
+impl core::convert::TryFrom<u32> for aya_obj::generated::perf_type_id
+pub type aya_obj::generated::perf_type_id::Error = aya_obj::InvalidTypeBinding<u32>
+pub fn aya_obj::generated::perf_type_id::try_from(perf_type: u32) -> core::result::Result<Self, Self::Error>
 impl core::fmt::Debug for aya_obj::generated::perf_type_id
 pub fn aya_obj::generated::perf_type_id::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::hash::Hash for aya_obj::generated::perf_type_id
@@ -6545,21 +6613,22 @@ pub const aya_obj::generated::TCA_BPF_OPS_LEN: aya_obj::generated::_bindgen_ty_1
 pub const aya_obj::generated::TCA_BPF_POLICE: aya_obj::generated::_bindgen_ty_152
 pub const aya_obj::generated::TCA_BPF_TAG: aya_obj::generated::_bindgen_ty_152
 pub const aya_obj::generated::TCA_BPF_UNSPEC: aya_obj::generated::_bindgen_ty_152
-pub const aya_obj::generated::TCA_CHAIN: aya_obj::generated::_bindgen_ty_170
-pub const aya_obj::generated::TCA_DUMP_INVISIBLE: aya_obj::generated::_bindgen_ty_170
-pub const aya_obj::generated::TCA_EGRESS_BLOCK: aya_obj::generated::_bindgen_ty_170
-pub const aya_obj::generated::TCA_FCNT: aya_obj::generated::_bindgen_ty_170
-pub const aya_obj::generated::TCA_HW_OFFLOAD: aya_obj::generated::_bindgen_ty_170
-pub const aya_obj::generated::TCA_INGRESS_BLOCK: aya_obj::generated::_bindgen_ty_170
-pub const aya_obj::generated::TCA_KIND: aya_obj::generated::_bindgen_ty_170
-pub const aya_obj::generated::TCA_OPTIONS: aya_obj::generated::_bindgen_ty_170
-pub const aya_obj::generated::TCA_PAD: aya_obj::generated::_bindgen_ty_170
-pub const aya_obj::generated::TCA_RATE: aya_obj::generated::_bindgen_ty_170
-pub const aya_obj::generated::TCA_STAB: aya_obj::generated::_bindgen_ty_170
-pub const aya_obj::generated::TCA_STATS: aya_obj::generated::_bindgen_ty_170
-pub const aya_obj::generated::TCA_STATS2: aya_obj::generated::_bindgen_ty_170
-pub const aya_obj::generated::TCA_UNSPEC: aya_obj::generated::_bindgen_ty_170
-pub const aya_obj::generated::TCA_XSTATS: aya_obj::generated::_bindgen_ty_170
+pub const aya_obj::generated::TCA_CHAIN: aya_obj::generated::_bindgen_ty_172
+pub const aya_obj::generated::TCA_DUMP_FLAGS: aya_obj::generated::_bindgen_ty_172
+pub const aya_obj::generated::TCA_DUMP_INVISIBLE: aya_obj::generated::_bindgen_ty_172
+pub const aya_obj::generated::TCA_EGRESS_BLOCK: aya_obj::generated::_bindgen_ty_172
+pub const aya_obj::generated::TCA_FCNT: aya_obj::generated::_bindgen_ty_172
+pub const aya_obj::generated::TCA_HW_OFFLOAD: aya_obj::generated::_bindgen_ty_172
+pub const aya_obj::generated::TCA_INGRESS_BLOCK: aya_obj::generated::_bindgen_ty_172
+pub const aya_obj::generated::TCA_KIND: aya_obj::generated::_bindgen_ty_172
+pub const aya_obj::generated::TCA_OPTIONS: aya_obj::generated::_bindgen_ty_172
+pub const aya_obj::generated::TCA_PAD: aya_obj::generated::_bindgen_ty_172
+pub const aya_obj::generated::TCA_RATE: aya_obj::generated::_bindgen_ty_172
+pub const aya_obj::generated::TCA_STAB: aya_obj::generated::_bindgen_ty_172
+pub const aya_obj::generated::TCA_STATS: aya_obj::generated::_bindgen_ty_172
+pub const aya_obj::generated::TCA_STATS2: aya_obj::generated::_bindgen_ty_172
+pub const aya_obj::generated::TCA_UNSPEC: aya_obj::generated::_bindgen_ty_172
+pub const aya_obj::generated::TCA_XSTATS: aya_obj::generated::_bindgen_ty_172
 pub const aya_obj::generated::TC_H_CLSACT: u32
 pub const aya_obj::generated::TC_H_INGRESS: u32
 pub const aya_obj::generated::TC_H_MAJ_MASK: u32
@@ -6578,7 +6647,7 @@ pub const aya_obj::generated::XDP_FLAGS_SKB_MODE: u32
 pub const aya_obj::generated::XDP_FLAGS_UPDATE_IF_NOEXIST: u32
 pub const aya_obj::generated::__IFLA_XDP_MAX: aya_obj::generated::_bindgen_ty_92
 pub const aya_obj::generated::__TCA_BPF_MAX: aya_obj::generated::_bindgen_ty_152
-pub const aya_obj::generated::__TCA_MAX: aya_obj::generated::_bindgen_ty_170
+pub const aya_obj::generated::__TCA_MAX: aya_obj::generated::_bindgen_ty_172
 pub type aya_obj::generated::__s16 = core::ffi::c_short
 pub type aya_obj::generated::__s32 = core::ffi::c_int
 pub type aya_obj::generated::__s64 = core::ffi::c_longlong
@@ -6594,7 +6663,7 @@ pub type aya_obj::generated::_bindgen_ty_14 = core::ffi::c_ulong
 pub type aya_obj::generated::_bindgen_ty_15 = core::ffi::c_int
 pub type aya_obj::generated::_bindgen_ty_152 = core::ffi::c_uint
 pub type aya_obj::generated::_bindgen_ty_17 = core::ffi::c_uint
-pub type aya_obj::generated::_bindgen_ty_170 = core::ffi::c_uint
+pub type aya_obj::generated::_bindgen_ty_172 = core::ffi::c_uint
 pub type aya_obj::generated::_bindgen_ty_19 = core::ffi::c_uint
 pub type aya_obj::generated::_bindgen_ty_2 = core::ffi::c_uint
 pub type aya_obj::generated::_bindgen_ty_21 = core::ffi::c_uint

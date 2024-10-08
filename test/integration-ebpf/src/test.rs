@@ -4,12 +4,12 @@
 use aya_ebpf::{
     bindings::xdp_action,
     macros::{
-        cgroup_skb, fentry, kprobe, kretprobe, raw_tracepoint, sk_lookup, tracepoint, uprobe,
-        uretprobe, xdp,
+        cgroup_skb, fentry, kprobe, kretprobe, perf_event, raw_tracepoint, sk_lookup, tracepoint,
+        uprobe, uretprobe, xdp,
     },
     programs::{
-        FEntryContext, ProbeContext, RawTracePointContext, RetProbeContext, SkBuffContext,
-        SkLookupContext, TracePointContext, XdpContext,
+        FEntryContext, PerfEventContext, ProbeContext, RawTracePointContext, RetProbeContext,
+        SkBuffContext, SkLookupContext, TracePointContext, XdpContext,
     },
 };
 
@@ -67,6 +67,11 @@ pub fn cgroup_skb(_ctx: SkBuffContext) -> i32 {
 
 #[sk_lookup]
 pub fn test_sk_lookup(_ctx: SkLookupContext) -> u32 {
+    0
+}
+
+#[perf_event]
+pub fn test_perf_event(_ctx: PerfEventContext) -> u32 {
     0
 }
 
