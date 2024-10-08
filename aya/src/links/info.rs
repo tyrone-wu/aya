@@ -8,7 +8,7 @@ use std::{
 use aya_obj::generated::{
     bpf_attach_type, bpf_cgroup_iter_order, bpf_link_info, bpf_link_type, bpf_perf_event_type,
     perf_hw_cache_id, perf_hw_cache_op_id, perf_hw_cache_op_result_id, perf_hw_id, perf_sw_ids,
-    perf_type_id,
+    perf_type_id, BPF_F_KPROBE_MULTI_RETURN, BPF_F_UPROBE_MULTI_RETURN,
 };
 
 #[allow(unused_imports)] // Used in rustdoc linking
@@ -188,6 +188,79 @@ impl LinkInfo {
                 Ok(LinkMetadata::Xdp {
                     interface_index: xdp.ifindex,
                     interface_name,
+                })
+            }
+            LinkType::KProbeMulti => {
+                // SAFETY: union access
+                let kprobe_multi = unsafe { &self.0.__bindgen_anon_1.kprobe_multi };
+                if kprobe_multi.count == 0 {
+                    return Ok(LinkMetadata::NotAvailable);
+                }
+
+                let count = kprobe_multi.count as usize;
+                let mut addrs = vec![0u64; count];
+                let mut cookies = vec![0u64; count];
+                bpf_link_get_info_by_fd(self.fd()?.as_fd(), |info: &mut bpf_link_info| {
+                    info.__bindgen_anon_1.kprobe_multi.addrs = addrs.as_mut_ptr() as _;
+                    info.__bindgen_anon_1.kprobe_multi.cookies = cookies.as_mut_ptr() as _;
+                    info.__bindgen_anon_1.kprobe_multi.count = kprobe_multi.count;
+                })?;
+                let attach_data = addrs.into_iter().zip(cookies).collect();
+                let return_probe = (kprobe_multi.flags & BPF_F_KPROBE_MULTI_RETURN) != 0;
+
+                Ok(LinkMetadata::KProbeMulti {
+                    attach_data,
+                    return_probe,
+                    misses: kprobe_multi.missed,
+                })
+            }
+            LinkType::UProbeMulti => {
+                // SAFETY: union access
+                let uprobe_multi = unsafe { &self.0.__bindgen_anon_1.uprobe_multi };
+                if uprobe_multi.count == 0 {
+                    return Ok(LinkMetadata::NotAvailable);
+                }
+
+                // Kernel bug: The `path_size` field is only populated on the second/returned
+                // after filling `path` & `path_size`.
+                let mut path = [0_u8; libc::PATH_MAX as usize];
+                let count = uprobe_multi.count as usize;
+                let mut offsets = vec![0u64; count];
+                let mut ref_ctr_offsets = vec![0u64; count];
+                let mut cookies = vec![0u64; count];
+                let ret_info =
+                    bpf_link_get_info_by_fd(self.fd()?.as_fd(), |info: &mut bpf_link_info| {
+                        // SAFETY: union access
+                        let uprobe_multi_attr = unsafe { &mut info.__bindgen_anon_1.uprobe_multi };
+
+                        uprobe_multi_attr.path = path.as_mut_ptr() as _;
+                        uprobe_multi_attr.path_size = libc::PATH_MAX as u32;
+
+                        uprobe_multi_attr.offsets = offsets.as_mut_ptr() as _;
+                        uprobe_multi_attr.ref_ctr_offsets = ref_ctr_offsets.as_mut_ptr() as _;
+                        uprobe_multi_attr.cookies = cookies.as_mut_ptr() as _;
+                        uprobe_multi_attr.count = uprobe_multi.count;
+                    })?;
+                // Actual path size on return info, without null terminator.
+                let path_size = unsafe { &ret_info.__bindgen_anon_1.uprobe_multi }
+                    .path_size
+                    .saturating_sub(1) as usize;
+                let file_path = str::from_utf8(&path[..path_size])
+                    .map(ToOwned::to_owned)
+                    .ok();
+                let attach_data = offsets
+                    .into_iter()
+                    .zip(ref_ctr_offsets)
+                    .zip(cookies)
+                    .map(|((o, r), c)| (o, r, c))
+                    .collect();
+                let return_probe = (uprobe_multi.flags & BPF_F_UPROBE_MULTI_RETURN) != 0;
+
+                Ok(LinkMetadata::UProbeMulti {
+                    file_path,
+                    attach_data,
+                    return_probe,
+                    pid: uprobe_multi.pid,
                 })
             }
             LinkType::PerfEvent => {
@@ -499,6 +572,51 @@ pub enum LinkMetadata {
         ///
         /// `None` is returned if the name was not valid unicode.
         interface_name: Option<String>,
+    },
+
+    /// [`LinkType::KProbeMulti`] metadata.
+    ///
+    /// Introduced in kernel v6.6.
+    /// Availability of fields may vary depending on kernel version.
+    KProbeMulti {
+        /// The list of (`address`, `cookie`) pairs attached to this link.
+        ///
+        /// The first element is the memory address of the kernel symbol.
+        /// Introduced in kernel v6.6.
+        ///
+        /// The second element is the cookie passed when attaching the program.
+        /// Introduced in kernel v6.9.
+        attach_data: Vec<(u64, u64)>,
+        /// Whether the `KProbe` program is a return probe.
+        ///
+        /// Introduced in kernel v6.6.
+        return_probe: bool,
+        /// The number of times the program missed execute when the probe point was triggered.
+        ///
+        /// Introduced in kernel v6.7.
+        misses: u64,
+    },
+
+    /// [`LinkType::UProbeMulti`] metadata.
+    ///
+    /// Introduced in kernel v6.8.
+    UProbeMulti {
+        /// The absolute file path that the link is attached to.
+        ///
+        /// `None` is returned if the name was not valid unicode.
+        file_path: Option<String>,
+        /// The list of (`offset`, `ref_ctr_offset`, `cookie`) tuples attached to this link.
+        ///
+        /// The first element is the offset into the function/symbol in the target file.
+        ///
+        /// The second element is the reference counter offsets.
+        ///
+        /// The third element is the cookie passed when attaching the program.
+        attach_data: Vec<(u64, u64, u64)>,
+        /// Whether the `UProbe` program is a return probe.
+        return_probe: bool,
+        /// The process ID that the `UProbe` is attached to.
+        pid: u32,
     },
 
     /// [`LinkType::PerfEvent`] metadata for `UProbe` programs.
