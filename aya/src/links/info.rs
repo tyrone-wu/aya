@@ -5,12 +5,18 @@ use std::{
     str,
 };
 
-use aya_obj::generated::{bpf_attach_type, bpf_link_info, bpf_link_type};
+use aya_obj::generated::{
+    bpf_attach_type, bpf_link_info, bpf_link_type, bpf_perf_event_type, perf_hw_cache_id,
+    perf_hw_cache_op_id, perf_hw_cache_op_result_id, perf_hw_id, perf_sw_ids, perf_type_id,
+};
 
 #[allow(unused_imports)] // Used in rustdoc linking
 use crate::programs::ProgramType;
 use crate::{
-    programs::links::{FdLink, LinkError},
+    programs::{
+        links::{FdLink, LinkError},
+        perf_event::PerfEventConfig,
+    },
     sys::{bpf_link_get_fd_by_id, bpf_link_get_info_by_fd, iter_link_ids},
     util::bytes_of_bpf_name,
 };
@@ -134,6 +140,163 @@ impl LinkInfo {
                     interface_name,
                 })
             }
+            LinkType::PerfEvent => {
+                use bpf_perf_event_type::*;
+
+                // SAFETY: union access
+                let perf_event = unsafe { &self.0.__bindgen_anon_1.perf_event };
+                let prog_type = bpf_perf_event_type::try_from(perf_event.type_)
+                    .map_err(|_| LinkError::InvalidLink)?;
+
+                match prog_type {
+                    BPF_PERF_EVENT_UNSPEC => return Ok(LinkMetadata::NotAvailable),
+                    BPF_PERF_EVENT_EVENT => {
+                        // SAFETY: union access
+                        let perf_event = unsafe { &perf_event.__bindgen_anon_1.event };
+                        let event = match perf_type_id::try_from(perf_event.type_)
+                            .unwrap_or(perf_type_id::PERF_TYPE_MAX)
+                        {
+                            perf_type_id::PERF_TYPE_HARDWARE => {
+                                let config = perf_hw_id::try_from(perf_event.config)
+                                    .unwrap_or(perf_hw_id::PERF_COUNT_HW_MAX)
+                                    .try_into()?;
+                                PerfEventConfig::Hardware(config)
+                            }
+                            perf_type_id::PERF_TYPE_SOFTWARE => {
+                                let config = perf_sw_ids::try_from(perf_event.config)
+                                    .unwrap_or(perf_sw_ids::PERF_COUNT_SW_MAX)
+                                    .try_into()?;
+                                PerfEventConfig::Software(config)
+                            }
+                            perf_type_id::PERF_TYPE_TRACEPOINT => PerfEventConfig::TracePoint {
+                                event_id: perf_event.config,
+                            },
+                            perf_type_id::PERF_TYPE_HW_CACHE => {
+                                let event = perf_hw_cache_id::try_from(perf_event.config & 0xFF)
+                                    .unwrap_or(perf_hw_cache_id::PERF_COUNT_HW_CACHE_MAX)
+                                    .try_into()?;
+                                let operation = perf_hw_cache_op_id::try_from(
+                                    (perf_event.config & 0xFF00) >> 8,
+                                )
+                                .unwrap_or(perf_hw_cache_op_id::PERF_COUNT_HW_CACHE_OP_MAX)
+                                .try_into()?;
+                                let result = perf_hw_cache_op_result_id::try_from(
+                                    (perf_event.config & 0xFF0000) >> 16,
+                                )
+                                .unwrap_or(
+                                    perf_hw_cache_op_result_id::PERF_COUNT_HW_CACHE_RESULT_MAX,
+                                )
+                                .try_into()?;
+                                PerfEventConfig::HwCache {
+                                    event,
+                                    operation,
+                                    result,
+                                }
+                            }
+                            perf_type_id::PERF_TYPE_RAW => PerfEventConfig::Raw {
+                                event_id: perf_event.config,
+                            },
+                            perf_type_id::PERF_TYPE_BREAKPOINT => PerfEventConfig::Breakpoint,
+                            perf_type_id::PERF_TYPE_MAX => {
+                                // If `.type_` value goes beyond the provided `perf_type_id`
+                                // values, this meaning it is a dynamic PMU.
+                                PerfEventConfig::Pmu {
+                                    pmu_type: perf_event.type_,
+                                    config: perf_event.config,
+                                }
+                            }
+                        };
+
+                        return Ok(LinkMetadata::PerfEvent {
+                            event,
+                            cookie: perf_event.cookie,
+                        });
+                    }
+                    _ => {}
+                }
+
+                let fd = self.fd()?;
+                // Kernel bug: https://lore.kernel.org/bpf/ZvqLanKfaO9dLlf4@krava/
+                // The `name_len` field is not populated on the kernel-side.
+                let mut bytes = [0_u8; libc::PATH_MAX as usize];
+                match prog_type {
+                    BPF_PERF_EVENT_UPROBE | BPF_PERF_EVENT_URETPROBE => {
+                        bpf_link_get_info_by_fd(fd.as_fd(), |info: &mut bpf_link_info| {
+                            // SAFETY: union access
+                            let uprobe = unsafe {
+                                &mut info.__bindgen_anon_1.perf_event.__bindgen_anon_1.uprobe
+                            };
+                            uprobe.file_name = bytes.as_mut_ptr() as _;
+                            uprobe.name_len = libc::PATH_MAX as u32;
+                        })?;
+
+                        // SAFETY: union access
+                        let uprobe = unsafe { &perf_event.__bindgen_anon_1.uprobe };
+                        let return_probe = prog_type == BPF_PERF_EVENT_URETPROBE;
+                        let file_path = bytes
+                            .iter()
+                            .position(|b| b == &0)
+                            .and_then(|i| str::from_utf8(&bytes[..i]).map(ToOwned::to_owned).ok());
+
+                        Ok(LinkMetadata::UProbe {
+                            return_probe,
+                            file_path,
+                            symbol_offset: uprobe.offset,
+                            cookie: uprobe.cookie,
+                        })
+                    }
+                    BPF_PERF_EVENT_KPROBE | BPF_PERF_EVENT_KRETPROBE => {
+                        bpf_link_get_info_by_fd(fd.as_fd(), |info: &mut bpf_link_info| {
+                            // SAFETY: union access
+                            let kprobe = unsafe {
+                                &mut info.__bindgen_anon_1.perf_event.__bindgen_anon_1.kprobe
+                            };
+                            kprobe.func_name = bytes.as_mut_ptr() as _;
+                            kprobe.name_len = libc::PATH_MAX as u32;
+                        })?;
+
+                        // SAFETY: union access
+                        let kprobe = unsafe { &perf_event.__bindgen_anon_1.kprobe };
+                        let return_probe = prog_type == BPF_PERF_EVENT_KRETPROBE;
+                        let function_name = bytes
+                            .iter()
+                            .position(|b| b == &0)
+                            .and_then(|i| str::from_utf8(&bytes[..i]).map(ToOwned::to_owned).ok());
+
+                        Ok(LinkMetadata::KProbe {
+                            return_probe,
+                            function_name,
+                            symbol_offset: kprobe.offset,
+                            address: kprobe.addr,
+                            misses: kprobe.missed,
+                            cookie: kprobe.cookie,
+                        })
+                    }
+                    BPF_PERF_EVENT_TRACEPOINT => {
+                        bpf_link_get_info_by_fd(fd.as_fd(), |info: &mut bpf_link_info| {
+                            // SAFETY: union access
+                            let tracepoint = unsafe {
+                                &mut info.__bindgen_anon_1.perf_event.__bindgen_anon_1.tracepoint
+                            };
+                            tracepoint.tp_name = bytes.as_mut_ptr() as _;
+                            tracepoint.name_len = libc::PATH_MAX as u32;
+                        })?;
+
+                        // SAFETY: union access
+                        let tp = unsafe { &perf_event.__bindgen_anon_1.tracepoint };
+                        let tracepoint_name = bytes
+                            .iter()
+                            .position(|b| b == &0)
+                            .and_then(|i| str::from_utf8(&bytes[..i]).map(ToOwned::to_owned).ok());
+
+                        Ok(LinkMetadata::TracePoint {
+                            tracepoint_name,
+                            cookie: tp.cookie,
+                        })
+                    }
+                    _ => Err(LinkError::InvalidLink),
+                }
+            }
             _ => Ok(LinkMetadata::NotImplemented),
         }
     }
@@ -218,6 +381,93 @@ pub enum LinkMetadata {
         ///
         /// `None` is returned if the name was not valid unicode.
         interface_name: Option<String>,
+    },
+
+    /// [`LinkType::PerfEvent`] metadata for `UProbe` programs.
+    ///
+    /// Introduced in kernel v6.6.
+    /// Availability of fields may vary depending on kernel version.
+    UProbe {
+        /// Whether the `UProbe` program is a return probe.
+        ///
+        /// Introduced in kernel v6.6.
+        return_probe: bool,
+        /// The absolute file path that the link is attached to.
+        ///
+        /// `None` is returned if the name was not valid unicode.
+        ///
+        /// Introduced in kernel v6.6.
+        file_path: Option<String>,
+        /// The offset into the function/symbol in the target file.
+        ///
+        /// Introduced in kernel v6.6.
+        symbol_offset: u32,
+        /// The cookie passed when attaching the program.
+        ///
+        /// Introduced in kernel v6.9.
+        cookie: u64,
+    },
+    /// [`LinkType::PerfEvent`] metadata for `KProbe` programs.
+    ///
+    /// Introduced in kernel v6.6.
+    /// Availability of fields may vary depending on kernel version.
+    KProbe {
+        /// Whether the `KProbe` program is a return probe.
+        ///
+        /// Introduced in kernel v6.6.
+        return_probe: bool,
+        /// The name of the function that the link is attached to.
+        ///
+        /// `None` is returned if the name was not valid unicode.
+        ///
+        /// Introduced in kernel v6.6.
+        function_name: Option<String>,
+        /// The offset into the function/symbol in the target function.
+        ///
+        /// Introduced in kernel v6.6.
+        symbol_offset: u32,
+        /// The memory address of the kernel symbol, which maps to the funciton name.
+        ///
+        /// Introduced in kernel v6.6.
+        address: u64,
+        /// The number of times the program missed execute when the probe point was triggered.
+        ///
+        /// Introduced in kernel v6.7.
+        misses: u64,
+        /// The cookie passed when attaching the program.
+        ///
+        /// Introduced in kernel v6.9.
+        cookie: u64,
+    },
+    /// [`LinkType::PerfEvent`] metadata for `Tracepoint` programs.
+    ///
+    /// Introduced in kernel v6.6.
+    /// Availability of fields may vary depending on kernel version.
+    TracePoint {
+        /// The name of the tracepoint that the link link is attached to.
+        ///
+        /// `None` is returned if the name was not valid unicode.
+        ///
+        /// Introduced in kernel v6.6.
+        tracepoint_name: Option<String>,
+        /// The cookie passed when attaching the program.
+        ///
+        /// Introduced in kernel v6.9.
+        cookie: u64,
+    },
+    /// [`LinkType::PerfEvent`] metadata for `PerfEvent` programs.
+    ///
+    /// Introduced in kernel v6.6.
+    /// Availability of fields may vary depending on kernel version.
+    PerfEvent {
+        /// The perf event type and configuration the program.
+        ///
+        /// Introduced in kernel v6.6.
+        event: PerfEventConfig,
+        /// The cookie passed when attaching the program.
+        ///
+        /// Introduced in kernel v6.9.
+        cookie: u64,
     },
 
     /// For metadata that have not been implemented yet.

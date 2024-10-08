@@ -20,11 +20,13 @@ use aya::{
     links::{loaded_links, AttachType, LinkInfo, LinkMetadata, LinkType},
     maps::{loaded_maps, Array, HashMap, IterableMap as _, MapType},
     programs::{
-        loaded_programs, CgroupSkb, FEntry, ProgramType, RawTracePoint, SkLookup, SocketFilter,
-        TracePoint, Xdp,
+        loaded_programs,
+        perf_event::{self, PerfEventConfig, SoftwareEvent},
+        CgroupSkb, FEntry, KProbe, PerfEvent, ProgramType, RawTracePoint, SkLookup, SocketFilter,
+        TracePoint, UProbe, Xdp,
     },
     sys::enable_stats,
-    util::KernelVersion,
+    util::{self, KernelVersion},
     Btf, Ebpf,
 };
 
@@ -571,6 +573,243 @@ fn test_link_info_xdp() {
 
             kernel_assert_eq!(expected_ifindex, interface_index, KernelVersion::new(5, 9, 0));
             kernel_assert_eq!(Some("lo"), interface_name.as_deref(), KernelVersion::new(5, 9, 0));
+        }
+    });
+}
+
+#[test]
+fn test_link_info_perf_uprobe() {
+    if !features().bpf_perf_link() {
+        eprintln!(
+            "ignoring test completely as `BPF_LINK_TYPE_PERF_EVENT` is not available on the host"
+        );
+        return;
+    }
+
+    let mut bpf: Ebpf = Ebpf::load(crate::TEST).unwrap();
+    let prog: &mut UProbe = bpf.program_mut("test_uprobe").unwrap().try_into().unwrap();
+    if let Err(err) = prog.load() {
+        if is_prog_einval(&err) {
+            eprintln!(
+                "ignoring test completely as `BPF_PROG_TYPE_KPROBE` is not available on the host"
+            );
+            return;
+        }
+        panic!("{err}");
+    }
+    prog.attach(Some("uprobe_function"), 0, "/proc/self/exe", None)
+        .unwrap();
+
+    let link_info = match get_link_info() {
+        Some(info) => info,
+        None => return,
+    };
+
+    assert_matches!(link_info.link_type(), Ok(link_type) => kernel_assert_eq!(
+        LinkType::PerfEvent,
+        link_type,
+        KernelVersion::new(5, 8, 0),
+    ));
+    kernel_assert!(link_info.id() > 0, KernelVersion::new(5, 8, 0));
+    assert_matches!(prog.info(), Ok(prog_info) => kernel_assert_eq!(
+        prog_info.id(),
+        link_info.program_id(),
+        KernelVersion::new(5, 8, 0),
+    ));
+    assert_matches!(link_info.metadata(), Ok(metadata) => {
+        kernel_assert!(
+            matches!(metadata, LinkMetadata::UProbe { .. }),
+            KernelVersion::new(6, 6, 0),
+        );
+        if let LinkMetadata::UProbe { return_probe, file_path, symbol_offset, .. } = metadata {
+            kernel_assert!(!return_probe, KernelVersion::new(6, 6, 0));
+            kernel_assert_eq!(
+                Some("/proc/self/exe"),
+                file_path.as_deref(),
+                KernelVersion::new(6, 6, 0),
+            );
+            kernel_assert!(symbol_offset > 0, KernelVersion::new(6, 6, 0));
+        }
+    });
+}
+
+#[test]
+fn test_link_info_perf_kprobe() {
+    if !features().bpf_perf_link() {
+        eprintln!(
+            "ignoring test completely as `BPF_LINK_TYPE_PERF_EVENT` is not available on the host"
+        );
+        return;
+    }
+
+    let mut bpf: Ebpf = Ebpf::load(crate::TEST).unwrap();
+    let prog: &mut KProbe = bpf
+        .program_mut("test_kretprobe")
+        .unwrap()
+        .try_into()
+        .unwrap();
+    if let Err(err) = prog.load() {
+        if is_prog_einval(&err) {
+            eprintln!(
+                "ignoring test completely as `BPF_PROG_TYPE_KPROBE` is not available on the host"
+            );
+            return;
+        }
+        panic!("{err}");
+    }
+    prog.attach("try_to_wake_up", 0).unwrap();
+
+    let link_info = match get_link_info() {
+        Some(info) => info,
+        None => return,
+    };
+
+    assert_matches!(link_info.link_type(), Ok(link_type) => kernel_assert_eq!(
+        LinkType::PerfEvent,
+        link_type,
+        KernelVersion::new(5, 8, 0),
+    ));
+    kernel_assert!(link_info.id() > 0, KernelVersion::new(5, 8, 0));
+    assert_matches!(prog.info(), Ok(prog_info) => kernel_assert_eq!(
+        prog_info.id(),
+        link_info.program_id(),
+        KernelVersion::new(5, 8, 0),
+    ));
+    assert_matches!(link_info.metadata(), Ok(metadata) => {
+        kernel_assert!(
+            matches!(metadata, LinkMetadata::KProbe { .. }),
+            KernelVersion::new(6, 6, 0),
+        );
+        if let LinkMetadata::KProbe { return_probe, function_name, address, .. } = metadata {
+            kernel_assert!(return_probe, KernelVersion::new(6, 6, 0));
+
+            let name = function_name.unwrap();
+            kernel_assert_eq!("try_to_wake_up", name, KernelVersion::new(6, 6, 0));
+
+            let expected_addr = util::kernel_symbols().unwrap()
+                .into_iter()
+                .find_map(|(k, v)| (v == name).then_some(k));
+            kernel_assert_eq!(expected_addr, Some(address), KernelVersion::new(6, 6, 0));
+        }
+    });
+}
+
+#[test]
+fn test_link_info_perf_tracepoint() {
+    if !features().bpf_perf_link() {
+        eprintln!(
+            "ignoring test completely as `BPF_LINK_TYPE_PERF_EVENT` is not available on the host"
+        );
+        return;
+    }
+
+    let mut bpf: Ebpf = Ebpf::load(crate::TEST).unwrap();
+    let prog: &mut TracePoint = bpf
+        .program_mut("test_tracepoint")
+        .unwrap()
+        .try_into()
+        .unwrap();
+    if let Err(err) = prog.load() {
+        if is_prog_einval(&err) {
+            eprintln!(
+                "ignoring test completely as `BPF_PROG_TYPE_TRACEPOINT` is not available on the host"
+            );
+            return;
+        }
+        panic!("{err}");
+    }
+    prog.attach("syscalls", "sys_enter_kill").unwrap();
+
+    let link_info = match get_link_info() {
+        Some(info) => info,
+        None => return,
+    };
+
+    assert_matches!(link_info.link_type(), Ok(link_type) => kernel_assert_eq!(
+        LinkType::PerfEvent,
+        link_type,
+        KernelVersion::new(5, 8, 0),
+    ));
+    kernel_assert!(link_info.id() > 0, KernelVersion::new(5, 8, 0));
+    assert_matches!(prog.info(), Ok(prog_info) => kernel_assert_eq!(
+        prog_info.id(),
+        link_info.program_id(),
+        KernelVersion::new(5, 8, 0),
+    ));
+    assert_matches!(link_info.metadata(), Ok(metadata) => {
+        kernel_assert!(
+            matches!(metadata, LinkMetadata::TracePoint { .. }),
+            KernelVersion::new(6, 6, 0),
+        );
+        if let LinkMetadata::TracePoint { tracepoint_name, .. } = metadata {
+            kernel_assert_eq!(
+                Some("sys_enter_kill"),
+                tracepoint_name.as_deref(),
+                KernelVersion::new(6, 6, 0),
+            );
+        }
+    });
+}
+
+#[test]
+fn test_link_info_perf_event() {
+    if !features().bpf_perf_link() {
+        eprintln!(
+            "ignoring test completely as `BPF_LINK_TYPE_PERF_EVENT` is not available on the host"
+        );
+        return;
+    }
+
+    let mut bpf: Ebpf = Ebpf::load(crate::TEST).unwrap();
+    let prog: &mut PerfEvent = bpf
+        .program_mut("test_perf_event")
+        .unwrap()
+        .try_into()
+        .unwrap();
+    if let Err(err) = prog.load() {
+        if is_prog_einval(&err) {
+            eprintln!(
+                "ignoring test completely as `BPF_PROG_TYPE_PERF_EVENT` is not available on the host"
+            );
+            return;
+        }
+        panic!("{err}");
+    }
+    prog.attach(
+        PerfEventConfig::Software(SoftwareEvent::ContextSwitches),
+        perf_event::PerfEventScope::CallingProcessAnyCpu,
+        perf_event::SamplePolicy::Frequency(1),
+        true,
+    )
+    .unwrap();
+
+    let link_info = match get_link_info() {
+        Some(info) => info,
+        None => return,
+    };
+
+    assert_matches!(link_info.link_type(), Ok(link_type) => kernel_assert_eq!(
+        LinkType::PerfEvent,
+        link_type,
+        KernelVersion::new(5, 8, 0),
+    ));
+    kernel_assert!(link_info.id() > 0, KernelVersion::new(5, 8, 0));
+    assert_matches!(prog.info(), Ok(prog_info) => kernel_assert_eq!(
+        prog_info.id(),
+        link_info.program_id(),
+        KernelVersion::new(5, 8, 0),
+    ));
+    assert_matches!(link_info.metadata(), Ok(metadata) => {
+        kernel_assert!(
+            matches!(metadata, LinkMetadata::PerfEvent { .. }),
+            KernelVersion::new(6, 6, 0),
+        );
+        if let LinkMetadata::PerfEvent { event, .. } = metadata {
+            kernel_assert_eq!(
+                PerfEventConfig::Software(SoftwareEvent::ContextSwitches),
+                event,
+                KernelVersion::new(6, 6, 0),
+            );
         }
     });
 }

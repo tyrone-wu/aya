@@ -1773,6 +1773,9 @@ pub fn aya_obj::generated::bpf_perf_event_type::clone(&self) -> aya_obj::generat
 impl core::cmp::Eq for aya_obj::generated::bpf_perf_event_type
 impl core::cmp::PartialEq for aya_obj::generated::bpf_perf_event_type
 pub fn aya_obj::generated::bpf_perf_event_type::eq(&self, other: &aya_obj::generated::bpf_perf_event_type) -> bool
+impl core::convert::TryFrom<u32> for aya_obj::generated::bpf_perf_event_type
+pub type aya_obj::generated::bpf_perf_event_type::Error = aya_obj::InvalidTypeBinding<u32>
+pub fn aya_obj::generated::bpf_perf_event_type::try_from(prog_type: u32) -> core::result::Result<Self, Self::Error>
 impl core::fmt::Debug for aya_obj::generated::bpf_perf_event_type
 pub fn aya_obj::generated::bpf_perf_event_type::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::hash::Hash for aya_obj::generated::bpf_perf_event_type
@@ -2156,6 +2159,9 @@ pub fn aya_obj::generated::perf_hw_cache_id::clone(&self) -> aya_obj::generated:
 impl core::cmp::Eq for aya_obj::generated::perf_hw_cache_id
 impl core::cmp::PartialEq for aya_obj::generated::perf_hw_cache_id
 pub fn aya_obj::generated::perf_hw_cache_id::eq(&self, other: &aya_obj::generated::perf_hw_cache_id) -> bool
+impl core::convert::TryFrom<u64> for aya_obj::generated::perf_hw_cache_id
+pub type aya_obj::generated::perf_hw_cache_id::Error = aya_obj::InvalidTypeBinding<u64>
+pub fn aya_obj::generated::perf_hw_cache_id::try_from(cache_id: u64) -> core::result::Result<Self, Self::Error>
 impl core::fmt::Debug for aya_obj::generated::perf_hw_cache_id
 pub fn aya_obj::generated::perf_hw_cache_id::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::hash::Hash for aya_obj::generated::perf_hw_cache_id
@@ -2200,6 +2206,9 @@ pub fn aya_obj::generated::perf_hw_cache_op_id::clone(&self) -> aya_obj::generat
 impl core::cmp::Eq for aya_obj::generated::perf_hw_cache_op_id
 impl core::cmp::PartialEq for aya_obj::generated::perf_hw_cache_op_id
 pub fn aya_obj::generated::perf_hw_cache_op_id::eq(&self, other: &aya_obj::generated::perf_hw_cache_op_id) -> bool
+impl core::convert::TryFrom<u64> for aya_obj::generated::perf_hw_cache_op_id
+pub type aya_obj::generated::perf_hw_cache_op_id::Error = aya_obj::InvalidTypeBinding<u64>
+pub fn aya_obj::generated::perf_hw_cache_op_id::try_from(cache_op_id: u64) -> core::result::Result<Self, Self::Error>
 impl core::fmt::Debug for aya_obj::generated::perf_hw_cache_op_id
 pub fn aya_obj::generated::perf_hw_cache_op_id::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::hash::Hash for aya_obj::generated::perf_hw_cache_op_id
@@ -2243,6 +2252,9 @@ pub fn aya_obj::generated::perf_hw_cache_op_result_id::clone(&self) -> aya_obj::
 impl core::cmp::Eq for aya_obj::generated::perf_hw_cache_op_result_id
 impl core::cmp::PartialEq for aya_obj::generated::perf_hw_cache_op_result_id
 pub fn aya_obj::generated::perf_hw_cache_op_result_id::eq(&self, other: &aya_obj::generated::perf_hw_cache_op_result_id) -> bool
+impl core::convert::TryFrom<u64> for aya_obj::generated::perf_hw_cache_op_result_id
+pub type aya_obj::generated::perf_hw_cache_op_result_id::Error = aya_obj::InvalidTypeBinding<u64>
+pub fn aya_obj::generated::perf_hw_cache_op_result_id::try_from(hw_cache_res: u64) -> core::result::Result<Self, Self::Error>
 impl core::fmt::Debug for aya_obj::generated::perf_hw_cache_op_result_id
 pub fn aya_obj::generated::perf_hw_cache_op_result_id::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::hash::Hash for aya_obj::generated::perf_hw_cache_op_result_id
@@ -2294,6 +2306,9 @@ pub fn aya_obj::generated::perf_hw_id::clone(&self) -> aya_obj::generated::perf_
 impl core::cmp::Eq for aya_obj::generated::perf_hw_id
 impl core::cmp::PartialEq for aya_obj::generated::perf_hw_id
 pub fn aya_obj::generated::perf_hw_id::eq(&self, other: &aya_obj::generated::perf_hw_id) -> bool
+impl core::convert::TryFrom<u64> for aya_obj::generated::perf_hw_id
+pub type aya_obj::generated::perf_hw_id::Error = aya_obj::InvalidTypeBinding<u64>
+pub fn aya_obj::generated::perf_hw_id::try_from(hw_id: u64) -> core::result::Result<Self, Self::Error>
 impl core::fmt::Debug for aya_obj::generated::perf_hw_id
 pub fn aya_obj::generated::perf_hw_id::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::hash::Hash for aya_obj::generated::perf_hw_id
@@ -2347,6 +2362,9 @@ pub fn aya_obj::generated::perf_sw_ids::clone(&self) -> aya_obj::generated::perf
 impl core::cmp::Eq for aya_obj::generated::perf_sw_ids
 impl core::cmp::PartialEq for aya_obj::generated::perf_sw_ids
 pub fn aya_obj::generated::perf_sw_ids::eq(&self, other: &aya_obj::generated::perf_sw_ids) -> bool
+impl core::convert::TryFrom<u64> for aya_obj::generated::perf_sw_ids
+pub type aya_obj::generated::perf_sw_ids::Error = aya_obj::InvalidTypeBinding<u64>
+pub fn aya_obj::generated::perf_sw_ids::try_from(sw_id: u64) -> core::result::Result<Self, Self::Error>
 impl core::fmt::Debug for aya_obj::generated::perf_sw_ids
 pub fn aya_obj::generated::perf_sw_ids::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::hash::Hash for aya_obj::generated::perf_sw_ids
@@ -2394,6 +2412,9 @@ pub fn aya_obj::generated::perf_type_id::clone(&self) -> aya_obj::generated::per
 impl core::cmp::Eq for aya_obj::generated::perf_type_id
 impl core::cmp::PartialEq for aya_obj::generated::perf_type_id
 pub fn aya_obj::generated::perf_type_id::eq(&self, other: &aya_obj::generated::perf_type_id) -> bool
+impl core::convert::TryFrom<u32> for aya_obj::generated::perf_type_id
+pub type aya_obj::generated::perf_type_id::Error = aya_obj::InvalidTypeBinding<u32>
+pub fn aya_obj::generated::perf_type_id::try_from(perf_type: u32) -> core::result::Result<Self, Self::Error>
 impl core::fmt::Debug for aya_obj::generated::perf_type_id
 pub fn aya_obj::generated::perf_type_id::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::hash::Hash for aya_obj::generated::perf_type_id

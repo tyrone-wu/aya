@@ -108,16 +108,34 @@ pub enum aya::links::LinkMetadata
 pub aya::links::LinkMetadata::Cgroup
 pub aya::links::LinkMetadata::Cgroup::attach_type: core::result::Result<aya::links::AttachType, aya::programs::links::LinkError>
 pub aya::links::LinkMetadata::Cgroup::id: u64
+pub aya::links::LinkMetadata::KProbe
+pub aya::links::LinkMetadata::KProbe::address: u64
+pub aya::links::LinkMetadata::KProbe::cookie: u64
+pub aya::links::LinkMetadata::KProbe::function_name: core::option::Option<alloc::string::String>
+pub aya::links::LinkMetadata::KProbe::misses: u64
+pub aya::links::LinkMetadata::KProbe::return_probe: bool
+pub aya::links::LinkMetadata::KProbe::symbol_offset: u32
 pub aya::links::LinkMetadata::NetNs
 pub aya::links::LinkMetadata::NetNs::attach_type: core::result::Result<aya::links::AttachType, aya::programs::links::LinkError>
 pub aya::links::LinkMetadata::NetNs::net_namespace_inode: u32
 pub aya::links::LinkMetadata::NotAvailable
+pub aya::links::LinkMetadata::PerfEvent
+pub aya::links::LinkMetadata::PerfEvent::cookie: u64
+pub aya::links::LinkMetadata::PerfEvent::event: aya::programs::perf_event::PerfEventConfig
 pub aya::links::LinkMetadata::RawTracePoint
 pub aya::links::LinkMetadata::RawTracePoint::name: core::option::Option<alloc::string::String>
+pub aya::links::LinkMetadata::TracePoint
+pub aya::links::LinkMetadata::TracePoint::cookie: u64
+pub aya::links::LinkMetadata::TracePoint::tracepoint_name: core::option::Option<alloc::string::String>
 pub aya::links::LinkMetadata::Tracing
 pub aya::links::LinkMetadata::Tracing::attach_type: core::result::Result<core::option::Option<aya::links::AttachType>, aya::programs::links::LinkError>
 pub aya::links::LinkMetadata::Tracing::target_btf_id: core::option::Option<u32>
 pub aya::links::LinkMetadata::Tracing::target_obj_id: core::option::Option<u32>
+pub aya::links::LinkMetadata::UProbe
+pub aya::links::LinkMetadata::UProbe::cookie: u64
+pub aya::links::LinkMetadata::UProbe::file_path: core::option::Option<alloc::string::String>
+pub aya::links::LinkMetadata::UProbe::return_probe: bool
+pub aya::links::LinkMetadata::UProbe::symbol_offset: u32
 pub aya::links::LinkMetadata::Xdp
 pub aya::links::LinkMetadata::Xdp::interface_index: u32
 pub aya::links::LinkMetadata::Xdp::interface_name: core::option::Option<alloc::string::String>
@@ -4780,9 +4798,15 @@ pub aya::programs::perf_event::HardwareEvent::StalledCyclesBackend = 8
 pub aya::programs::perf_event::HardwareEvent::StalledCyclesFrontend = 7
 impl core::clone::Clone for aya::programs::perf_event::HardwareEvent
 pub fn aya::programs::perf_event::HardwareEvent::clone(&self) -> aya::programs::perf_event::HardwareEvent
+impl core::cmp::PartialEq for aya::programs::perf_event::HardwareEvent
+pub fn aya::programs::perf_event::HardwareEvent::eq(&self, other: &aya::programs::perf_event::HardwareEvent) -> bool
+impl core::convert::TryFrom<aya_obj::generated::linux_bindings_x86_64::perf_hw_id> for aya::programs::perf_event::HardwareEvent
+pub type aya::programs::perf_event::HardwareEvent::Error = aya::programs::links::LinkError
+pub fn aya::programs::perf_event::HardwareEvent::try_from(hw_id: aya_obj::generated::linux_bindings_x86_64::perf_hw_id) -> core::result::Result<Self, Self::Error>
 impl core::fmt::Debug for aya::programs::perf_event::HardwareEvent
 pub fn aya::programs::perf_event::HardwareEvent::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::marker::Copy for aya::programs::perf_event::HardwareEvent
+impl core::marker::StructuralPartialEq for aya::programs::perf_event::HardwareEvent
 impl core::marker::Freeze for aya::programs::perf_event::HardwareEvent
 impl core::marker::Send for aya::programs::perf_event::HardwareEvent
 impl core::marker::Sync for aya::programs::perf_event::HardwareEvent
@@ -4821,9 +4845,15 @@ pub aya::programs::perf_event::HwCacheEvent::Ll = 2
 pub aya::programs::perf_event::HwCacheEvent::Node = 6
 impl core::clone::Clone for aya::programs::perf_event::HwCacheEvent
 pub fn aya::programs::perf_event::HwCacheEvent::clone(&self) -> aya::programs::perf_event::HwCacheEvent
+impl core::cmp::PartialEq for aya::programs::perf_event::HwCacheEvent
+pub fn aya::programs::perf_event::HwCacheEvent::eq(&self, other: &aya::programs::perf_event::HwCacheEvent) -> bool
+impl core::convert::TryFrom<aya_obj::generated::linux_bindings_x86_64::perf_hw_cache_id> for aya::programs::perf_event::HwCacheEvent
+pub type aya::programs::perf_event::HwCacheEvent::Error = aya::programs::links::LinkError
+pub fn aya::programs::perf_event::HwCacheEvent::try_from(cache_id: aya_obj::generated::linux_bindings_x86_64::perf_hw_cache_id) -> core::result::Result<Self, Self::Error>
 impl core::fmt::Debug for aya::programs::perf_event::HwCacheEvent
 pub fn aya::programs::perf_event::HwCacheEvent::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::marker::Copy for aya::programs::perf_event::HwCacheEvent
+impl core::marker::StructuralPartialEq for aya::programs::perf_event::HwCacheEvent
 impl core::marker::Freeze for aya::programs::perf_event::HwCacheEvent
 impl core::marker::Send for aya::programs::perf_event::HwCacheEvent
 impl core::marker::Sync for aya::programs::perf_event::HwCacheEvent
@@ -4858,9 +4888,15 @@ pub aya::programs::perf_event::HwCacheOp::Read = 0
 pub aya::programs::perf_event::HwCacheOp::Write = 1
 impl core::clone::Clone for aya::programs::perf_event::HwCacheOp
 pub fn aya::programs::perf_event::HwCacheOp::clone(&self) -> aya::programs::perf_event::HwCacheOp
+impl core::cmp::PartialEq for aya::programs::perf_event::HwCacheOp
+pub fn aya::programs::perf_event::HwCacheOp::eq(&self, other: &aya::programs::perf_event::HwCacheOp) -> bool
+impl core::convert::TryFrom<aya_obj::generated::linux_bindings_x86_64::perf_hw_cache_op_id> for aya::programs::perf_event::HwCacheOp
+pub type aya::programs::perf_event::HwCacheOp::Error = aya::programs::links::LinkError
+pub fn aya::programs::perf_event::HwCacheOp::try_from(cache_op: aya_obj::generated::linux_bindings_x86_64::perf_hw_cache_op_id) -> core::result::Result<Self, Self::Error>
 impl core::fmt::Debug for aya::programs::perf_event::HwCacheOp
 pub fn aya::programs::perf_event::HwCacheOp::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::marker::Copy for aya::programs::perf_event::HwCacheOp
+impl core::marker::StructuralPartialEq for aya::programs::perf_event::HwCacheOp
 impl core::marker::Freeze for aya::programs::perf_event::HwCacheOp
 impl core::marker::Send for aya::programs::perf_event::HwCacheOp
 impl core::marker::Sync for aya::programs::perf_event::HwCacheOp
@@ -4894,9 +4930,15 @@ pub aya::programs::perf_event::HwCacheResult::Access = 0
 pub aya::programs::perf_event::HwCacheResult::Miss = 1
 impl core::clone::Clone for aya::programs::perf_event::HwCacheResult
 pub fn aya::programs::perf_event::HwCacheResult::clone(&self) -> aya::programs::perf_event::HwCacheResult
+impl core::cmp::PartialEq for aya::programs::perf_event::HwCacheResult
+pub fn aya::programs::perf_event::HwCacheResult::eq(&self, other: &aya::programs::perf_event::HwCacheResult) -> bool
+impl core::convert::TryFrom<aya_obj::generated::linux_bindings_x86_64::perf_hw_cache_op_result_id> for aya::programs::perf_event::HwCacheResult
+pub type aya::programs::perf_event::HwCacheResult::Error = aya::programs::links::LinkError
+pub fn aya::programs::perf_event::HwCacheResult::try_from(cache_res: aya_obj::generated::linux_bindings_x86_64::perf_hw_cache_op_result_id) -> core::result::Result<Self, Self::Error>
 impl core::fmt::Debug for aya::programs::perf_event::HwCacheResult
 pub fn aya::programs::perf_event::HwCacheResult::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::marker::Copy for aya::programs::perf_event::HwCacheResult
+impl core::marker::StructuralPartialEq for aya::programs::perf_event::HwCacheResult
 impl core::marker::Freeze for aya::programs::perf_event::HwCacheResult
 impl core::marker::Send for aya::programs::perf_event::HwCacheResult
 impl core::marker::Sync for aya::programs::perf_event::HwCacheResult
@@ -4942,8 +4984,11 @@ pub aya::programs::perf_event::PerfEventConfig::TracePoint
 pub aya::programs::perf_event::PerfEventConfig::TracePoint::event_id: u64
 impl core::clone::Clone for aya::programs::perf_event::PerfEventConfig
 pub fn aya::programs::perf_event::PerfEventConfig::clone(&self) -> aya::programs::perf_event::PerfEventConfig
+impl core::cmp::PartialEq for aya::programs::perf_event::PerfEventConfig
+pub fn aya::programs::perf_event::PerfEventConfig::eq(&self, other: &aya::programs::perf_event::PerfEventConfig) -> bool
 impl core::fmt::Debug for aya::programs::perf_event::PerfEventConfig
 pub fn aya::programs::perf_event::PerfEventConfig::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+impl core::marker::StructuralPartialEq for aya::programs::perf_event::PerfEventConfig
 impl core::marker::Freeze for aya::programs::perf_event::PerfEventConfig
 impl core::marker::Send for aya::programs::perf_event::PerfEventConfig
 impl core::marker::Sync for aya::programs::perf_event::PerfEventConfig
@@ -5065,9 +5110,15 @@ pub aya::programs::perf_event::SoftwareEvent::PageFaultsMin = 5
 pub aya::programs::perf_event::SoftwareEvent::TaskClock = 1
 impl core::clone::Clone for aya::programs::perf_event::SoftwareEvent
 pub fn aya::programs::perf_event::SoftwareEvent::clone(&self) -> aya::programs::perf_event::SoftwareEvent
+impl core::cmp::PartialEq for aya::programs::perf_event::SoftwareEvent
+pub fn aya::programs::perf_event::SoftwareEvent::eq(&self, other: &aya::programs::perf_event::SoftwareEvent) -> bool
+impl core::convert::TryFrom<aya_obj::generated::linux_bindings_x86_64::perf_sw_ids> for aya::programs::perf_event::SoftwareEvent
+pub type aya::programs::perf_event::SoftwareEvent::Error = aya::programs::links::LinkError
+pub fn aya::programs::perf_event::SoftwareEvent::try_from(sw_id: aya_obj::generated::linux_bindings_x86_64::perf_sw_ids) -> core::result::Result<Self, Self::Error>
 impl core::fmt::Debug for aya::programs::perf_event::SoftwareEvent
 pub fn aya::programs::perf_event::SoftwareEvent::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::marker::Copy for aya::programs::perf_event::SoftwareEvent
+impl core::marker::StructuralPartialEq for aya::programs::perf_event::SoftwareEvent
 impl core::marker::Freeze for aya::programs::perf_event::SoftwareEvent
 impl core::marker::Send for aya::programs::perf_event::SoftwareEvent
 impl core::marker::Sync for aya::programs::perf_event::SoftwareEvent
