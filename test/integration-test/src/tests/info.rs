@@ -9,12 +9,13 @@ use std::{fs, panic, path::Path, time::SystemTime};
 
 use assert_matches::assert_matches;
 use aya::{
-    links::{loaded_links, LinkInfo, LinkMetadata, LinkType},
+    features,
+    links::{loaded_links, AttachType, LinkInfo, LinkMetadata, LinkType},
     maps::{loaded_maps, Array, HashMap, IterableMap as _, MapType},
-    programs::{loaded_programs, ProgramType, RawTracePoint, SocketFilter, TracePoint},
+    programs::{loaded_programs, FEntry, ProgramType, RawTracePoint, SocketFilter, TracePoint},
     sys::enable_stats,
     util::KernelVersion,
-    Ebpf,
+    Btf, Ebpf,
 };
 
 use crate::utils::{
@@ -353,6 +354,57 @@ fn test_link_info_raw_tp() {
         metadata,
         LinkMetadata::RawTracePoint { name } => {
             kernel_assert_eq!(Some("sys_exit"), name.as_deref(), KernelVersion::new(5, 8, 0));
+        }
+    ));
+}
+
+#[test]
+fn test_link_info_tracing() {
+    if features().btf().is_none() {
+        eprintln!("ignoring test completely as BTF is not available on the host");
+        return;
+    }
+
+    let mut bpf: Ebpf = Ebpf::load(crate::TEST).unwrap();
+    let prog: &mut FEntry = bpf.program_mut("fentry").unwrap().try_into().unwrap();
+    let btf = Btf::from_sys_fs().unwrap();
+    if let Err(err) = prog.load("do_unlinkat", &btf) {
+        if is_prog_einval(&err) {
+            eprintln!(
+                "ignoring test completely as `BPF_PROG_TYPE_TRACING` is not available on the host"
+            );
+            return;
+        }
+        panic!("{err}");
+    }
+    prog.attach().unwrap();
+
+    let link_info = match get_link_info() {
+        Some(info) => info,
+        None => return,
+    };
+
+    assert_matches!(link_info.link_type(), Ok(link_type) => kernel_assert_eq!(
+        LinkType::Tracing,
+        link_type,
+        KernelVersion::new(5, 8, 0),
+    ));
+    kernel_assert!(link_info.id() > 0, KernelVersion::new(5, 8, 0));
+    assert_matches!(prog.info(), Ok(prog_info) => kernel_assert_eq!(
+        prog_info.id(),
+        link_info.program_id(),
+        KernelVersion::new(5, 8, 0),
+    ));
+    assert_matches!(link_info.metadata(), Ok(metadata) => assert_matches!(
+        metadata,
+        LinkMetadata::Tracing { attach_type, target_obj_id, target_btf_id } => {
+            assert_matches!(attach_type, Ok(attach_type) => kernel_assert_eq!(
+                Some(AttachType::TraceFEntry),
+                attach_type,
+                KernelVersion::new(5, 8, 0),
+            ));
+            kernel_assert!(target_obj_id.is_some(), KernelVersion::new(5, 13, 0));
+            kernel_assert!(target_btf_id.is_some(), KernelVersion::new(5, 13, 0));
         }
     ));
 }

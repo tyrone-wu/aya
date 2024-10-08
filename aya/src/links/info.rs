@@ -74,6 +74,23 @@ impl LinkInfo {
 
                 Ok(LinkMetadata::RawTracePoint { name })
             }
+            LinkType::Tracing => {
+                // SAFETY: union access
+                let tracing = unsafe { &self.0.__bindgen_anon_1.tracing };
+                let attach_type = if tracing.attach_type != 0 {
+                    AttachType::try_from(tracing.attach_type).map(Some)
+                } else {
+                    Ok(None)
+                };
+                let target_obj_id = (tracing.target_obj_id > 0).then_some(tracing.target_obj_id);
+                let target_btf_id = (tracing.target_btf_id > 0).then_some(tracing.target_btf_id);
+
+                Ok(LinkMetadata::Tracing {
+                    attach_type,
+                    target_obj_id,
+                    target_btf_id,
+                })
+            }
             _ => Ok(LinkMetadata::NotImplemented),
         }
     }
@@ -99,6 +116,33 @@ pub enum LinkMetadata {
         ///
         /// `None` is returned if the name is not valid unicode.
         name: Option<String>,
+    },
+
+    /// [`LinkType::Tracing`] metadata.
+    ///
+    /// Introduced in kernel v5.8.
+    /// Availability of fields may vary depending on kernel version.
+    Tracing {
+        /// The [`AttachType`] of the link.
+        ///
+        /// `None` is returned if this field is unused (e.g. [`ProgramType::Extension`]).
+        ///
+        /// Introduced in kernel v5.8.
+        attach_type: Result<Option<AttachType>, LinkError>,
+        /// The meaning of this field depends on program type using this link:
+        /// - [`ProgramType::Extension`]: The ID of the program that the extension program is extending.
+        /// - Otherwise: The BTF **object** ID.
+        ///
+        /// `None` is returned if the field is not available.
+        ///
+        /// Introduced in kernel v5.13.
+        target_obj_id: Option<u32>,
+        /// The BTF **type** ID inside the BTF object.
+        ///
+        /// `None` is returned if the field is not available, or unused.
+        ///
+        /// Introduced in kernel v5.13.
+        target_btf_id: Option<u32>,
     },
 
     /// For metadata that have not been implemented yet.
@@ -642,5 +686,15 @@ impl TryFrom<bpf_attach_type> for AttachType {
             BPF_NETKIT_PEER => Self::NetkitPeer,
             __MAX_BPF_ATTACH_TYPE => return Err(LinkError::InvalidAttachment),
         })
+    }
+}
+
+impl TryFrom<u32> for AttachType {
+    type Error = LinkError;
+
+    fn try_from(attach_type: u32) -> Result<Self, Self::Error> {
+        bpf_attach_type::try_from(attach_type)
+            .unwrap_or(bpf_attach_type::__MAX_BPF_ATTACH_TYPE)
+            .try_into()
     }
 }
