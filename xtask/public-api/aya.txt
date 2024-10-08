@@ -127,6 +127,10 @@ pub aya::links::LinkMetadata::KProbe::function_name: core::option::Option<alloc:
 pub aya::links::LinkMetadata::KProbe::misses: u64
 pub aya::links::LinkMetadata::KProbe::return_probe: bool
 pub aya::links::LinkMetadata::KProbe::symbol_offset: u32
+pub aya::links::LinkMetadata::KProbeMulti
+pub aya::links::LinkMetadata::KProbeMulti::attach_data: alloc::vec::Vec<(u64, u64)>
+pub aya::links::LinkMetadata::KProbeMulti::misses: u64
+pub aya::links::LinkMetadata::KProbeMulti::return_probe: bool
 pub aya::links::LinkMetadata::NetNs
 pub aya::links::LinkMetadata::NetNs::attach_type: core::result::Result<aya::links::AttachType, aya::programs::links::LinkError>
 pub aya::links::LinkMetadata::NetNs::net_namespace_inode: u32
@@ -152,6 +156,11 @@ pub aya::links::LinkMetadata::UProbe::cookie: u64
 pub aya::links::LinkMetadata::UProbe::file_path: core::option::Option<alloc::string::String>
 pub aya::links::LinkMetadata::UProbe::return_probe: bool
 pub aya::links::LinkMetadata::UProbe::symbol_offset: u32
+pub aya::links::LinkMetadata::UProbeMulti
+pub aya::links::LinkMetadata::UProbeMulti::attach_data: alloc::vec::Vec<(u64, u64, u64)>
+pub aya::links::LinkMetadata::UProbeMulti::file_path: core::option::Option<alloc::string::String>
+pub aya::links::LinkMetadata::UProbeMulti::pid: u32
+pub aya::links::LinkMetadata::UProbeMulti::return_probe: bool
 pub aya::links::LinkMetadata::Xdp
 pub aya::links::LinkMetadata::Xdp::interface_index: u32
 pub aya::links::LinkMetadata::Xdp::interface_name: core::option::Option<alloc::string::String>
