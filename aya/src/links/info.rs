@@ -297,6 +297,27 @@ impl LinkInfo {
                     _ => Err(LinkError::InvalidLink),
                 }
             }
+            LinkType::Tcx => {
+                // SAFETY: union access
+                let tcx = unsafe { &self.0.__bindgen_anon_1.tcx };
+                if tcx.ifindex == 0 {
+                    return Ok(LinkMetadata::NotAvailable);
+                }
+
+                let mut bytes = [0_i8; libc::IFNAMSIZ];
+                // SAFETY: libc wrapper
+                unsafe { libc::if_indextoname(tcx.ifindex, bytes.as_mut_ptr()) };
+                let interface_name = str::from_utf8(bytes_of_bpf_name(&bytes))
+                    .map(ToOwned::to_owned)
+                    .ok();
+                let attach_type = AttachType::try_from(tcx.attach_type);
+
+                Ok(LinkMetadata::Tcx {
+                    interface_index: tcx.ifindex,
+                    interface_name,
+                    attach_type,
+                })
+            }
             _ => Ok(LinkMetadata::NotImplemented),
         }
     }
@@ -468,6 +489,20 @@ pub enum LinkMetadata {
         ///
         /// Introduced in kernel v6.9.
         cookie: u64,
+    },
+
+    /// [`LinkType::Tcx`] metadata.
+    ///
+    /// Introduced in kernel v6.6.
+    Tcx {
+        /// The interface index that the link is attached to.
+        interface_index: u32,
+        /// The name of the network interface.
+        ///
+        /// `None` is returned if the name was not valid unicode.
+        interface_name: Option<String>,
+        /// The [`AttachType`] of the link.
+        attach_type: Result<AttachType, LinkError>,
     },
 
     /// For metadata that have not been implemented yet.

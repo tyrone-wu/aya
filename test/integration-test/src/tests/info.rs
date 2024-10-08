@@ -22,8 +22,8 @@ use aya::{
     programs::{
         loaded_programs,
         perf_event::{self, PerfEventConfig, SoftwareEvent},
-        CgroupSkb, FEntry, KProbe, PerfEvent, ProgramType, RawTracePoint, SkLookup, SocketFilter,
-        TracePoint, UProbe, Xdp,
+        CgroupSkb, FEntry, KProbe, PerfEvent, ProgramType, RawTracePoint, SchedClassifier,
+        SkLookup, SocketFilter, TracePoint, UProbe, Xdp,
     },
     sys::enable_stats,
     util::{self, KernelVersion},
@@ -810,6 +810,70 @@ fn test_link_info_perf_event() {
                 event,
                 KernelVersion::new(6, 6, 0),
             );
+        }
+    });
+}
+
+#[test]
+fn test_link_info_tcx() {
+    if KernelVersion::current().unwrap() < KernelVersion::new(6, 6, 0) {
+        eprintln!("ignoring test completely as `BPF_LINK_TYPE_TCX` is not available on the host");
+        return;
+    }
+
+    let _netns = NetNsGuard::new();
+    let _ = aya::programs::tc::qdisc_add_clsact("lo");
+
+    let mut bpf: Ebpf = Ebpf::load(crate::TEST).unwrap();
+    let prog: &mut SchedClassifier = bpf
+        .program_mut("test_sched_cls")
+        .unwrap()
+        .try_into()
+        .unwrap();
+    if let Err(err) = prog.load() {
+        if is_prog_einval(&err) {
+            eprintln!(
+                "ignoring test completely as `BPF_PROG_TYPE_SCHED_CLS` is not available on the host"
+            );
+            return;
+        }
+        panic!("{err}");
+    }
+    prog.attach("lo", aya::programs::tc::TcAttachType::Egress)
+        .unwrap();
+
+    let link_info = match get_link_info() {
+        Some(info) => info,
+        None => return,
+    };
+
+    assert_matches!(link_info.link_type(), Ok(link_type) => kernel_assert_eq!(
+        LinkType::Tcx,
+        link_type,
+        KernelVersion::new(5, 8, 0),
+    ));
+    kernel_assert!(link_info.id() > 0, KernelVersion::new(5, 8, 0));
+    assert_matches!(prog.info(), Ok(prog_info) => kernel_assert_eq!(
+        prog_info.id(),
+        link_info.program_id(),
+        KernelVersion::new(5, 8, 0),
+    ));
+    assert_matches!(link_info.metadata(), Ok(metadata) => {
+        kernel_assert!(
+            matches!(metadata, LinkMetadata::Tcx { .. }),
+            KernelVersion::new(6, 6, 0),
+        );
+        if let LinkMetadata::Tcx { interface_index, interface_name, attach_type } = metadata {
+            let ifname = CString::new("lo").unwrap();
+            let expected_ifindex = unsafe { libc::if_nametoindex(ifname.as_ptr()) };
+
+            kernel_assert_eq!(expected_ifindex, interface_index, KernelVersion::new(6, 6, 0));
+            kernel_assert_eq!(Some("lo"), interface_name.as_deref(), KernelVersion::new(6, 6, 0));
+            assert_matches!(attach_type, Ok(attach_type) => kernel_assert_eq!(
+                AttachType::TcxEgress,
+                attach_type,
+                KernelVersion::new(6, 6, 0),
+            ));
         }
     });
 }
