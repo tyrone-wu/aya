@@ -109,6 +109,8 @@ fn codegen_bindings(opts: &SysrootOptions, libbpf_dir: &Path) -> Result<(), anyh
         // NETLINK
         "ifinfomsg",
         "tcmsg",
+        // ITER
+        "bpf_cgroup_iter_order",
     ];
 
     let vars = [

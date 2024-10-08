@@ -108,6 +108,18 @@ pub enum aya::links::LinkMetadata
 pub aya::links::LinkMetadata::Cgroup
 pub aya::links::LinkMetadata::Cgroup::attach_type: core::result::Result<aya::links::AttachType, aya::programs::links::LinkError>
 pub aya::links::LinkMetadata::Cgroup::id: u64
+pub aya::links::LinkMetadata::Iter
+pub aya::links::LinkMetadata::Iter::bpf_iter: core::option::Option<alloc::string::String>
+pub aya::links::LinkMetadata::IterCgroup
+pub aya::links::LinkMetadata::IterCgroup::cgroup_id: u64
+pub aya::links::LinkMetadata::IterCgroup::order: core::result::Result<CgroupIterOrder, aya::programs::links::LinkError>
+pub aya::links::LinkMetadata::IterMapElement
+pub aya::links::LinkMetadata::IterMapElement::bpf_iter: alloc::string::String
+pub aya::links::LinkMetadata::IterMapElement::map_id: u32
+pub aya::links::LinkMetadata::IterTask
+pub aya::links::LinkMetadata::IterTask::bpf_iter: alloc::string::String
+pub aya::links::LinkMetadata::IterTask::pid: u32
+pub aya::links::LinkMetadata::IterTask::tid: u32
 pub aya::links::LinkMetadata::KProbe
 pub aya::links::LinkMetadata::KProbe::address: u64
 pub aya::links::LinkMetadata::KProbe::cookie: u64

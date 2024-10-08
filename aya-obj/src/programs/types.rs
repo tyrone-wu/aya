@@ -182,3 +182,19 @@ impl TryFrom<u64> for crate::generated::perf_hw_cache_op_result_id {
         })
     }
 }
+
+impl TryFrom<u32> for crate::generated::bpf_cgroup_iter_order {
+    type Error = InvalidTypeBinding<u32>;
+
+    fn try_from(order: u32) -> Result<Self, Self::Error> {
+        use crate::generated::bpf_cgroup_iter_order::*;
+        Ok(match order {
+            x if x == BPF_CGROUP_ITER_ORDER_UNSPEC as u32 => BPF_CGROUP_ITER_ORDER_UNSPEC,
+            x if x == BPF_CGROUP_ITER_SELF_ONLY as u32 => BPF_CGROUP_ITER_SELF_ONLY,
+            x if x == BPF_CGROUP_ITER_DESCENDANTS_PRE as u32 => BPF_CGROUP_ITER_DESCENDANTS_PRE,
+            x if x == BPF_CGROUP_ITER_DESCENDANTS_POST as u32 => BPF_CGROUP_ITER_DESCENDANTS_POST,
+            x if x == BPF_CGROUP_ITER_ANCESTORS_UP as u32 => BPF_CGROUP_ITER_ANCESTORS_UP,
+            _ => return Err(InvalidTypeBinding { value: order }),
+        })
+    }
+}
