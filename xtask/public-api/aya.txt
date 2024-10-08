@@ -69,6 +69,9 @@ pub fn aya::links::AttachType::eq(&self, other: &aya::links::AttachType) -> bool
 impl core::convert::TryFrom<aya_obj::generated::linux_bindings_x86_64::bpf_attach_type> for aya::links::AttachType
 pub type aya::links::AttachType::Error = aya::programs::links::LinkError
 pub fn aya::links::AttachType::try_from(attach_type: aya_obj::generated::linux_bindings_x86_64::bpf_attach_type) -> core::result::Result<Self, Self::Error>
+impl core::convert::TryFrom<u32> for aya::links::AttachType
+pub type aya::links::AttachType::Error = aya::programs::links::LinkError
+pub fn aya::links::AttachType::try_from(attach_type: u32) -> core::result::Result<Self, Self::Error>
 impl core::fmt::Debug for aya::links::AttachType
 pub fn aya::links::AttachType::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::marker::Copy for aya::links::AttachType
@@ -105,14 +108,18 @@ pub enum aya::links::LinkMetadata
 pub aya::links::LinkMetadata::NotAvailable
 pub aya::links::LinkMetadata::RawTracePoint
 pub aya::links::LinkMetadata::RawTracePoint::name: core::option::Option<alloc::string::String>
+pub aya::links::LinkMetadata::Tracing
+pub aya::links::LinkMetadata::Tracing::attach_type: core::result::Result<core::option::Option<aya::links::AttachType>, aya::programs::links::LinkError>
+pub aya::links::LinkMetadata::Tracing::target_btf_id: core::option::Option<u32>
+pub aya::links::LinkMetadata::Tracing::target_obj_id: core::option::Option<u32>
 impl core::fmt::Debug for aya::links::LinkMetadata
 pub fn aya::links::LinkMetadata::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::marker::Freeze for aya::links::LinkMetadata
 impl core::marker::Send for aya::links::LinkMetadata
 impl core::marker::Sync for aya::links::LinkMetadata
 impl core::marker::Unpin for aya::links::LinkMetadata
-impl core::panic::unwind_safe::RefUnwindSafe for aya::links::LinkMetadata
-impl core::panic::unwind_safe::UnwindSafe for aya::links::LinkMetadata
+impl !core::panic::unwind_safe::RefUnwindSafe for aya::links::LinkMetadata
+impl !core::panic::unwind_safe::UnwindSafe for aya::links::LinkMetadata
 impl<T, U> core::convert::Into<U> for aya::links::LinkMetadata where U: core::convert::From<T>
 pub fn aya::links::LinkMetadata::into(self) -> U
 impl<T, U> core::convert::TryFrom<U> for aya::links::LinkMetadata where U: core::convert::Into<T>

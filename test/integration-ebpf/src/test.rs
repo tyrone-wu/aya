@@ -3,9 +3,10 @@
 
 use aya_ebpf::{
     bindings::xdp_action,
-    macros::{kprobe, kretprobe, raw_tracepoint, tracepoint, uprobe, uretprobe, xdp},
+    macros::{fentry, kprobe, kretprobe, raw_tracepoint, tracepoint, uprobe, uretprobe, xdp},
     programs::{
-        ProbeContext, RawTracePointContext, RetProbeContext, TracePointContext, XdpContext,
+        FEntryContext, ProbeContext, RawTracePointContext, RetProbeContext, TracePointContext,
+        XdpContext,
     },
 };
 
@@ -48,6 +49,11 @@ pub fn test_uretprobe(_ctx: RetProbeContext) -> u32 {
 
 #[raw_tracepoint(tracepoint = "sys_exit")]
 pub fn raw_tracepoint(_ctx: RawTracePointContext) -> i32 {
+    0
+}
+
+#[fentry(function = "do_unlinkat")]
+pub fn fentry(_ctx: FEntryContext) -> u32 {
     0
 }
 
