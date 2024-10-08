@@ -3,8 +3,10 @@
 
 use aya_ebpf::{
     bindings::xdp_action,
-    macros::{kprobe, kretprobe, tracepoint, uprobe, uretprobe, xdp},
-    programs::{ProbeContext, RetProbeContext, TracePointContext, XdpContext},
+    macros::{kprobe, kretprobe, raw_tracepoint, tracepoint, uprobe, uretprobe, xdp},
+    programs::{
+        ProbeContext, RawTracePointContext, RetProbeContext, TracePointContext, XdpContext,
+    },
 };
 
 #[xdp]
@@ -41,6 +43,11 @@ pub fn test_uprobe(_ctx: ProbeContext) -> u32 {
 
 #[uretprobe]
 pub fn test_uretprobe(_ctx: RetProbeContext) -> u32 {
+    0
+}
+
+#[raw_tracepoint(tracepoint = "sys_exit")]
+pub fn raw_tracepoint(_ctx: RawTracePointContext) -> i32 {
     0
 }
 

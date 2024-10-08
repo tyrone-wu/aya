@@ -1,10 +1,11 @@
 use std::{convert::TryInto as _, fs::remove_file, path::Path, thread, time::Duration};
 
 use aya::{
+    links::loaded_links,
     maps::Array,
     programs::{
         links::{FdLink, PinnedLink},
-        loaded_links, loaded_programs, KProbe, TracePoint, UProbe, Xdp, XdpFlags,
+        loaded_programs, KProbe, TracePoint, UProbe, Xdp, XdpFlags,
     },
     util::KernelVersion,
     Ebpf,
@@ -159,7 +160,7 @@ fn assert_loaded_and_linked(name: &str) {
             // program in the middle of a `loaded_programs()` call.
             loaded_links()
                 .filter_map(|link| link.ok())
-                .find_map(|link| (link.prog_id == prog_id).then_some(link.id))
+                .find_map(|link| (link.program_id() == prog_id).then_some(link.id()))
         });
     assert!(
         poll_loaded_link_id

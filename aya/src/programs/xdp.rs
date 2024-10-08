@@ -329,7 +329,7 @@ impl TryFrom<FdLink> for XdpLink {
 
     fn try_from(fd_link: FdLink) -> Result<Self, Self::Error> {
         // unwrap of fd_link.fd will not panic since it's only None when being dropped.
-        let info = bpf_link_get_info_by_fd(fd_link.fd.as_fd())?;
+        let info = bpf_link_get_info_by_fd(fd_link.fd.as_fd(), |_| {})?;
         if info.type_ == (bpf_link_type::BPF_LINK_TYPE_XDP as u32) {
             return Ok(Self::new(XdpLinkInner::FdLink(fd_link)));
         }

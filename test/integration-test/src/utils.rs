@@ -6,7 +6,11 @@ use std::{
     sync::atomic::{AtomicU64, Ordering},
 };
 
-use aya::netlink_set_link_up;
+use aya::{
+    maps::MapError,
+    netlink_set_link_up,
+    programs::{links::LinkError, ProgramError},
+};
 use libc::if_nametoindex;
 use netns_rs::{get_from_current_thread, NetNs};
 
@@ -82,12 +86,12 @@ macro_rules! kernel_assert {
             let cond_literal = stringify!($cond);
             if current >= feat_version {
                 // Host kernel is expected to have the feat but does not
-                panic!(
+                std::panic!(
                     r#"  assertion `{cond_literal}` failed: expected host kernel v{current} to have v{feat_version} feature"#,
                 );
             } else {
                 // Continue with tests since host is not expected to have feat
-                eprintln!(
+                std::eprintln!(
                     r#"ignoring assertion at {}:{}
   assertion `{cond_literal}` failed: continuing since host kernel v{current} is not expected to have v{feat_version} feature"#,
                     file!(), line!(),
@@ -108,7 +112,7 @@ macro_rules! kernel_assert_eq {
             let current = aya::util::KernelVersion::current().unwrap();
             if current >= feat_version {
                 // Host kernel is expected to have the feat but does not
-                panic!(
+                std::panic!(
                     r#"  assertion `left == right` failed: expected host kernel v{current} to have v{feat_version} feature
     left: {:?}
    right: {:?}"#,
@@ -116,7 +120,7 @@ macro_rules! kernel_assert_eq {
                 );
             } else {
                 // Continue with tests since host is not expected to have feat
-                eprintln!(
+                std::eprintln!(
                     r#"ignoring assertion at {}:{}
   assertion `left == right` failed: continuing since host kernel v{current} is not expected to have v{feat_version} feature
     left: {:?}
@@ -129,3 +133,40 @@ macro_rules! kernel_assert_eq {
 }
 
 pub(crate) use kernel_assert_eq;
+
+/// Returns whether the error is `EINVAL` for `ProgramError`.
+/// `EINVAL` usually indicates that the operation does not exist.
+pub(crate) fn is_prog_einval(err: &ProgramError) -> bool {
+    let io_error = match &err {
+        ProgramError::LoadError { io_error, .. } => io_error,
+        ProgramError::SyscallError(err) => &err.io_error,
+        _ => return false,
+    };
+    io_error
+        .raw_os_error()
+        .is_some_and(|errno| errno == libc::EINVAL)
+}
+
+/// Returns whether the error is `EINVAL` for `MapError`.
+/// `EINVAL` usually indicates that the operation does not exist.
+pub(crate) fn is_map_einval(err: &MapError) -> bool {
+    if let MapError::SyscallError(err) = err {
+        err.io_error
+            .raw_os_error()
+            .is_some_and(|errno| errno == libc::EINVAL)
+    } else {
+        false
+    }
+}
+
+/// Returns whether the error is `EINVAL` for `LinkError`.
+/// `EINVAL` usually indicates that the operation does not exist.
+pub(crate) fn is_link_einval(err: &LinkError) -> bool {
+    if let LinkError::SyscallError(err) = err {
+        err.io_error
+            .raw_os_error()
+            .is_some_and(|errno| errno == libc::EINVAL)
+    } else {
+        false
+    }
+}
