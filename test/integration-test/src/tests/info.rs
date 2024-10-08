@@ -7,16 +7,19 @@
 
 use std::{fs, panic, path::Path, time::SystemTime};
 
+use assert_matches::assert_matches;
 use aya::{
-    maps::{loaded_maps, Array, HashMap, IterableMap as _, MapError, MapType},
-    programs::{loaded_programs, ProgramError, ProgramType, SocketFilter, TracePoint},
+    links::{loaded_links, LinkInfo, LinkMetadata, LinkType},
+    maps::{loaded_maps, Array, HashMap, IterableMap as _, MapType},
+    programs::{loaded_programs, ProgramType, RawTracePoint, SocketFilter, TracePoint},
     sys::enable_stats,
     util::KernelVersion,
     Ebpf,
 };
-use libc::EINVAL;
 
-use crate::utils::{kernel_assert, kernel_assert_eq};
+use crate::utils::{
+    is_link_einval, is_map_einval, is_prog_einval, kernel_assert, kernel_assert_eq,
+};
 
 const BPF_JIT_ENABLE: &str = "/proc/sys/net/core/bpf_jit_enable";
 const BPF_STATS_ENABLED: &str = "/proc/sys/kernel/bpf_stats_enabled";
@@ -33,18 +36,11 @@ fn test_loaded_programs() {
     // Ensure loaded program doesn't panic
     let mut programs = loaded_programs().peekable();
     if let Err(err) = programs.peek().unwrap() {
-        if let ProgramError::SyscallError(err) = &err {
-            // Skip entire test since feature not available
-            if err
-                .io_error
-                .raw_os_error()
-                .is_some_and(|errno| errno == EINVAL)
-            {
-                eprintln!(
-                    "ignoring test completely as `loaded_programs()` is not available on the host"
-                );
-                return;
-            }
+        if is_prog_einval(err) {
+            eprintln!(
+                "ignoring test completely as `loaded_programs()` is not available on the host"
+            );
+            return;
         }
         panic!("{err}");
     }
@@ -234,17 +230,9 @@ fn list_loaded_maps() {
     // Ensure the loaded_maps() api doesn't panic
     let mut maps = loaded_maps().peekable();
     if let Err(err) = maps.peek().unwrap() {
-        if let MapError::SyscallError(err) = &err {
-            if err
-                .io_error
-                .raw_os_error()
-                .is_some_and(|errno| errno == EINVAL)
-            {
-                eprintln!(
-                    "ignoring test completely as `loaded_maps()` is not available on the host"
-                );
-                return;
-            }
+        if is_map_einval(err) {
+            eprintln!("ignoring test completely as `loaded_maps()` is not available on the host");
+            return;
         }
         panic!("{err}");
     }
@@ -326,6 +314,49 @@ fn test_map_info() {
     array.fd().unwrap();
 }
 
+#[test]
+fn test_link_info_raw_tp() {
+    let mut bpf: Ebpf = Ebpf::load(crate::TEST).unwrap();
+    let prog: &mut RawTracePoint = bpf
+        .program_mut("raw_tracepoint")
+        .unwrap()
+        .try_into()
+        .unwrap();
+    if let Err(err) = prog.load() {
+        if is_prog_einval(&err) {
+            eprintln!(
+                "ignoring test completely as `BPF_PROG_TYPE_RAW_TRACEPOINT` is not available on the host"
+            );
+            return;
+        }
+        panic!("{err}");
+    }
+    prog.attach("sys_exit").unwrap();
+
+    let link_info = match get_link_info() {
+        Some(info) => info,
+        None => return,
+    };
+
+    assert_matches!(link_info.link_type(), Ok(link_type) => kernel_assert_eq!(
+        LinkType::RawTracePoint,
+        link_type,
+        KernelVersion::new(5, 8, 0),
+    ));
+    kernel_assert!(link_info.id() > 0, KernelVersion::new(5, 8, 0));
+    assert_matches!(prog.info(), Ok(prog_info) => kernel_assert_eq!(
+        prog_info.id(),
+        link_info.program_id(),
+        KernelVersion::new(5, 8, 0),
+    ));
+    assert_matches!(link_info.metadata(), Ok(metadata) => assert_matches!(
+        metadata,
+        LinkMetadata::RawTracePoint { name } => {
+            kernel_assert_eq!(Some("sys_exit"), name.as_deref(), KernelVersion::new(5, 8, 0));
+        }
+    ));
+}
+
 /// Whether sysctl parameter is enabled in the `/proc` file.
 fn is_sysctl_enabled(path: &str) -> bool {
     match fs::read_to_string(path) {
@@ -342,4 +373,23 @@ fn enable_sysctl_param(path: &str) -> bool {
 /// Disable sysctl parameter through procfs.
 fn disable_sysctl_param(path: &str) -> bool {
     fs::write(path, b"0").is_ok()
+}
+
+/// Return link info if `loaded_links()` is available, `None` if not available, or panic if link
+/// error occurs.
+fn get_link_info() -> Option<LinkInfo> {
+    // There may be a link from `hid_tail_call` program, which is why we get last link.
+    let link = loaded_links().last().unwrap();
+    match link {
+        Ok(info) => Some(info),
+        Err(err) => {
+            if is_link_einval(&err) {
+                eprintln!(
+                    "ignoring test completely as `loaded_links()` is not available on the host"
+                );
+                return None;
+            }
+            panic!("{err}");
+        }
+    }
 }

@@ -618,6 +618,7 @@ pub(crate) fn bpf_map_get_info_by_fd(fd: BorrowedFd<'_>) -> Result<bpf_map_info,
     bpf_obj_get_info_by_fd(fd, |_| {})
 }
 
+/// Introduced in kernel v5.8.
 pub(crate) fn bpf_link_get_fd_by_id(link_id: u32) -> Result<crate::MockableFd, SyscallError> {
     let mut attr = unsafe { mem::zeroed::<bpf_attr>() };
 
@@ -632,8 +633,11 @@ pub(crate) fn bpf_link_get_fd_by_id(link_id: u32) -> Result<crate::MockableFd, S
     })
 }
 
-pub(crate) fn bpf_link_get_info_by_fd(fd: BorrowedFd<'_>) -> Result<bpf_link_info, SyscallError> {
-    bpf_obj_get_info_by_fd(fd, |_| {})
+pub(crate) fn bpf_link_get_info_by_fd(
+    fd: BorrowedFd<'_>,
+    init: impl FnOnce(&mut bpf_link_info),
+) -> Result<bpf_link_info, SyscallError> {
+    bpf_obj_get_info_by_fd(fd, init)
 }
 
 pub(crate) fn btf_obj_get_info_by_fd(
@@ -1202,6 +1206,7 @@ pub(crate) fn iter_prog_ids() -> impl Iterator<Item = Result<u32, SyscallError>>
     iter_obj_ids(bpf_cmd::BPF_PROG_GET_NEXT_ID, "bpf_prog_get_next_id")
 }
 
+/// Introduced in kernel v5.8.
 pub(crate) fn iter_link_ids() -> impl Iterator<Item = Result<u32, SyscallError>> {
     iter_obj_ids(bpf_cmd::BPF_LINK_GET_NEXT_ID, "bpf_link_get_next_id")
 }

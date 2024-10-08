@@ -3,7 +3,7 @@ use std::{
     collections::{hash_map::Entry, HashMap},
     ffi::CString,
     io,
-    os::fd::{AsFd as _, AsRawFd as _, BorrowedFd, RawFd},
+    os::fd::{AsFd, AsRawFd as _, BorrowedFd, RawFd},
     path::{Path, PathBuf},
 };
 
@@ -212,6 +212,13 @@ impl From<PinnedLink> for FdLink {
     }
 }
 
+impl AsFd for FdLink {
+    fn as_fd(&self) -> BorrowedFd<'_> {
+        let Self { fd } = self;
+        fd.as_fd()
+    }
+}
+
 /// A pinned file descriptor link.
 ///
 /// This link has been pinned to the BPF filesystem. On drop, the file descriptor that backs
@@ -386,15 +393,20 @@ macro_rules! define_link_wrapper {
 
 pub(crate) use define_link_wrapper;
 
-#[derive(Error, Debug)]
 /// Errors from operations on links.
+#[derive(Error, Debug)]
 pub enum LinkError {
     /// Invalid link.
     #[error("Invalid link")]
     InvalidLink,
+
     /// Syscall failed.
     #[error(transparent)]
     SyscallError(#[from] SyscallError),
+
+    /// Invalid attach type.
+    #[error("Invalid attachment")]
+    InvalidAttachment,
 }
 
 #[derive(Debug)]

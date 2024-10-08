@@ -4,6 +4,215 @@ pub use aya::BtfError
 pub use aya::Endianness
 pub use aya::PinningType
 pub use aya::bpf_map_def
+pub mod aya::links
+#[non_exhaustive] pub enum aya::links::AttachType
+pub aya::links::AttachType::CgroupDevice = 6
+pub aya::links::AttachType::CgroupGetsockopt = 21
+pub aya::links::AttachType::CgroupInet4Bind = 8
+pub aya::links::AttachType::CgroupInet4Connect = 10
+pub aya::links::AttachType::CgroupInet4Getpeername = 29
+pub aya::links::AttachType::CgroupInet4Getsockname = 31
+pub aya::links::AttachType::CgroupInet4PostBind = 12
+pub aya::links::AttachType::CgroupInet6Bind = 9
+pub aya::links::AttachType::CgroupInet6Connect = 11
+pub aya::links::AttachType::CgroupInet6Getpeername = 30
+pub aya::links::AttachType::CgroupInet6Getsockname = 32
+pub aya::links::AttachType::CgroupInet6PostBind = 13
+pub aya::links::AttachType::CgroupInetEgress = 1
+pub aya::links::AttachType::CgroupInetIngress = 0
+pub aya::links::AttachType::CgroupInetSockCreate = 2
+pub aya::links::AttachType::CgroupInetSockRelease = 34
+pub aya::links::AttachType::CgroupSetsockopt = 22
+pub aya::links::AttachType::CgroupSockOps = 3
+pub aya::links::AttachType::CgroupSysctl = 18
+pub aya::links::AttachType::CgroupUdp4Recvmsg = 19
+pub aya::links::AttachType::CgroupUdp4Sendmsg = 14
+pub aya::links::AttachType::CgroupUdp6Recvmsg = 20
+pub aya::links::AttachType::CgroupUdp6Sendmsg = 15
+pub aya::links::AttachType::CgroupUnixConnect = 49
+pub aya::links::AttachType::CgroupUnixGetpeername = 52
+pub aya::links::AttachType::CgroupUnixGetsockname = 53
+pub aya::links::AttachType::CgroupUnixRecvmsg = 51
+pub aya::links::AttachType::CgroupUnixSendmsg = 50
+pub aya::links::AttachType::FlowDissector = 17
+pub aya::links::AttachType::LircMode2 = 16
+pub aya::links::AttachType::LsmCgroup = 43
+pub aya::links::AttachType::LsmMac = 27
+pub aya::links::AttachType::ModifyReturn = 26
+pub aya::links::AttachType::Netfilter = 45
+pub aya::links::AttachType::NetkitPeer = 55
+pub aya::links::AttachType::NetkitPrimary = 54
+pub aya::links::AttachType::PerfEvent = 41
+pub aya::links::AttachType::SkLookup = 36
+pub aya::links::AttachType::SkMsgVerdict = 7
+pub aya::links::AttachType::SkReuseportSelect = 39
+pub aya::links::AttachType::SkReuseportSelectOrMigrate = 40
+pub aya::links::AttachType::SkSkbStreamParser = 4
+pub aya::links::AttachType::SkSkbStreamVerdict = 5
+pub aya::links::AttachType::SkSkbVerdict = 38
+pub aya::links::AttachType::StructOps = 44
+pub aya::links::AttachType::TcxEgress = 47
+pub aya::links::AttachType::TcxIngress = 46
+pub aya::links::AttachType::TraceFEntry = 24
+pub aya::links::AttachType::TraceFExit = 25
+pub aya::links::AttachType::TraceIter = 28
+pub aya::links::AttachType::TraceKProbeMulti = 42
+pub aya::links::AttachType::TraceRawTp = 23
+pub aya::links::AttachType::TraceUProbeMulti = 48
+pub aya::links::AttachType::Xdp = 37
+pub aya::links::AttachType::XdpCpuMap = 35
+pub aya::links::AttachType::XdpDevMap = 33
+impl core::clone::Clone for aya::links::AttachType
+pub fn aya::links::AttachType::clone(&self) -> aya::links::AttachType
+impl core::cmp::PartialEq for aya::links::AttachType
+pub fn aya::links::AttachType::eq(&self, other: &aya::links::AttachType) -> bool
+impl core::convert::TryFrom<aya_obj::generated::linux_bindings_x86_64::bpf_attach_type> for aya::links::AttachType
+pub type aya::links::AttachType::Error = aya::programs::links::LinkError
+pub fn aya::links::AttachType::try_from(attach_type: aya_obj::generated::linux_bindings_x86_64::bpf_attach_type) -> core::result::Result<Self, Self::Error>
+impl core::fmt::Debug for aya::links::AttachType
+pub fn aya::links::AttachType::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+impl core::marker::Copy for aya::links::AttachType
+impl core::marker::StructuralPartialEq for aya::links::AttachType
+impl core::marker::Freeze for aya::links::AttachType
+impl core::marker::Send for aya::links::AttachType
+impl core::marker::Sync for aya::links::AttachType
+impl core::marker::Unpin for aya::links::AttachType
+impl core::panic::unwind_safe::RefUnwindSafe for aya::links::AttachType
+impl core::panic::unwind_safe::UnwindSafe for aya::links::AttachType
+impl<T, U> core::convert::Into<U> for aya::links::AttachType where U: core::convert::From<T>
+pub fn aya::links::AttachType::into(self) -> U
+impl<T, U> core::convert::TryFrom<U> for aya::links::AttachType where U: core::convert::Into<T>
+pub type aya::links::AttachType::Error = core::convert::Infallible
+pub fn aya::links::AttachType::try_from(value: U) -> core::result::Result<T, <T as core::convert::TryFrom<U>>::Error>
+impl<T, U> core::convert::TryInto<U> for aya::links::AttachType where U: core::convert::TryFrom<T>
+pub type aya::links::AttachType::Error = <U as core::convert::TryFrom<T>>::Error
+pub fn aya::links::AttachType::try_into(self) -> core::result::Result<U, <U as core::convert::TryFrom<T>>::Error>
+impl<T> alloc::borrow::ToOwned for aya::links::AttachType where T: core::clone::Clone
+pub type aya::links::AttachType::Owned = T
+pub fn aya::links::AttachType::clone_into(&self, target: &mut T)
+pub fn aya::links::AttachType::to_owned(&self) -> T
+impl<T> core::any::Any for aya::links::AttachType where T: 'static + core::marker::Sized
+pub fn aya::links::AttachType::type_id(&self) -> core::any::TypeId
+impl<T> core::borrow::Borrow<T> for aya::links::AttachType where T: core::marker::Sized
+pub fn aya::links::AttachType::borrow(&self) -> &T
+impl<T> core::borrow::BorrowMut<T> for aya::links::AttachType where T: core::marker::Sized
+pub fn aya::links::AttachType::borrow_mut(&mut self) -> &mut T
+impl<T> core::clone::CloneToUninit for aya::links::AttachType where T: core::clone::Clone
+pub unsafe fn aya::links::AttachType::clone_to_uninit(&self, dst: *mut T)
+impl<T> core::convert::From<T> for aya::links::AttachType
+pub fn aya::links::AttachType::from(t: T) -> T
+pub enum aya::links::LinkMetadata
+pub aya::links::LinkMetadata::NotAvailable
+pub aya::links::LinkMetadata::RawTracePoint
+pub aya::links::LinkMetadata::RawTracePoint::name: core::option::Option<alloc::string::String>
+impl core::fmt::Debug for aya::links::LinkMetadata
+pub fn aya::links::LinkMetadata::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+impl core::marker::Freeze for aya::links::LinkMetadata
+impl core::marker::Send for aya::links::LinkMetadata
+impl core::marker::Sync for aya::links::LinkMetadata
+impl core::marker::Unpin for aya::links::LinkMetadata
+impl core::panic::unwind_safe::RefUnwindSafe for aya::links::LinkMetadata
+impl core::panic::unwind_safe::UnwindSafe for aya::links::LinkMetadata
+impl<T, U> core::convert::Into<U> for aya::links::LinkMetadata where U: core::convert::From<T>
+pub fn aya::links::LinkMetadata::into(self) -> U
+impl<T, U> core::convert::TryFrom<U> for aya::links::LinkMetadata where U: core::convert::Into<T>
+pub type aya::links::LinkMetadata::Error = core::convert::Infallible
+pub fn aya::links::LinkMetadata::try_from(value: U) -> core::result::Result<T, <T as core::convert::TryFrom<U>>::Error>
+impl<T, U> core::convert::TryInto<U> for aya::links::LinkMetadata where U: core::convert::TryFrom<T>
+pub type aya::links::LinkMetadata::Error = <U as core::convert::TryFrom<T>>::Error
+pub fn aya::links::LinkMetadata::try_into(self) -> core::result::Result<U, <U as core::convert::TryFrom<T>>::Error>
+impl<T> core::any::Any for aya::links::LinkMetadata where T: 'static + core::marker::Sized
+pub fn aya::links::LinkMetadata::type_id(&self) -> core::any::TypeId
+impl<T> core::borrow::Borrow<T> for aya::links::LinkMetadata where T: core::marker::Sized
+pub fn aya::links::LinkMetadata::borrow(&self) -> &T
+impl<T> core::borrow::BorrowMut<T> for aya::links::LinkMetadata where T: core::marker::Sized
+pub fn aya::links::LinkMetadata::borrow_mut(&mut self) -> &mut T
+impl<T> core::convert::From<T> for aya::links::LinkMetadata
+pub fn aya::links::LinkMetadata::from(t: T) -> T
+#[non_exhaustive] pub enum aya::links::LinkType
+pub aya::links::LinkType::Cgroup = 3
+pub aya::links::LinkType::Iter = 4
+pub aya::links::LinkType::KProbeMulti = 8
+pub aya::links::LinkType::NetNs = 5
+pub aya::links::LinkType::Netfilter = 10
+pub aya::links::LinkType::Netkit = 13
+pub aya::links::LinkType::PerfEvent = 7
+pub aya::links::LinkType::RawTracePoint = 1
+pub aya::links::LinkType::StructOps = 9
+pub aya::links::LinkType::Tcx = 11
+pub aya::links::LinkType::Tracing = 2
+pub aya::links::LinkType::UProbeMulti = 12
+pub aya::links::LinkType::Unspecified = 0
+pub aya::links::LinkType::Xdp = 6
+impl core::clone::Clone for aya::links::LinkType
+pub fn aya::links::LinkType::clone(&self) -> aya::links::LinkType
+impl core::cmp::PartialEq for aya::links::LinkType
+pub fn aya::links::LinkType::eq(&self, other: &aya::links::LinkType) -> bool
+impl core::convert::TryFrom<aya_obj::generated::linux_bindings_x86_64::bpf_link_type> for aya::links::LinkType
+pub type aya::links::LinkType::Error = aya::programs::links::LinkError
+pub fn aya::links::LinkType::try_from(link_type: aya_obj::generated::linux_bindings_x86_64::bpf_link_type) -> core::result::Result<Self, Self::Error>
+impl core::fmt::Debug for aya::links::LinkType
+pub fn aya::links::LinkType::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+impl core::marker::Copy for aya::links::LinkType
+impl core::marker::StructuralPartialEq for aya::links::LinkType
+impl core::marker::Freeze for aya::links::LinkType
+impl core::marker::Send for aya::links::LinkType
+impl core::marker::Sync for aya::links::LinkType
+impl core::marker::Unpin for aya::links::LinkType
+impl core::panic::unwind_safe::RefUnwindSafe for aya::links::LinkType
+impl core::panic::unwind_safe::UnwindSafe for aya::links::LinkType
+impl<T, U> core::convert::Into<U> for aya::links::LinkType where U: core::convert::From<T>
+pub fn aya::links::LinkType::into(self) -> U
+impl<T, U> core::convert::TryFrom<U> for aya::links::LinkType where U: core::convert::Into<T>
+pub type aya::links::LinkType::Error = core::convert::Infallible
+pub fn aya::links::LinkType::try_from(value: U) -> core::result::Result<T, <T as core::convert::TryFrom<U>>::Error>
+impl<T, U> core::convert::TryInto<U> for aya::links::LinkType where U: core::convert::TryFrom<T>
+pub type aya::links::LinkType::Error = <U as core::convert::TryFrom<T>>::Error
+pub fn aya::links::LinkType::try_into(self) -> core::result::Result<U, <U as core::convert::TryFrom<T>>::Error>
+impl<T> alloc::borrow::ToOwned for aya::links::LinkType where T: core::clone::Clone
+pub type aya::links::LinkType::Owned = T
+pub fn aya::links::LinkType::clone_into(&self, target: &mut T)
+pub fn aya::links::LinkType::to_owned(&self) -> T
+impl<T> core::any::Any for aya::links::LinkType where T: 'static + core::marker::Sized
+pub fn aya::links::LinkType::type_id(&self) -> core::any::TypeId
+impl<T> core::borrow::Borrow<T> for aya::links::LinkType where T: core::marker::Sized
+pub fn aya::links::LinkType::borrow(&self) -> &T
+impl<T> core::borrow::BorrowMut<T> for aya::links::LinkType where T: core::marker::Sized
+pub fn aya::links::LinkType::borrow_mut(&mut self) -> &mut T
+impl<T> core::clone::CloneToUninit for aya::links::LinkType where T: core::clone::Clone
+pub unsafe fn aya::links::LinkType::clone_to_uninit(&self, dst: *mut T)
+impl<T> core::convert::From<T> for aya::links::LinkType
+pub fn aya::links::LinkType::from(t: T) -> T
+pub struct aya::links::LinkInfo(_)
+impl aya::links::LinkInfo
+pub fn aya::links::LinkInfo::from_id(id: u32) -> core::result::Result<Self, aya::programs::links::LinkError>
+pub fn aya::links::LinkInfo::id(&self) -> u32
+pub fn aya::links::LinkInfo::link_type(&self) -> core::result::Result<aya::links::LinkType, aya::programs::links::LinkError>
+pub fn aya::links::LinkInfo::metadata(&self) -> core::result::Result<aya::links::LinkMetadata, aya::programs::links::LinkError>
+pub fn aya::links::LinkInfo::program_id(&self) -> u32
+impl core::marker::Freeze for aya::links::LinkInfo
+impl core::marker::Send for aya::links::LinkInfo
+impl core::marker::Sync for aya::links::LinkInfo
+impl core::marker::Unpin for aya::links::LinkInfo
+impl core::panic::unwind_safe::RefUnwindSafe for aya::links::LinkInfo
+impl core::panic::unwind_safe::UnwindSafe for aya::links::LinkInfo
+impl<T, U> core::convert::Into<U> for aya::links::LinkInfo where U: core::convert::From<T>
+pub fn aya::links::LinkInfo::into(self) -> U
+impl<T, U> core::convert::TryFrom<U> for aya::links::LinkInfo where U: core::convert::Into<T>
+pub type aya::links::LinkInfo::Error = core::convert::Infallible
+pub fn aya::links::LinkInfo::try_from(value: U) -> core::result::Result<T, <T as core::convert::TryFrom<U>>::Error>
+impl<T, U> core::convert::TryInto<U> for aya::links::LinkInfo where U: core::convert::TryFrom<T>
+pub type aya::links::LinkInfo::Error = <U as core::convert::TryFrom<T>>::Error
+pub fn aya::links::LinkInfo::try_into(self) -> core::result::Result<U, <U as core::convert::TryFrom<T>>::Error>
+impl<T> core::any::Any for aya::links::LinkInfo where T: 'static + core::marker::Sized
+pub fn aya::links::LinkInfo::type_id(&self) -> core::any::TypeId
+impl<T> core::borrow::Borrow<T> for aya::links::LinkInfo where T: core::marker::Sized
+pub fn aya::links::LinkInfo::borrow(&self) -> &T
+impl<T> core::borrow::BorrowMut<T> for aya::links::LinkInfo where T: core::marker::Sized
+pub fn aya::links::LinkInfo::borrow_mut(&mut self) -> &mut T
+impl<T> core::convert::From<T> for aya::links::LinkInfo
+pub fn aya::links::LinkInfo::from(t: T) -> T
+pub fn aya::links::loaded_links() -> impl core::iter::traits::iterator::Iterator<Item = core::result::Result<aya::links::LinkInfo, aya::programs::links::LinkError>>
 pub mod aya::maps
 pub mod aya::maps::array
 pub struct aya::maps::array::Array<T, V: aya::Pod>
@@ -3827,6 +4036,7 @@ pub unsafe fn aya::programs::links::CgroupAttachMode::clone_to_uninit(&self, dst
 impl<T> core::convert::From<T> for aya::programs::links::CgroupAttachMode
 pub fn aya::programs::links::CgroupAttachMode::from(t: T) -> T
 pub enum aya::programs::links::LinkError
+pub aya::programs::links::LinkError::InvalidAttachment
 pub aya::programs::links::LinkError::InvalidLink
 pub aya::programs::links::LinkError::SyscallError(aya::sys::SyscallError)
 impl core::convert::From<aya::sys::SyscallError> for aya::programs::links::LinkError
@@ -3936,6 +4146,8 @@ pub type aya::programs::links::FdLink::Error = aya::programs::links::LinkError
 pub fn aya::programs::links::FdLink::try_from(value: aya::programs::xdp::XdpLink) -> core::result::Result<Self, Self::Error>
 impl core::fmt::Debug for aya::programs::links::FdLink
 pub fn aya::programs::links::FdLink::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+impl std::os::fd::owned::AsFd for aya::programs::links::FdLink
+pub fn aya::programs::links::FdLink::as_fd(&self) -> std::os::fd::owned::BorrowedFd<'_>
 impl<'a> core::convert::TryFrom<&'a aya::programs::tc::SchedClassifierLink> for &'a aya::programs::links::FdLink
 pub type &'a aya::programs::links::FdLink::Error = aya::programs::links::LinkError
 pub fn &'a aya::programs::links::FdLink::try_from(value: &'a aya::programs::tc::SchedClassifierLink) -> core::result::Result<Self, Self::Error>

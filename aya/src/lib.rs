@@ -78,6 +78,7 @@
 )]
 
 mod bpf;
+pub mod links;
 pub mod maps;
 pub mod pin;
 pub mod programs;
