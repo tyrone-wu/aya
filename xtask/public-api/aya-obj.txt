@@ -1506,6 +1506,9 @@ pub fn aya_obj::generated::bpf_cgroup_iter_order::clone(&self) -> aya_obj::gener
 impl core::cmp::Eq for aya_obj::generated::bpf_cgroup_iter_order
 impl core::cmp::PartialEq for aya_obj::generated::bpf_cgroup_iter_order
 pub fn aya_obj::generated::bpf_cgroup_iter_order::eq(&self, other: &aya_obj::generated::bpf_cgroup_iter_order) -> bool
+impl core::convert::TryFrom<u32> for aya_obj::generated::bpf_cgroup_iter_order
+pub type aya_obj::generated::bpf_cgroup_iter_order::Error = aya_obj::InvalidTypeBinding<u32>
+pub fn aya_obj::generated::bpf_cgroup_iter_order::try_from(order: u32) -> core::result::Result<Self, Self::Error>
 impl core::fmt::Debug for aya_obj::generated::bpf_cgroup_iter_order
 pub fn aya_obj::generated::bpf_cgroup_iter_order::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::hash::Hash for aya_obj::generated::bpf_cgroup_iter_order

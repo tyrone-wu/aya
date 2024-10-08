@@ -6,8 +6,9 @@ use std::{
 };
 
 use aya_obj::generated::{
-    bpf_attach_type, bpf_link_info, bpf_link_type, bpf_perf_event_type, perf_hw_cache_id,
-    perf_hw_cache_op_id, perf_hw_cache_op_result_id, perf_hw_id, perf_sw_ids, perf_type_id,
+    bpf_attach_type, bpf_cgroup_iter_order, bpf_link_info, bpf_link_type, bpf_perf_event_type,
+    perf_hw_cache_id, perf_hw_cache_op_id, perf_hw_cache_op_result_id, perf_hw_id, perf_sw_ids,
+    perf_type_id,
 };
 
 #[allow(unused_imports)] // Used in rustdoc linking
@@ -109,6 +110,55 @@ impl LinkInfo {
                 Ok(LinkMetadata::Cgroup {
                     id: cgroup.cgroup_id,
                     attach_type,
+                })
+            }
+            LinkType::Iter => {
+                // SAFETY: union access
+                let iter = unsafe { &self.0.__bindgen_anon_1.iter };
+                if iter.target_name_len == 0 {
+                    return Ok(LinkMetadata::NotAvailable);
+                }
+
+                let mut bytes = vec![0u8; iter.target_name_len as usize];
+                bpf_link_get_info_by_fd(self.fd()?.as_fd(), |info: &mut bpf_link_info| {
+                    info.__bindgen_anon_1.iter.target_name = bytes.as_mut_ptr() as _;
+                    info.__bindgen_anon_1.iter.target_name_len = iter.target_name_len;
+                })?;
+                bytes.pop(); // Remove null terminator
+                let target = String::from_utf8(bytes).unwrap_or_default();
+
+                Ok(match target.as_str() {
+                    "bpf_map_elem" | "bpf_sk_storage_map" => {
+                        // SAFETY: union access
+                        let map = unsafe { &iter.__bindgen_anon_1.map };
+                        LinkMetadata::IterMapElement {
+                            bpf_iter: target,
+                            map_id: map.map_id,
+                        }
+                    }
+                    "cgroup" => {
+                        // SAFETY: union access
+                        let cgroup = unsafe { &iter.__bindgen_anon_2.cgroup };
+                        let order = bpf_cgroup_iter_order::try_from(cgroup.order)
+                            .unwrap_or(bpf_cgroup_iter_order::BPF_CGROUP_ITER_ORDER_UNSPEC)
+                            .try_into();
+                        LinkMetadata::IterCgroup {
+                            cgroup_id: cgroup.cgroup_id,
+                            order,
+                        }
+                    }
+                    "task" | "task_file" | "task_vma" => {
+                        // SAFETY: union access
+                        let task = unsafe { &iter.__bindgen_anon_2.task };
+                        LinkMetadata::IterTask {
+                            bpf_iter: target,
+                            tid: task.tid,
+                            pid: task.pid,
+                        }
+                    }
+                    _ => LinkMetadata::Iter {
+                        bpf_iter: (!target.is_empty()).then_some(target),
+                    },
                 })
             }
             LinkType::NetNs => {
@@ -380,6 +430,53 @@ pub enum LinkMetadata {
         id: u64,
         /// The [`AttachType`] of the link.
         attach_type: Result<AttachType, LinkError>,
+    },
+
+    /// [`LinkType::Iter`] metadata.
+    ///
+    /// Introduced in kernel v5.10.
+    Iter {
+        /// Name of the target `bpf_iter__`.
+        ///
+        /// `None` is returned if the name was not valid unicode.
+        bpf_iter: Option<String>,
+    },
+    /// [`LinkType::Iter`] metadata for iterating elements of a map.
+    ///
+    /// Introduced in kernel v5.10.
+    IterMapElement {
+        /// Name of the target `bpf_iter__` (`bpf_map_elem`, `bpf_sk_storage_map`).
+        bpf_iter: String,
+        /// The ID of the map's elements to iterate.
+        map_id: u32,
+    },
+    /// [`LinkType::Iter`] metadata for iterating cgroups.
+    ///
+    /// Introduced in kernel v6.1.
+    IterCgroup {
+        /// The ID of the cgroup of where the iterator starts.
+        ///
+        /// An ID of `0` indicates that the iterator starts from the default cgroup v2 root.
+        /// If iterating through cgroup v1 hierarchy instead, then the ID should not be `0`.
+        cgroup_id: u64,
+        /// How the iterator traverses the cgroups.
+        order: Result<CgroupIterOrder, LinkError>,
+    },
+    /// [`LinkType::Iter`] metadata for iterating tasks.
+    ///
+    /// Introduced in kernel v6.1.
+    IterTask {
+        /// Name of the target `bpf_iter__` (`task`, `task_file`, `task_vma`).
+        bpf_iter: String,
+        /// The ID of the task/thread to visit.
+        ///
+        /// An ID of `0` indicates that the iterator iterates through every task/thread of a
+        /// process.
+        tid: u32,
+        /// The ID of the process/task group to visit.
+        ///
+        /// An ID of `0` indicates that the iterator iterates through every process.
+        pid: u32,
     },
 
     /// [`LinkType::NetNs`] metadata.
@@ -1056,5 +1153,40 @@ impl TryFrom<u32> for AttachType {
         bpf_attach_type::try_from(attach_type)
             .unwrap_or(bpf_attach_type::__MAX_BPF_ATTACH_TYPE)
             .try_into()
+    }
+}
+
+/// How the iterator should traverse the cgroups.
+// TODO: move this into appropriate location once this program type is implemented
+#[doc(alias = "bpf_cgroup_iter_order")]
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum CgroupIterOrder {
+    /// Only yield the cgroup that was specified (single).
+    #[doc(alias = "BPF_CGROUP_ITER_SELF_ONLY")]
+    SelfOnly = bpf_cgroup_iter_order::BPF_CGROUP_ITER_SELF_ONLY as isize,
+    /// Traverse the descendants of the specified cgroup, starting from the specified cgroup down to its children (top-down).
+    #[doc(alias = "BPF_CGROUP_ITER_DESCENDANTS_PRE")]
+    DescendantsPre = bpf_cgroup_iter_order::BPF_CGROUP_ITER_DESCENDANTS_PRE as isize,
+    /// Traverse the descendants of the specified cgroup, starting from its children up to the cgroup (bottom-up).
+    #[doc(alias = "BPF_CGROUP_ITER_DESCENDANTS_POST")]
+    DescendantsPost = bpf_cgroup_iter_order::BPF_CGROUP_ITER_DESCENDANTS_POST as isize,
+    /// Traverse the ancestors of the specified cgroup, from the specified cgroup up to the root.
+    #[doc(alias = "BPF_CGROUP_ITER_ANCESTORS_UP")]
+    AncestorsUp = bpf_cgroup_iter_order::BPF_CGROUP_ITER_ANCESTORS_UP as isize,
+}
+
+// TODO: move this into appropriate location once this program type is implemented
+impl TryFrom<bpf_cgroup_iter_order> for CgroupIterOrder {
+    type Error = LinkError;
+
+    fn try_from(order: bpf_cgroup_iter_order) -> Result<Self, Self::Error> {
+        use bpf_cgroup_iter_order::*;
+        Ok(match order {
+            BPF_CGROUP_ITER_SELF_ONLY => Self::SelfOnly,
+            BPF_CGROUP_ITER_DESCENDANTS_PRE => Self::DescendantsPre,
+            BPF_CGROUP_ITER_DESCENDANTS_POST => Self::DescendantsPost,
+            BPF_CGROUP_ITER_ANCESTORS_UP => Self::AncestorsUp,
+            _ => return Err(LinkError::InvalidAttachment),
+        })
     }
 }
