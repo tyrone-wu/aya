@@ -118,6 +118,9 @@ pub aya::links::LinkMetadata::Tracing
 pub aya::links::LinkMetadata::Tracing::attach_type: core::result::Result<core::option::Option<aya::links::AttachType>, aya::programs::links::LinkError>
 pub aya::links::LinkMetadata::Tracing::target_btf_id: core::option::Option<u32>
 pub aya::links::LinkMetadata::Tracing::target_obj_id: core::option::Option<u32>
+pub aya::links::LinkMetadata::Xdp
+pub aya::links::LinkMetadata::Xdp::interface_index: u32
+pub aya::links::LinkMetadata::Xdp::interface_name: core::option::Option<alloc::string::String>
 impl core::fmt::Debug for aya::links::LinkMetadata
 pub fn aya::links::LinkMetadata::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
 impl core::marker::Freeze for aya::links::LinkMetadata

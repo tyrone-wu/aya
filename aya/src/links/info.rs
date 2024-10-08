@@ -1,6 +1,9 @@
 //! Metadata information about an eBPF link.
 
-use std::os::fd::{AsFd as _, BorrowedFd};
+use std::{
+    os::fd::{AsFd as _, BorrowedFd},
+    str,
+};
 
 use aya_obj::generated::{bpf_attach_type, bpf_link_info, bpf_link_type};
 
@@ -9,6 +12,7 @@ use crate::programs::ProgramType;
 use crate::{
     programs::links::{FdLink, LinkError},
     sys::{bpf_link_get_fd_by_id, bpf_link_get_info_by_fd, iter_link_ids},
+    util::bytes_of_bpf_name,
 };
 
 /// Provides metadata information about an attached eBPF link.
@@ -111,6 +115,25 @@ impl LinkInfo {
                     attach_type,
                 })
             }
+            LinkType::Xdp => {
+                // SAFETY: union access
+                let xdp = unsafe { &self.0.__bindgen_anon_1.xdp };
+                if xdp.ifindex == 0 {
+                    return Ok(LinkMetadata::NotAvailable);
+                }
+
+                let mut bytes = [0_i8; libc::IFNAMSIZ];
+                // SAFETY: libc wrapper
+                unsafe { libc::if_indextoname(xdp.ifindex, bytes.as_mut_ptr()) };
+                let interface_name = str::from_utf8(bytes_of_bpf_name(&bytes))
+                    .map(ToOwned::to_owned)
+                    .ok();
+
+                Ok(LinkMetadata::Xdp {
+                    interface_index: xdp.ifindex,
+                    interface_name,
+                })
+            }
             _ => Ok(LinkMetadata::NotImplemented),
         }
     }
@@ -183,6 +206,18 @@ pub enum LinkMetadata {
         net_namespace_inode: u32,
         /// The [`AttachType`] of the link.
         attach_type: Result<AttachType, LinkError>,
+    },
+
+    /// [`LinkType::Xdp`] metadata.
+    ///
+    /// Introduced in kernel v5.9.
+    Xdp {
+        /// The interface index that the link is attached to.
+        interface_index: u32,
+        /// The name of the network interface.
+        ///
+        /// `None` is returned if the name was not valid unicode.
+        interface_name: Option<String>,
     },
 
     /// For metadata that have not been implemented yet.

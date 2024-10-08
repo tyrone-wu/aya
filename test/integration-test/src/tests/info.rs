@@ -6,6 +6,7 @@
 //       Issue is that `bpf_obj_get_info_by_fd()` will need to be public. :/
 
 use std::{
+    ffi::CString,
     fs::{self, File},
     os::unix::fs::MetadataExt as _,
     panic,
@@ -20,7 +21,7 @@ use aya::{
     maps::{loaded_maps, Array, HashMap, IterableMap as _, MapType},
     programs::{
         loaded_programs, CgroupSkb, FEntry, ProgramType, RawTracePoint, SkLookup, SocketFilter,
-        TracePoint,
+        TracePoint, Xdp,
     },
     sys::enable_stats,
     util::KernelVersion,
@@ -521,6 +522,57 @@ fn test_link_info_netns() {
             ));
         }
     ));
+}
+
+#[test]
+fn test_link_info_xdp() {
+    if KernelVersion::current().unwrap() < KernelVersion::new(5, 9, 0) {
+        eprintln!("ignoring test completely as `BPF_LINK_TYPE_XDP` is not available on the host");
+        return;
+    }
+
+    let _netns = NetNsGuard::new();
+
+    let mut bpf: Ebpf = Ebpf::load(crate::TEST).unwrap();
+    let prog: &mut Xdp = bpf.program_mut("pass").unwrap().try_into().unwrap();
+    if let Err(err) = prog.load() {
+        if is_prog_einval(&err) {
+            eprintln!(
+                "ignoring test completely as `BPF_PROG_TYPE_XDP` is not available on the host"
+            );
+            return;
+        }
+        panic!("{err}");
+    }
+    prog.attach("lo", aya::programs::xdp::XdpFlags::default())
+        .unwrap();
+
+    let link_info = match get_link_info() {
+        Some(info) => info,
+        None => return,
+    };
+
+    assert_matches!(link_info.link_type(), Ok(link_type) => kernel_assert_eq!(
+        LinkType::Xdp,
+        link_type,
+        KernelVersion::new(5, 8, 0),
+    ));
+    kernel_assert!(link_info.id() > 0, KernelVersion::new(5, 8, 0));
+    assert_matches!(prog.info(), Ok(prog_info) => kernel_assert_eq!(
+        prog_info.id(),
+        link_info.program_id(),
+        KernelVersion::new(5, 8, 0),
+    ));
+    assert_matches!(link_info.metadata(), Ok(metadata) => {
+        kernel_assert!(matches!(metadata, LinkMetadata::Xdp { .. }), KernelVersion::new(5, 9, 0));
+        if let LinkMetadata::Xdp { interface_index, interface_name } = metadata {
+            let ifname = CString::new("lo").unwrap();
+            let expected_ifindex = unsafe { libc::if_nametoindex(ifname.as_ptr()) };
+
+            kernel_assert_eq!(expected_ifindex, interface_index, KernelVersion::new(5, 9, 0));
+            kernel_assert_eq!(Some("lo"), interface_name.as_deref(), KernelVersion::new(5, 9, 0));
+        }
+    });
 }
 
 /// Whether sysctl parameter is enabled in the `/proc` file.
