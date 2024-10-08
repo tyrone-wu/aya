@@ -108,6 +108,9 @@ pub enum aya::links::LinkMetadata
 pub aya::links::LinkMetadata::Cgroup
 pub aya::links::LinkMetadata::Cgroup::attach_type: core::result::Result<aya::links::AttachType, aya::programs::links::LinkError>
 pub aya::links::LinkMetadata::Cgroup::id: u64
+pub aya::links::LinkMetadata::NetNs
+pub aya::links::LinkMetadata::NetNs::attach_type: core::result::Result<aya::links::AttachType, aya::programs::links::LinkError>
+pub aya::links::LinkMetadata::NetNs::net_namespace_inode: u32
 pub aya::links::LinkMetadata::NotAvailable
 pub aya::links::LinkMetadata::RawTracePoint
 pub aya::links::LinkMetadata::RawTracePoint::name: core::option::Option<alloc::string::String>

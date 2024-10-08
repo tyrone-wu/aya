@@ -7,6 +7,7 @@
 
 use std::{
     fs::{self, File},
+    os::unix::fs::MetadataExt as _,
     panic,
     path::Path,
     time::SystemTime,
@@ -18,7 +19,8 @@ use aya::{
     links::{loaded_links, AttachType, LinkInfo, LinkMetadata, LinkType},
     maps::{loaded_maps, Array, HashMap, IterableMap as _, MapType},
     programs::{
-        loaded_programs, CgroupSkb, FEntry, ProgramType, RawTracePoint, SocketFilter, TracePoint,
+        loaded_programs, CgroupSkb, FEntry, ProgramType, RawTracePoint, SkLookup, SocketFilter,
+        TracePoint,
     },
     sys::enable_stats,
     util::KernelVersion,
@@ -26,7 +28,7 @@ use aya::{
 };
 
 use crate::utils::{
-    is_link_einval, is_map_einval, is_prog_einval, kernel_assert, kernel_assert_eq,
+    is_link_einval, is_map_einval, is_prog_einval, kernel_assert, kernel_assert_eq, NetNsGuard,
 };
 
 const BPF_JIT_ENABLE: &str = "/proc/sys/net/core/bpf_jit_enable";
@@ -458,6 +460,62 @@ fn test_link_info_cgroup() {
             kernel_assert_eq!(1, id, KernelVersion::new(5, 8, 0));
             assert_matches!(attach_type, Ok(attach_type) => kernel_assert_eq!(
                 AttachType::CgroupInetIngress,
+                attach_type,
+                KernelVersion::new(5, 8, 0),
+            ));
+        }
+    ));
+}
+
+#[test]
+fn test_link_info_netns() {
+    let netns = NetNsGuard::new();
+
+    let mut bpf: Ebpf = Ebpf::load(crate::TEST).unwrap();
+    let prog: &mut SkLookup = bpf
+        .program_mut("test_sk_lookup")
+        .unwrap()
+        .try_into()
+        .unwrap();
+    if let Err(err) = prog.load() {
+        if is_prog_einval(&err) {
+            eprintln!(
+                "ignoring test completely as `BPF_PROG_TYPE_SK_LOOKUP` is not available on the host"
+            );
+            return;
+        }
+        panic!("{err}");
+    }
+    let netns_path = File::open(netns.path()).unwrap();
+    prog.attach(netns_path).unwrap();
+
+    let link_info = match get_link_info() {
+        Some(info) => info,
+        None => return,
+    };
+
+    assert_matches!(link_info.link_type(), Ok(link_type) => kernel_assert_eq!(
+        LinkType::NetNs,
+        link_type,
+        KernelVersion::new(5, 8, 0),
+    ));
+    kernel_assert!(link_info.id() > 0, KernelVersion::new(5, 8, 0));
+    assert_matches!(prog.info(), Ok(prog_info) => kernel_assert_eq!(
+        prog_info.id(),
+        link_info.program_id(),
+        KernelVersion::new(5, 8, 0),
+    ));
+    assert_matches!(link_info.metadata(), Ok(metadata) => assert_matches!(
+        metadata,
+        LinkMetadata::NetNs { net_namespace_inode, attach_type } => {
+            let expected_ino = netns.file_metadata().unwrap().ino();
+            kernel_assert_eq!(
+                expected_ino,
+                net_namespace_inode as u64,
+                KernelVersion::new(5, 8, 0),
+            );
+            assert_matches!(attach_type, Ok(attach_type) => kernel_assert_eq!(
+                AttachType::SkLookup,
                 attach_type,
                 KernelVersion::new(5, 8, 0),
             ));

@@ -101,6 +101,16 @@ impl LinkInfo {
                     attach_type,
                 })
             }
+            LinkType::NetNs => {
+                // SAFETY: union access
+                let netns = unsafe { &self.0.__bindgen_anon_1.netns };
+                let attach_type = AttachType::try_from(netns.attach_type);
+
+                Ok(LinkMetadata::NetNs {
+                    net_namespace_inode: netns.netns_ino,
+                    attach_type,
+                })
+            }
             _ => Ok(LinkMetadata::NotImplemented),
         }
     }
@@ -161,6 +171,16 @@ pub enum LinkMetadata {
     Cgroup {
         /// The ID of the cGroup that the link is attached to.
         id: u64,
+        /// The [`AttachType`] of the link.
+        attach_type: Result<AttachType, LinkError>,
+    },
+
+    /// [`LinkType::NetNs`] metadata.
+    ///
+    /// Introduced in kernel v5.8.
+    NetNs {
+        /// The inode number of the network namespace that the link is attached to.
+        net_namespace_inode: u32,
         /// The [`AttachType`] of the link.
         attach_type: Result<AttachType, LinkError>,
     },

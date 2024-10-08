@@ -2,7 +2,10 @@
 
 use std::{
     ffi::CString,
-    io, process,
+    fs::Metadata,
+    io,
+    path::Path,
+    process,
     sync::atomic::{AtomicU64, Ordering},
 };
 
@@ -57,6 +60,16 @@ impl NetNsGuard {
         }
 
         netns
+    }
+
+    /// Returns the file path of the created network namespace.
+    pub(crate) fn path(&self) -> &Path {
+        return self.ns.as_ref().unwrap().path();
+    }
+
+    /// Returns the file metadata object of the created namespace.
+    pub(crate) fn file_metadata(&self) -> Option<Metadata> {
+        return self.ns.as_ref().unwrap().file().metadata().ok();
     }
 }
 
