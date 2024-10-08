@@ -2,4 +2,6 @@
 
 mod info;
 
-pub use info::{loaded_links, AttachType, LinkInfo, LinkMetadata, LinkType};
+pub use info::{
+    loaded_links, AttachType, InetHook, LinkInfo, LinkMetadata, LinkType, ProtocolFamily,
+};
