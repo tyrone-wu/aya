@@ -183,6 +183,10 @@ pub aya::links::LinkMetadata::Netfilter
 pub aya::links::LinkMetadata::Netfilter::hook: core::result::Result<aya::links::InetHook, aya::programs::links::LinkError>
 pub aya::links::LinkMetadata::Netfilter::priority: i32
 pub aya::links::LinkMetadata::Netfilter::protocol_family: core::result::Result<aya::links::ProtocolFamily, aya::programs::links::LinkError>
+pub aya::links::LinkMetadata::Netkit
+pub aya::links::LinkMetadata::Netkit::attach_type: core::result::Result<aya::links::AttachType, aya::programs::links::LinkError>
+pub aya::links::LinkMetadata::Netkit::interface_index: u32
+pub aya::links::LinkMetadata::Netkit::interface_name: core::option::Option<alloc::string::String>
 pub aya::links::LinkMetadata::NotAvailable
 pub aya::links::LinkMetadata::PerfEvent
 pub aya::links::LinkMetadata::PerfEvent::cookie: u64
