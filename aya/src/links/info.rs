@@ -463,6 +463,24 @@ impl LinkInfo {
                     attach_type,
                 })
             }
+            LinkType::Netkit => {
+                // SAFETY: union access
+                let netkit = unsafe { &self.0.__bindgen_anon_1.netkit };
+
+                let mut bytes = [0_i8; libc::IFNAMSIZ];
+                // SAFETY: libc wrapper
+                unsafe { libc::if_indextoname(netkit.ifindex, bytes.as_mut_ptr()) };
+                let interface_name = str::from_utf8(bytes_of_bpf_name(&bytes))
+                    .map(ToOwned::to_owned)
+                    .ok();
+                let attach_type = AttachType::try_from(netkit.attach_type);
+
+                Ok(LinkMetadata::Netkit {
+                    interface_index: netkit.ifindex,
+                    interface_name,
+                    attach_type,
+                })
+            }
             _ => Ok(LinkMetadata::NotImplemented),
         }
     }
@@ -748,6 +766,20 @@ pub enum LinkMetadata {
     ///
     /// Introduced in kernel v6.6.
     Tcx {
+        /// The interface index that the link is attached to.
+        interface_index: u32,
+        /// The name of the network interface.
+        ///
+        /// `None` is returned if the name was not valid unicode.
+        interface_name: Option<String>,
+        /// The [`AttachType`] of the link.
+        attach_type: Result<AttachType, LinkError>,
+    },
+
+    /// [`LinkType::Netkit`] metadata.
+    ///
+    /// Introduced in kernel v6.7.
+    Netkit {
         /// The interface index that the link is attached to.
         interface_index: u32,
         /// The name of the network interface.
