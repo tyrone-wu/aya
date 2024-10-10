@@ -193,6 +193,8 @@ pub aya::links::LinkMetadata::PerfEvent::cookie: u64
 pub aya::links::LinkMetadata::PerfEvent::event: aya::programs::perf_event::PerfEventConfig
 pub aya::links::LinkMetadata::RawTracePoint
 pub aya::links::LinkMetadata::RawTracePoint::name: core::option::Option<alloc::string::String>
+pub aya::links::LinkMetadata::StructOps
+pub aya::links::LinkMetadata::StructOps::map_id: u32
 pub aya::links::LinkMetadata::Tcx
 pub aya::links::LinkMetadata::Tcx::attach_type: core::result::Result<aya::links::AttachType, aya::programs::links::LinkError>
 pub aya::links::LinkMetadata::Tcx::interface_index: u32
