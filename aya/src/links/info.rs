@@ -62,6 +62,8 @@ impl LinkInfo {
 
     /// The ID of the program that is using this link.
     ///
+    /// This field is unused in [`LinkType::StructOps`].
+    ///
     /// Introduced in kernel v5.8.
     pub fn program_id(&self) -> u32 {
         self.0.prog_id
@@ -189,6 +191,17 @@ impl LinkInfo {
                 Ok(LinkMetadata::Xdp {
                     interface_index: xdp.ifindex,
                     interface_name,
+                })
+            }
+            LinkType::StructOps => {
+                // SAFETY: union access
+                let struct_ops = unsafe { &self.0.__bindgen_anon_1.struct_ops };
+                if struct_ops.map_id == 0 {
+                    return Ok(LinkMetadata::NotAvailable);
+                }
+
+                Ok(LinkMetadata::StructOps {
+                    map_id: struct_ops.map_id,
                 })
             }
             LinkType::Netfilter => {
@@ -481,7 +494,6 @@ impl LinkInfo {
                     attach_type,
                 })
             }
-            _ => Ok(LinkMetadata::NotImplemented),
         }
     }
 
@@ -612,6 +624,14 @@ pub enum LinkMetadata {
         ///
         /// `None` is returned if the name was not valid unicode.
         interface_name: Option<String>,
+    },
+
+    /// [`LinkType::StructOps`] metadata.
+    ///
+    /// Introduced in kernel v6.4.
+    StructOps {
+        /// The ID of the [`MapType::StructOps`](crate::maps::MapType::StructOps) map.
+        map_id: u32,
     },
 
     /// [`LinkType::Netfilter`] metadata.
@@ -789,10 +809,6 @@ pub enum LinkMetadata {
         /// The [`AttachType`] of the link.
         attach_type: Result<AttachType, LinkError>,
     },
-
-    /// For metadata that have not been implemented yet.
-    #[doc(hidden)]
-    NotImplemented,
 }
 
 /// Returns an iterator of [`LinkInfo`] over all eBPF links on the host.
@@ -910,7 +926,8 @@ pub enum LinkType {
     #[doc(alias = "BPF_LINK_TYPE_KPROBE_MULTI")]
     KProbeMulti = bpf_link_type::BPF_LINK_TYPE_KPROBE_MULTI as isize,
     /// Link type used in:
-    /// - [`AttachType::StructOps`]
+    /// - [`MapType::StructOps`](crate::maps::MapType::StructOps) with
+    ///   [`AttachType::StructOps`].
     ///
     /// Introduced in kernel v5.19.
     #[doc(alias = "BPF_LINK_TYPE_STRUCT_OPS")]
