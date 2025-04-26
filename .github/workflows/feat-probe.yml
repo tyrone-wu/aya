@@ -1,0 +1,61 @@
+name: test
+
+on:
+  workflow_dispatch:
+
+permissions:
+  packages: read
+
+jobs:
+  feature-probe-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        kernel:
+          - "3.19.8"    # prog: socket_filter; map: hash, array
+          - "4.1.52"    # prog: kprobe, sched_cls, sched_act
+          # - "4.7.10"    # prog: tracepoint
+          - "4.8.17"    # prog: xdp
+          # - "4.9.337"   # prog: perf_event
+          # - "4.10.17"   # prog: cgroup_skb, cgroup_sock, lwt_input, lwt_ouput, lwt_xmit
+          # - "4.13.16"   # prog: sock_ops
+          # - "4.14.336"  # prog: sk_skb
+          - "4.15.18"   # prog: cgroup_device
+          # - "4.17.19"   # prog: sk_msg, raw_tracepoint, cgroup_sock_addr
+          # - "4.18.20"   # prog: lwt_seg6local, lirc_mode2
+          # - "4.19.325"  # prog: sk_reuseport
+          # - "4.20.17"   # prog: flow_dissector
+          # - "5.2.21"    # prog: cgroup_sysctl, raw_tracepoint_writable
+          # - "5.3.18"    # prog: cgroup_sockopt
+          - "5.5.19"    # prog: tracing
+          # - "5.6.19"    # prog: struct_ops, extension
+          # - "5.7.19"    # prog: lsm
+          # - "5.9.16"    # prog: sk_look
+          # - "5.14.21"   # prog: syscall
+          - "6.4.16"    # prog: netfilter
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: ORAS CLI
+        uses: oras-project/setup-oras@v1
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Retrieve vmlinuz from GHCR
+        run: |
+          TAG=${{ matrix.kernel }}
+          oras pull \
+            ghcr.io/${{ github.repository_owner }}/vmlinuz:$TAG \
+            --output vmlinuz-$TAG
+
+      - run: |
+          ls -l vmlinuz-${{ matrix.kernel }}
