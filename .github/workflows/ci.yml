@@ -2,6 +2,8 @@ name: aya-ci
 
 on:
   push:
+    branches:
+      - pr-1251
 
   pull_request:
 
